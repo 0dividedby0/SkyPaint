@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate : DJISDKManagerDelegate {
     func appRegisteredWithError(_ error: Error?) {
         
-        NSLog("SDK Registered with error \(error?.localizedDescription)")
+        NSLog("SDK Registered with error \(error?.localizedDescription ?? "Registration Error")")
         
         if enableBridgeMode {
             DJISDKManager.enableBridgeMode(withBridgeAppIP: bridgeAppIP)

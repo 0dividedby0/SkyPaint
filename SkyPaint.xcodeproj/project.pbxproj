@@ -10,7 +10,7 @@
 		22F83415E48D591315367E67 /* libPods-SkyPaint.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 289057F1F243958EE2E2B0B1 /* libPods-SkyPaint.a */; };
 		25ED179B2048EA9700F038C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179A2048EA9700F038C5 /* AppDelegate.swift */; };
 		25ED179D2048EA9700F038C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179C2048EA9700F038C5 /* ViewController.swift */; };
-		25ED17A02048EA9700F038C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED179E2048EA9700F038C5 /* Main.storyboard */; };
+		25ED17A02048EA9700F038C5 /* Flight.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED179E2048EA9700F038C5 /* Flight.storyboard */; };
 		25ED17A22048EA9700F038C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25ED17A12048EA9700F038C5 /* Assets.xcassets */; };
 		25ED17A52048EA9700F038C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -19,7 +19,7 @@
 		25ED17972048EA9700F038C5 /* SkyPaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25ED179A2048EA9700F038C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25ED179C2048EA9700F038C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		25ED179F2048EA9700F038C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		25ED179F2048EA9700F038C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Flight.storyboard; sourceTree = "<group>"; };
 		25ED17A12048EA9700F038C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25ED17A42048EA9700F038C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25ED17A62048EA9700F038C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 			children = (
 				25ED179A2048EA9700F038C5 /* AppDelegate.swift */,
 				25ED179C2048EA9700F038C5 /* ViewController.swift */,
-				25ED179E2048EA9700F038C5 /* Main.storyboard */,
+				25ED179E2048EA9700F038C5 /* Flight.storyboard */,
 				25ED17A12048EA9700F038C5 /* Assets.xcassets */,
 				25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */,
 				25ED17A62048EA9700F038C5 /* Info.plist */,
@@ -152,7 +152,7 @@
 			files = (
 				25ED17A52048EA9700F038C5 /* LaunchScreen.storyboard in Resources */,
 				25ED17A22048EA9700F038C5 /* Assets.xcassets in Resources */,
-				25ED17A02048EA9700F038C5 /* Main.storyboard in Resources */,
+				25ED17A02048EA9700F038C5 /* Flight.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,12 +225,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		25ED179E2048EA9700F038C5 /* Main.storyboard */ = {
+		25ED179E2048EA9700F038C5 /* Flight.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				25ED179F2048EA9700F038C5 /* Base */,
 			);
-			name = Main.storyboard;
+			name = Flight.storyboard;
 			sourceTree = "<group>";
 		};
 		25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */ = {

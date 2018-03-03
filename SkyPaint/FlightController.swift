@@ -9,7 +9,7 @@
 import UIKit
 import DJISDK
 
-class ViewController: UIViewController {
+class FlightController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

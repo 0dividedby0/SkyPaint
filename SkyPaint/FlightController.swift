@@ -8,9 +8,15 @@
 
 import UIKit
 import DJISDK
+import VideoPreviewer
 
 class FlightController: UIViewController {
 
+    @IBOutlet weak var ModelLabel: UILabel!
+    @IBOutlet weak var BatteryLabel: UILabel!
+    @IBOutlet weak var StatusLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

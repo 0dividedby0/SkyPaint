@@ -13,25 +13,12 @@ import DJISDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    // Set this value to true to use the app with the Bridge and false to connect directly to the product
-    let enableBridgeMode = false
-    
-    // When enableBridgeMode is set to true, set this value to the IP of your bridge app.
-    let bridgeAppIP = "10.0.1.5"
+    var productCommunicationManager = ProductCommunicationManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let appKey = Bundle.main.object(forInfoDictionaryKey: SDK_APP_KEY_INFO_PLIST_KEY) as? String
-        
-        guard appKey != nil && appKey!.isEmpty == false else {
-            NSLog("Please enter your app key in the info.plist")
-            return false
-        }
-        
-        DJISDKManager.registerApp(with: self)
-        
+        self.productCommunicationManager.registerWithSDK()
         return true
     }
 
@@ -58,34 +45,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
-}
-
-extension AppDelegate : DJISDKManagerDelegate {
-    func appRegisteredWithError(_ error: Error?) {
-        
-        NSLog("SDK Registered with error \(error?.localizedDescription ?? "Registration Error")")
-        
-        if enableBridgeMode {
-            DJISDKManager.enableBridgeMode(withBridgeAppIP: bridgeAppIP)
-        } else {
-            DJISDKManager.startConnectionToProduct()
-        }
-        
-    }
-    
-    func productConnected(_ product: DJIBaseProduct?) {
-        
-    }
-    
-    func productDisconnected() {
-        
-    }
-    
-    func componentConnected(withKey key: String?, andIndex index: Int) {
-        
-    }
-    
-    func componentDisconnected(withKey key: String?, andIndex index: Int) {
-        
-    }
 }

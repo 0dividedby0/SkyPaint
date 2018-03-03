@@ -16,7 +16,6 @@
 		25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179C2048EA9700F038C5 /* FlightController.swift */; };
 		25ED17A02048EA9700F038C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED179E2048EA9700F038C5 /* Main.storyboard */; };
 		25ED17A22048EA9700F038C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25ED17A12048EA9700F038C5 /* Assets.xcassets */; };
-		25ED17A52048EA9700F038C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +58,6 @@
 		25ED179C2048EA9700F038C5 /* FlightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightController.swift; sourceTree = "<group>"; };
 		25ED179F2048EA9700F038C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		25ED17A12048EA9700F038C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		25ED17A42048EA9700F038C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25ED17A62048EA9700F038C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		289057F1F243958EE2E2B0B1 /* libPods-SkyPaint.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SkyPaint.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		386CE929806BEE70AFFD6FBE /* Pods-SkyPaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPaint/Pods-SkyPaint.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 				25705339204B481400B92E65 /* MainMenuController.swift */,
 				25ED179E2048EA9700F038C5 /* Main.storyboard */,
 				25ED17A12048EA9700F038C5 /* Assets.xcassets */,
-				25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */,
 				25ED17A62048EA9700F038C5 /* Info.plist */,
 				251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */,
 			);
@@ -218,7 +215,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25ED17A52048EA9700F038C5 /* LaunchScreen.storyboard in Resources */,
 				25ED17A22048EA9700F038C5 /* Assets.xcassets in Resources */,
 				25ED17A02048EA9700F038C5 /* Main.storyboard in Resources */,
 			);
@@ -309,14 +305,6 @@
 				25ED179F2048EA9700F038C5 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		25ED17A32048EA9700F038C5 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				25ED17A42048EA9700F038C5 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -134,8 +134,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             placingCenter = false
         }
         else {
-            let latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
-            let longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
+             latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
+             longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
             performSegue(withIdentifier: "mapToConfirmSegue", sender: nil)
         }
@@ -192,8 +192,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "mapToConfirmSegue"){
             let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
-            view.longitudeScale = self.longitudeScale
-            view.latitudeScale = self.latitudeScale
+            view.longitudeScale = self.longitudeScale!
+            view.latitudeScale = self.latitudeScale!
             view.center = self.center
         }
     }

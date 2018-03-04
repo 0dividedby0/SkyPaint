@@ -13,8 +13,8 @@ import DJISDK
 class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var center: CLLocationCoordinate2D?
-    var latitudeScale: Double?
-    var longitudeScale: Double?
+    var latitudeScale: Double = 1
+    var longitudeScale: Double = 1
     let mission = DJIMutableWaypointMission()
     var path: [Float] = []
     var distanceInMeters: Double?
@@ -27,44 +27,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         super.init(coder: aDecoder)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        /*path.append((0, 0, 200))
-        path.append((0, 100, 250))
-        path.append((50, 100, 250))
-        path.append((50,0, 200))
-        path.append((0, 0, 250))*/
-        
-        //path = UserDefaults.standard.object(forKey: "Path1") as? [(Float, Float, Float)]
-        
-        var scaledPoint:(CLLocationCoordinate2D,Float)!
-        
-        var lat:Double = 0
-        var long:Double = 0
-        
-        for i in 0..<path.count{
-            switch (i%3)
-            {
-            case 0:
-                long = Double(path[i]) * longitudeScale! + center!.longitude
-                break
-            case 1:
-                 lat = Double(path[i]) * latitudeScale! + center!.latitude
-                break
-            case 2:
-                scaledPoint.1 = path[i] / 3.28
-                break
-            default:
-                break
-            }
-            
-            scaledPoint.0 = CLLocationCoordinate2D(latitude: lat, longitude: long)
-           
-            let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
-            waypoint.altitude = scaledPoint.1
-            mission.add(waypoint)
-            
-        }
-    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (pathNames?.count)!
@@ -80,6 +43,34 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
+        
+        var scaledPoint:(CLLocationCoordinate2D,Float)
+        
+        var lat:Double?
+        var long:Double?
+        
+        for i in 0..<path.count{
+            switch (i%3)
+            {
+            case 0:
+                long = Double(path[i]) * longitudeScale + center!.longitude
+                break
+            case 1:
+                lat = Double(path[i]) * latitudeScale + center!.latitude
+                break
+            case 2:
+                scaledPoint.1 = path[i] / 3.28
+                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+                let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
+                waypoint.altitude = scaledPoint.1
+                mission.add(waypoint)
+                break
+            default:
+                break
+            }
+            
+           
+        }
     }
     
     @IBAction func speedSliderChange(_ sender: UISlider) {

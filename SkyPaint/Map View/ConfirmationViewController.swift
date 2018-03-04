@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import DJISDK
 
-class ConfirmationViewController: UIViewController {
+class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var center: CLLocationCoordinate2D?
     var latitudeScale: Double?
@@ -18,7 +18,9 @@ class ConfirmationViewController: UIViewController {
     let mission = DJIMutableWaypointMission()
     var path: [(Float,Float,Float)]
     var distanceInMeters: Double?
+    var pathNames:[String]?
     
+    @IBOutlet weak var pathNamesTableView: UITableView!
     @IBOutlet weak var speedSliderOutlet: UISlider!
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,11 +29,11 @@ class ConfirmationViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        path.append((0, 0, 200))
+        /*path.append((0, 0, 200))
         path.append((0, 100, 250))
         path.append((50, 100, 250))
         path.append((50,0, 200))
-        path.append((0, 0, 250))
+        path.append((0, 0, 250))*/
         
         //path = UserDefaults.standard.object(forKey: "Path1") as? [(Float, Float, Float)]
         
@@ -45,8 +47,22 @@ class ConfirmationViewController: UIViewController {
             mission.add(waypoint)
             
         }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "pathNameIdentifier", for: indexPath)
         
+        cell.textLabel?.text = pathNames?[indexPath.row]
         
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        path = UserDefaults.standard.object(forKey: pathNames![indexPath.row]) as! [(Float, Float, Float)]
     }
     
     @IBAction func speedSliderChange(_ sender: UISlider) {
@@ -55,7 +71,10 @@ class ConfirmationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        pathNamesTableView.dataSource = self
+        pathNamesTableView.delegate = self
         
+        pathNames = (UserDefaults.standard.array(forKey: "PathNames") as! [String])
         
     }
 

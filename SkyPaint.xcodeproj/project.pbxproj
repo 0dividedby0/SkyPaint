@@ -20,6 +20,8 @@
 		25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179C2048EA9700F038C5 /* FlightController.swift */; };
 		25ED17A02048EA9700F038C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25ED179E2048EA9700F038C5 /* Main.storyboard */; };
 		25ED17A22048EA9700F038C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25ED17A12048EA9700F038C5 /* Assets.xcassets */; };
+		31621D14204C2F94009380F8 /* pathDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31621D12204C2F93009380F8 /* pathDisplayView.swift */; };
+		31621D15204C2F94009380F8 /* EditWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31621D13204C2F93009380F8 /* EditWindowViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		25ED17A12048EA9700F038C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25ED17A62048EA9700F038C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		289057F1F243958EE2E2B0B1 /* libPods-SkyPaint.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SkyPaint.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31621D12204C2F93009380F8 /* pathDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = pathDisplayView.swift; path = "Edit View/pathDisplayView.swift"; sourceTree = "<group>"; };
+		31621D13204C2F93009380F8 /* EditWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditWindowViewController.swift; path = "Edit View/EditWindowViewController.swift"; sourceTree = "<group>"; };
 		386CE929806BEE70AFFD6FBE /* Pods-SkyPaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPaint/Pods-SkyPaint.release.xcconfig"; sourceTree = "<group>"; };
 		F5A1607807DB6DA814412D6F /* Pods-SkyPaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPaint/Pods-SkyPaint.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +155,8 @@
 		25ED17992048EA9700F038C5 /* SkyPaint */ = {
 			isa = PBXGroup;
 			children = (
+				31621D13204C2F93009380F8 /* EditWindowViewController.swift */,
+				31621D12204C2F93009380F8 /* pathDisplayView.swift */,
 				25ED179A2048EA9700F038C5 /* AppDelegate.swift */,
 				25ED179E2048EA9700F038C5 /* Main.storyboard */,
 				25ED17A12048EA9700F038C5 /* Assets.xcassets */,
@@ -323,7 +329,9 @@
 				2570533A204B481400B92E65 /* MainMenuController.swift in Sources */,
 				25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */,
 				2558452F204B74BD00B89AB2 /* MapController.swift in Sources */,
+				31621D14204C2F94009380F8 /* pathDisplayView.swift in Sources */,
 				25ADB1A5204C2A4400D5A7F2 /* ConfirmationViewController.swift in Sources */,
+				31621D15204C2F94009380F8 /* EditWindowViewController.swift in Sources */,
 				25ED179B2048EA9700F038C5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,7 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V3KUY8J833;
+				DEVELOPMENT_TEAM = C2A778HN46;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/Headers/Public\"";
 				INFOPLIST_FILE = SkyPaint/Info.plist;
@@ -482,7 +490,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V3KUY8J833;
+				DEVELOPMENT_TEAM = C2A778HN46;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/Headers/Public\"";
 				INFOPLIST_FILE = SkyPaint/Info.plist;

@@ -34,6 +34,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var xzOutlet: UIButton!
     @IBOutlet weak var xyOutlet: UIButton!
     
+    @IBOutlet weak var pathNameTextFeild: UITextField!
+
+    
     //***************************************TextFields and Sliders**************************************
 
     
@@ -65,17 +68,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func zTexFieldChanged(_ sender: UITextField) {
         zSlider.value = Float(zPointTextField.text!)!
     }
-    
-
-    @IBOutlet weak var speedTextField: UITextField!
-    @IBOutlet weak var speedSlider: UISlider!
-    @IBAction func speedSliderChanged(_ sender: UISlider) {
-        speedTextField.text = "\(speedSlider.value)"
-    }
-    @IBAction func speedTexFieldChanged(_ sender: UITextField) {
-        speedSlider.value = Float(speedTextField.text!)!
-    }
-    
     
     @IBOutlet weak var pointTableView: UITableView!
     @IBOutlet weak var sucessOutlet: UILabel!
@@ -174,7 +166,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             xPointTextField.text = "\(xSlider.value)"
             yPointTextField.text = "\(ySlider.value)"
             zPointTextField.text = "\(zSlider.value)"
-            speedTextField.text = "\(speedSlider.value)"
             
             self.pointTableView.reloadData()
         }
@@ -185,6 +176,17 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func savePath(_ sender: UIButton) {
+        
+        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != ""){
+            var pathNames:[String]? = UserDefaults.standard.stringArray(forKey: "PathNames")
+            let name:String = pathNameTextFeild.text!
+            UserDefaults.standard.set(points, forKey: name)
+            pathNames!.append(pathNameTextFeild.text!)
+            UserDefaults.standard.set(pathNames, forKey: "PathNames")
+        }
+        else{
+            sucessOutlet.text = "Please enter a unique PathName"
+        }
     }
     
 
@@ -312,7 +314,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xSlider.maximumValue = 250
         ySlider.maximumValue = 250
         zSlider.maximumValue = 400
-        speedSlider.maximumValue = 500
         
         xSlider.minimumValue = -250
         ySlider.minimumValue = -250
@@ -322,13 +323,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xSlider.value = 0
         ySlider.value = 0
         zSlider.value = 0
-        speedSlider.value = 250
         
         
         xPointTextField.text = "\(xSlider.value)"
         yPointTextField.text = "\(ySlider.value)"
         zPointTextField.text = "\(zSlider.value)"
-        speedTextField.text = "\(speedSlider.value)"
 
         
         xzOutlet.tintColor = xyOutlet.tintColor
@@ -342,7 +341,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         verticalAxisLabel.text = "Y-Axis"
         horizantalAxisLabel.text = "X-Axis"
-
+ 
+        
         // Do any additional setup after loading the view.
     }
 

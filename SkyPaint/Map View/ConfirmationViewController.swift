@@ -16,28 +16,35 @@ class ConfirmationViewController: UIViewController {
     var latitudeScale: Double?
     var longitudeScale: Double?
     let mission = DJIMutableWaypointMission()
-    var path: [(Float,Float,Float)]?
+    var path: [(Float,Float,Float)]
+    var distanceInMeters: Double?
     
     @IBOutlet weak var speedSliderOutlet: UISlider!
     
+    required init?(coder aDecoder: NSCoder) {
+        path = [(Float,Float,Float)]()
+        super.init(coder: aDecoder)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        path?.append((0, 0, 200))
-        path?.append((0, 100, 250))
-        path?.append((50, 100, 250))
-        path?.append((50,0, 200))
-        path?.append((0, 0, 250))
+        path.append((0, 0, 200))
+        path.append((0, 100, 250))
+        path.append((50, 100, 250))
+        path.append((50,0, 200))
+        path.append((0, 0, 250))
         
         //path = UserDefaults.standard.object(forKey: "Path1") as? [(Float, Float, Float)]
         
         var scaledPoint:(CLLocationCoordinate2D,Float)!
         
-//        for point in path!{
-//            scaledPoint.0 = CLLocationCoordinate2D(latitude: Double(point.1) * latitudeScale! + center!.latitude, longitude: Double(point.0) * longitudeScale! + center!.longitude)
-//            scaledPoint.1 = point.2 / 3.28
-//            let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
-//            waypoint.altitude = scaledPoint.1
-//            mission.add(waypoint)
-//        }
+        for point in path{
+            scaledPoint.0 = CLLocationCoordinate2D(latitude: Double(point.1) * latitudeScale! + center!.latitude, longitude: Double(point.0) * longitudeScale! + center!.longitude)
+            scaledPoint.1 = point.2 / 3.28
+            let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
+            waypoint.altitude = scaledPoint.1
+            mission.add(waypoint)
+            
+        }
         
         
     }

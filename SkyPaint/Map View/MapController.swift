@@ -135,9 +135,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             let latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
             let longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
-            let alert = UIAlertController(title: "Region Confirmed!", message: "Longitude Scale - 1:\(longitudeScale)\nLatitude Scale - 1:\(latitudeScale)\nCenter - (\(center!.latitude), \(center!.longitude))", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-            self.present(alert, animated: true)
+            performSegue(withIdentifier: "mapToConfirmSegue", sender: nil)
         }
     }
     

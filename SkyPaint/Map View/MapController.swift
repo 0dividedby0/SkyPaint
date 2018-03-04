@@ -19,8 +19,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var LatitudeLabel: UILabel!
     @IBOutlet weak var LongitudeSlider: UISlider!
     @IBOutlet weak var LongitudeLabel: UILabel!
-    @IBOutlet weak var HeightSlider: UISlider!
-    @IBOutlet weak var HeightLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet var mapView: MKMapView!
@@ -121,10 +119,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             
             LongitudeSlider.isHidden = false;
             LatitudeSlider.isHidden = false;
-            HeightSlider.isHidden = false;
             LongitudeLabel.isHidden = false;
             LatitudeLabel.isHidden = false;
-            HeightLabel.isHidden = false;
             
             regionPins.append(MKPointAnnotation())
             regionPins.append(MKPointAnnotation())
@@ -139,7 +135,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             let latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
             let longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
-            let alert = UIAlertController(title: "Region Confirmed!", message: "Longitude Scale - 1:\(longitudeScale)\nLatitude Scale - 1:\(latitudeScale)\nCenter - (\(center?.latitude), \(center?.longitude))", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Region Confirmed!", message: "Longitude Scale - 1:\(longitudeScale)\nLatitude Scale - 1:\(latitudeScale)\nCenter - (\(center!.latitude), \(center!.longitude))", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
             self.present(alert, animated: true)
         }
@@ -178,8 +174,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBAction func longitudeSliderChanged(_ sender: Any) {
         lonOffset = CLLocationDegrees(0.001 * LongitudeSlider.value)
         positionRegionPoints()
-    }
-    @IBAction func heightSliderChanged(_ sender: Any) {
     }
     
     

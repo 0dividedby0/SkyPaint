@@ -15,7 +15,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var center: CLLocationCoordinate2D?
     var latitudeScale: Double = 1
     var longitudeScale: Double = 1
-    let mission:DJIMutableWaypointMission = DJIMutableWaypointMission()
+    let mutablemission:DJIMutableWaypointMission = DJIMutableWaypointMission()
     var path: [Float] = []
     var distanceInMeters: Double?
     var pathNames:[String]?
@@ -66,10 +66,10 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
                 scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
                 waypoint = DJIWaypoint(coordinate: scaledPoint.0)
                 waypoint.altitude = scaledPoint.1
-                mission.add(waypoint)
+                mutablemission.add(waypoint)
             }
             print("\n \(i)" + ", ")
-            print(mission.allWaypoints().count)
+            print(mutablemission.allWaypoints().count)
         }
         let a = 5
     }
@@ -99,19 +99,18 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     func startMission() {
         let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
         
-        mission.maxFlightSpeed = 20
-        mission.autoFlightSpeed = speedSliderOutlet.value
-        mission.headingMode = DJIWaypointMissionHeadingMode.auto
+        mutablemission.maxFlightSpeed = 20
+        mutablemission.autoFlightSpeed = speedSliderOutlet.value
+        mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
         
-        //mission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         
-        missionOperator?.load(mission as DJIWaypointMission)
+        let mission = DJIWaypointMission(mission: mutablemission)
+
+        missionOperator?.load(mission)
         
         missionOperator?.uploadMission(completion: nil)
         
         missionOperator?.startMission(completion: nil)
-        
-      
         
     }
     

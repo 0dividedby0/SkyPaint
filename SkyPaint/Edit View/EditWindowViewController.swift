@@ -176,13 +176,39 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func savePath(_ sender: UIButton) {
+        let defaults = UserDefaults.standard
+        var newPath:[Float] = []
         
         if (pathNameTextFeild.text != nil && pathNameTextFeild.text != ""){
-            var pathNames:[String]? = UserDefaults.standard.stringArray(forKey: "PathNames")
-            let name:String = pathNameTextFeild.text!
-            UserDefaults.standard.set(points, forKey: name)
-            pathNames!.append(pathNameTextFeild.text!)
-            UserDefaults.standard.set(pathNames, forKey: "PathNames")
+            if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames") as? [String]{
+                let name:String = pathNameTextFeild.text!
+                
+                pathNames.append(pathNameTextFeild.text!)
+                defaults.set(pathNames, forKey: "PathNames")
+                for point in points
+                {
+                    newPath.append(contentsOf: [point.0, point.1, point.2])
+                }
+                
+                defaults.set(newPath, forKey: name)
+                
+            }
+            else
+            {
+                var pathNames:[String] = []
+                let name:String = pathNameTextFeild.text!
+                
+                pathNames.append(pathNameTextFeild.text!)
+                defaults.set(pathNames, forKey: "PathNames")
+                for point in points
+                {
+                    newPath.append(contentsOf: [point.0, point.1, point.2])
+                }                
+                defaults.set(newPath, forKey: name)
+            }
+           
+            
+            
         }
         else{
             sucessOutlet.text = "Please enter a unique PathName"

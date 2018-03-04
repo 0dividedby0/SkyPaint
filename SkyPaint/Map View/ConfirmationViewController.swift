@@ -16,7 +16,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var latitudeScale: Double?
     var longitudeScale: Double?
     let mission = DJIMutableWaypointMission()
-    var path: [(Float,Float,Float)]
+    var path: [Float] = []
     var distanceInMeters: Double?
     var pathNames:[String]?
     
@@ -24,7 +24,6 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var speedSliderOutlet: UISlider!
     
     required init?(coder aDecoder: NSCoder) {
-        path = [(Float,Float,Float)]()
         super.init(coder: aDecoder)
     }
     
@@ -39,9 +38,27 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         
         var scaledPoint:(CLLocationCoordinate2D,Float)!
         
-        for point in path{
-            scaledPoint.0 = CLLocationCoordinate2D(latitude: Double(point.1) * latitudeScale! + center!.latitude, longitude: Double(point.0) * longitudeScale! + center!.longitude)
-            scaledPoint.1 = point.2 / 3.28
+        var lat:Double = 0
+        var long:Double = 0
+        
+        for i in 0..<path.count{
+            switch (i%3)
+            {
+            case 0:
+                long = Double(path[i]) * longitudeScale! + center!.longitude
+                break
+            case 1:
+                 lat = Double(path[i]) * latitudeScale! + center!.latitude
+                break
+            case 2:
+                scaledPoint.1 = path[i] / 3.28
+                break
+            default:
+                break
+            }
+            
+            scaledPoint.0 = CLLocationCoordinate2D(latitude: lat, longitude: long)
+           
             let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
             waypoint.altitude = scaledPoint.1
             mission.add(waypoint)
@@ -50,7 +67,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return (pathNames?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,12 +79,16 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        path = UserDefaults.standard.object(forKey: pathNames![indexPath.row]) as! [(Float, Float, Float)]
+        path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
     }
     
     @IBAction func speedSliderChange(_ sender: UISlider) {
     }
     
+    @IBAction func startButtonTouched(_ sender: UIButton) {
+        startMission()
+        performSegue(withIdentifier: "confirmationToStartSegue", sender: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -93,6 +114,10 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         mission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         
         missionOperator?.load(mission)
+        
+        missionOperator?.uploadMission(completion: nil)
+        
+        missionOperator?.startMission(completion: nil)
     }
     
 

@@ -370,16 +370,25 @@
                                 <rect key="frame" x="918" y="14" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="YZ"/>
+                                <connections>
+                                    <action selector="yzButtonTapped:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="hRZ-ND-xFf"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhY-Ql-N4b">
                                 <rect key="frame" x="880" y="14" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="XZ"/>
+                                <connections>
+                                    <action selector="xzButtonTapped:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="mtd-Yw-mex"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dYD-Ld-Eeo">
                                 <rect key="frame" x="842" y="14" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="XY"/>
+                                <connections>
+                                    <action selector="xyButtonTapped:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="8fF-ra-7Dv"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Path Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUF-TN-AYg">
                                 <rect key="frame" x="20" y="369" width="89" height="21"/>
@@ -405,7 +414,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07M-rp-ze2">
-                                <rect key="frame" x="683" y="617" width="68" height="30"/>
+                                <rect key="frame" x="856" y="617" width="68" height="30"/>
                                 <state key="normal" title="Save Path"/>
                                 <connections>
                                     <action selector="savePath:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="8kL-uU-9Ii"/>
@@ -447,7 +456,7 @@
                             <constraint firstItem="kvg-Pk-Uk5" firstAttribute="centerX" secondItem="Fhq-Ap-j6D" secondAttribute="centerX" id="ebc-6C-y8Z"/>
                             <constraint firstItem="QqA-a0-2mb" firstAttribute="leading" secondItem="4PU-a2-3JW" secondAttribute="trailing" constant="40" id="fEx-3H-8r6"/>
                             <constraint firstItem="ZBc-Pe-tAb" firstAttribute="top" secondItem="SDx-6B-YJF" secondAttribute="bottom" constant="34" id="fiT-Qz-sia"/>
-                            <constraint firstItem="bb0-8k-ZKv" firstAttribute="trailing" secondItem="07M-rp-ze2" secondAttribute="trailing" constant="273" id="gZa-Vl-ecf"/>
+                            <constraint firstItem="bb0-8k-ZKv" firstAttribute="trailing" secondItem="07M-rp-ze2" secondAttribute="trailing" constant="100" id="gZa-Vl-ecf"/>
                             <constraint firstItem="Fhq-Ap-j6D" firstAttribute="leading" secondItem="1zy-w5-9fC" secondAttribute="trailing" constant="5" id="iTS-vA-nR1"/>
                             <constraint firstItem="QqA-a0-2mb" firstAttribute="top" secondItem="bb0-8k-ZKv" secondAttribute="top" constant="30" id="jAk-d8-1u9"/>
                             <constraint firstItem="q92-rl-CXH" firstAttribute="leading" secondItem="bb0-8k-ZKv" secondAttribute="leading" constant="20" id="jQf-Xz-cA2"/>

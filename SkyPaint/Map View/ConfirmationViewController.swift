@@ -15,10 +15,11 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var center: CLLocationCoordinate2D?
     var latitudeScale: Double = 1
     var longitudeScale: Double = 1
-    let mission = DJIMutableWaypointMission()
+    let mission:DJIMutableWaypointMission = DJIMutableWaypointMission()
     var path: [Float] = []
     var distanceInMeters: Double?
     var pathNames:[String]?
+    var waypoint:DJIWaypoint = DJIWaypoint()
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     @IBOutlet weak var speedSliderOutlet: UISlider!
@@ -49,28 +50,28 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         var lat:Double?
         var long:Double?
         
-        for i in 0..<path.count{
-            switch (i%3)
+        for i in 0...path.count - 1{
+            if(i%3 == 0)
             {
-            case 0:
                 long = Double(path[i]) * longitudeScale + center!.longitude
-                break
-            case 1:
+            }
+            else if(i%3 == 1)
+            {
                 lat = Double(path[i]) * latitudeScale + center!.latitude
-                break
-            case 2:
+
+            }
+            else if(i%3 == 2)
+            {
                 scaledPoint.1 = path[i] / 3.28
                 scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
+                waypoint = DJIWaypoint(coordinate: scaledPoint.0)
                 waypoint.altitude = scaledPoint.1
                 mission.add(waypoint)
-                break
-            default:
-                break
             }
-            
-           
+            print("\n \(i)" + ", ")
+            print(mission.allWaypoints().count)
         }
+        let a = 5
     }
     
     @IBAction func speedSliderChange(_ sender: UISlider) {
@@ -104,11 +105,15 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         
         mission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         
-        missionOperator?.load(mission)
+    
+        
+        missionOperator?.load(mission as DJIWaypointMission)
         
         missionOperator?.uploadMission(completion: nil)
         
         missionOperator?.startMission(completion: nil)
+        
+        
     }
     
 

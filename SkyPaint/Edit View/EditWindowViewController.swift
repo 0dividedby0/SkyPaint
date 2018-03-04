@@ -78,7 +78,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     //********************************************Buttons***********************************************
 
     
-    @IBAction func xzBarButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func xzButtonTapped(_ sender: UIButton) {
         plane = "XZ"
         pDV.plane = "XZ"
         pDV.setNeedsDisplay()
@@ -95,7 +95,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
-    @IBAction func yzBarButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func yzButtonTapped(_ sender: UIButton) {
         plane = "YZ"
         pDV.plane = "YZ"
         pDV.setNeedsDisplay()
@@ -111,7 +111,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         yzOutlet.tintColor = UIColor.green
     }
     
-    @IBAction func xyBarButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func xyButtonTapped(_ sender: UIButton) {
         plane = "XY"
         pDV.plane = "XY"
         pDV.setNeedsDisplay()
@@ -206,7 +206,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 }                
                 defaults.set(newPath, forKey: name)
             }
-           
+            sucessOutlet.text = "Successfully Added Path"
+
             
             
         }

@@ -43,8 +43,8 @@ public class pathDisplayView: UIView {
         }
         else
         {
-            coor1 = CGFloat(points[0].0)
-            coor2 = CGFloat(points[0].1) * -1 + 500 + 250
+            coor1 = CGFloat(points[0].0) + 250
+            coor2 = CGFloat(points[0].1) * -1 + 250
         }
         
         newPoint = CGPoint(x: coor1, y: coor2) //initial point
@@ -62,18 +62,18 @@ public class pathDisplayView: UIView {
             
             if(plane == "XZ")
             {
-                coor1 = CGFloat(points[i].0)
-                coor2 = CGFloat(points[i].2) * -1 + 500
+                coor1 = CGFloat(points[i].0) + 250
+                coor2 = CGFloat(points[i].2) * -1 + 400
             }
             else if(plane == "YZ")
             {
-                coor1 = CGFloat(points[i].1)
-                coor2 = CGFloat(points[i].2) * -1 + 500
+                coor1 = CGFloat(points[i].1) + 250
+                coor2 = CGFloat(points[i].2) * -1 + 400
             }
             else
             {
-                coor1 = CGFloat(points[i].0)
-                coor2 = CGFloat(points[i].1) * -1 + 500
+                coor1 = CGFloat(points[i].0) + 250
+                coor2 = CGFloat(points[i].1) * -1 + 250
             }
             
             newPoint = CGPoint(x: coor1, y: coor2) //initial point

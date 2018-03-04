@@ -103,9 +103,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         mission.autoFlightSpeed = speedSliderOutlet.value
         mission.headingMode = DJIWaypointMissionHeadingMode.auto
         
-        mission.finishedAction = DJIWaypointMissionFinishedAction.noAction
-        
-    
+        //mission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         
         missionOperator?.load(mission as DJIWaypointMission)
         
@@ -113,6 +111,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         
         missionOperator?.startMission(completion: nil)
         
+      
         
     }
     

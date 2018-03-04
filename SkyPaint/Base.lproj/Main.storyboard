@@ -17,6 +17,16 @@
                     <view key="view" contentMode="scaleToFill" id="9Vn-Tm-hIh">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
+                                <rect key="frame" x="897" y="683" width="67" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Map View"/>
+                                <connections>
+                                    <segue destination="uzY-xF-TEI" kind="show" id="nKp-ha-4Sg"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="yGl-TS-C1v"/>
                     </view>
@@ -27,6 +37,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1y-qb-Z5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="430.6640625" y="-59.375"/>
+        </scene>
+        <!--Map Controller-->
+        <scene sceneID="dbh-n4-DAa">
+            <objects>
+                <viewController id="uzY-xF-TEI" customClass="MapController" customModule="SkyPaint" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dOq-e7-JhA">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xWJ-aB-miv">
+                                <rect key="frame" x="45" y="57" width="934" height="674"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="674" id="8ef-m2-cQz"/>
+                                    <constraint firstAttribute="width" constant="934" id="d1n-oA-qGp"/>
+                                </constraints>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eq8-H7-X1k">
+                                <rect key="frame" x="935" y="701" width="42" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Focus"/>
+                                <connections>
+                                    <action selector="focusMap:" destination="uzY-xF-TEI" eventType="touchUpInside" id="t9H-xH-HtO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerX" secondItem="M2v-oW-0jc" secondAttribute="centerX" id="1Ne-XB-ZKa"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerY" secondItem="M2v-oW-0jc" secondAttribute="centerY" id="SZf-eH-D2E"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="M2v-oW-0jc"/>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="xWJ-aB-miv" id="KHr-LT-ZWS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gUN-N4-fXV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1080.46875" y="-59.375"/>
         </scene>
         <!--Main Menu Controller-->
         <scene sceneID="L2K-ml-MvP">

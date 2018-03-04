@@ -11,6 +11,9 @@
 		251249D2204B367700B2FDAD /* VideoPreviewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 251249C9204B35ED00B2FDAD /* VideoPreviewer.framework */; };
 		251249D3204B367700B2FDAD /* VideoPreviewer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 251249C9204B35ED00B2FDAD /* VideoPreviewer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		251249D9204B3D3D00B2FDAD /* ProductCommunicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */; };
+		2558452F204B74BD00B89AB2 /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2558452E204B74BD00B89AB2 /* MapController.swift */; };
+		25584531204B761C00B89AB2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25584530204B761C00B89AB2 /* MapKit.framework */; };
+		25584533204B778600B89AB2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25584532204B778600B89AB2 /* CoreLocation.framework */; };
 		2570533A204B481400B92E65 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25705339204B481400B92E65 /* MainMenuController.swift */; };
 		25ED179B2048EA9700F038C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179A2048EA9700F038C5 /* AppDelegate.swift */; };
 		25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ED179C2048EA9700F038C5 /* FlightController.swift */; };
@@ -52,6 +55,9 @@
 /* Begin PBXFileReference section */
 		251249C4204B35ED00B2FDAD /* VideoPreviewer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VideoPreviewer.xcodeproj; path = VideoPreviewer/VideoPreviewer.xcodeproj; sourceTree = "<group>"; };
 		251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCommunicationManager.swift; sourceTree = "<group>"; };
+		2558452E204B74BD00B89AB2 /* MapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
+		25584530204B761C00B89AB2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		25584532204B778600B89AB2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		25705339204B481400B92E65 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		25ED17972048EA9700F038C5 /* SkyPaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25ED179A2048EA9700F038C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25584533204B778600B89AB2 /* CoreLocation.framework in Frameworks */,
+				25584531204B761C00B89AB2 /* MapKit.framework in Frameworks */,
 				251249D2204B367700B2FDAD /* VideoPreviewer.framework in Frameworks */,
 				22F83415E48D591315367E67 /* libPods-SkyPaint.a in Frameworks */,
 			);
@@ -119,6 +127,7 @@
 				25ED179C2048EA9700F038C5 /* FlightController.swift */,
 				25705339204B481400B92E65 /* MainMenuController.swift */,
 				25ED179E2048EA9700F038C5 /* Main.storyboard */,
+				2558452E204B74BD00B89AB2 /* MapController.swift */,
 				25ED17A12048EA9700F038C5 /* Assets.xcassets */,
 				25ED17A62048EA9700F038C5 /* Info.plist */,
 				251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */,
@@ -129,6 +138,8 @@
 		F7C33DE3E7F8D7E9AF06F451 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25584532204B778600B89AB2 /* CoreLocation.framework */,
+				25584530204B761C00B89AB2 /* MapKit.framework */,
 				251249C4204B35ED00B2FDAD /* VideoPreviewer.xcodeproj */,
 				289057F1F243958EE2E2B0B1 /* libPods-SkyPaint.a */,
 			);
@@ -284,6 +295,7 @@
 				251249D9204B3D3D00B2FDAD /* ProductCommunicationManager.swift in Sources */,
 				2570533A204B481400B92E65 /* MainMenuController.swift in Sources */,
 				25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */,
+				2558452F204B74BD00B89AB2 /* MapController.swift in Sources */,
 				25ED179B2048EA9700F038C5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

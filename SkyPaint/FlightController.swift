@@ -24,11 +24,12 @@ class FlightController: UIViewController, DJIVideoFeedListener, DJICameraDelegat
             alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
             self.present(alert, animated: true)
         }
-        
-        let camera = (DJISDKManager.product() as! DJIAircraft).camera
-        camera!.delegate = self
-        
-        self.setupVideoPreviewer()
+        else {
+            let camera = (DJISDKManager.product() as! DJIAircraft).camera
+            camera!.delegate = self
+            
+            self.setupVideoPreviewer()
+        }
     }
 
     override func didReceiveMemoryWarning() {

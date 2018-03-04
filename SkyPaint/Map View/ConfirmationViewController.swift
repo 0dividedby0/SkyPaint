@@ -31,13 +31,13 @@ class ConfirmationViewController: UIViewController {
         
         var scaledPoint:(CLLocationCoordinate2D,Float)!
         
-        for point in path!{
-            scaledPoint.0 = CLLocationCoordinate2D(latitude: Double(point.1) * latitudeScale! + center!.latitude, longitude: Double(point.0) * longitudeScale! + center!.longitude)
-            scaledPoint.1 = point.2 / 3.28
-            let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
-            waypoint.altitude = scaledPoint.1
-            mission.add(waypoint)
-        }
+//        for point in path!{
+//            scaledPoint.0 = CLLocationCoordinate2D(latitude: Double(point.1) * latitudeScale! + center!.latitude, longitude: Double(point.0) * longitudeScale! + center!.longitude)
+//            scaledPoint.1 = point.2 / 3.28
+//            let waypoint = DJIWaypoint(coordinate: scaledPoint.0)
+//            waypoint.altitude = scaledPoint.1
+//            mission.add(waypoint)
+//        }
         
         
     }

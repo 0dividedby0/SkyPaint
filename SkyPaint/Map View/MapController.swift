@@ -30,6 +30,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     var regionPins: [MKPointAnnotation]
     var latOffset = CLLocationDegrees(0.001)
     var lonOffset = CLLocationDegrees(0.001)
+    var latitudeScale: Double?
+    var longitudeScale: Double?
     
     required init?(coder aDecoder: NSCoder) {
         self.regionPins = [MKPointAnnotation]()
@@ -187,4 +189,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         return MKOverlayRenderer()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "mapToConfirmSegue"){
+            let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
+            view.longitudeScale = self.longitudeScale
+            view.latitudeScale = self.latitudeScale
+            view.center = self.center
+        }
+    }
 }

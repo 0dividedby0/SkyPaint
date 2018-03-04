@@ -102,6 +102,31 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		25584534204B834700B89AB2 /* Map View */ = {
+			isa = PBXGroup;
+			children = (
+				2558452E204B74BD00B89AB2 /* MapController.swift */,
+			);
+			path = "Map View";
+			sourceTree = "<group>";
+		};
+		25584535204B836200B89AB2 /* Main Menu */ = {
+			isa = PBXGroup;
+			children = (
+				25705339204B481400B92E65 /* MainMenuController.swift */,
+				251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */,
+			);
+			path = "Main Menu";
+			sourceTree = "<group>";
+		};
+		25584538204B863E00B89AB2 /* Flight View */ = {
+			isa = PBXGroup;
+			children = (
+				25ED179C2048EA9700F038C5 /* FlightController.swift */,
+			);
+			path = "Flight View";
+			sourceTree = "<group>";
+		};
 		25ED178E2048EA9700F038C5 = {
 			isa = PBXGroup;
 			children = (
@@ -124,13 +149,12 @@
 			isa = PBXGroup;
 			children = (
 				25ED179A2048EA9700F038C5 /* AppDelegate.swift */,
-				25ED179C2048EA9700F038C5 /* FlightController.swift */,
-				25705339204B481400B92E65 /* MainMenuController.swift */,
 				25ED179E2048EA9700F038C5 /* Main.storyboard */,
-				2558452E204B74BD00B89AB2 /* MapController.swift */,
 				25ED17A12048EA9700F038C5 /* Assets.xcassets */,
 				25ED17A62048EA9700F038C5 /* Info.plist */,
-				251249D8204B3D3D00B2FDAD /* ProductCommunicationManager.swift */,
+				25584535204B836200B89AB2 /* Main Menu */,
+				25584534204B834700B89AB2 /* Map View */,
+				25584538204B863E00B89AB2 /* Flight View */,
 			);
 			path = SkyPaint;
 			sourceTree = "<group>";

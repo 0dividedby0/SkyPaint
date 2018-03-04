@@ -47,30 +47,98 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xWJ-aB-miv">
-                                <rect key="frame" x="45" y="57" width="934" height="674"/>
+                                <rect key="frame" x="45" y="56" width="934" height="674"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="674" id="8ef-m2-cQz"/>
                                     <constraint firstAttribute="width" constant="934" id="d1n-oA-qGp"/>
                                 </constraints>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eq8-H7-X1k">
-                                <rect key="frame" x="935" y="701" width="42" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpz-tQ-8Uw">
+                                <rect key="frame" x="50" y="63" width="55" height="30"/>
+                                <state key="normal" title="Confirm"/>
+                                <connections>
+                                    <action selector="confirmPoints:" destination="uzY-xF-TEI" eventType="touchUpInside" id="uJa-pR-i39"/>
+                                </connections>
+                            </button>
+                            <slider hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="QNt-P7-SUO">
+                                <rect key="frame" x="104" y="701" width="244" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="latitudeSliderChanged:" destination="uzY-xF-TEI" eventType="valueChanged" id="bB4-Cy-4h5"/>
+                                </connections>
+                            </slider>
+                            <slider hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="yQp-IS-nEr">
+                                <rect key="frame" x="390" y="701" width="244" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="longitudeSliderChanged:" destination="uzY-xF-TEI" eventType="valueChanged" id="rQ3-Vk-n3N"/>
+                                </connections>
+                            </slider>
+                            <slider hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="vCM-a0-bXi">
+                                <rect key="frame" x="681" y="701" width="244" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="heightSliderChanged:" destination="uzY-xF-TEI" eventType="valueChanged" id="Tqy-K6-Eod"/>
+                                </connections>
+                            </slider>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEi-yd-DG0">
+                                <rect key="frame" x="156" y="672" width="141" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVl-6e-WkS">
+                                <rect key="frame" x="451" y="671" width="123" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B97-b5-NVB">
+                                <rect key="frame" x="725" y="672" width="156" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eq8-H7-X1k">
+                                <rect key="frame" x="50" y="92" width="42" height="30"/>
                                 <state key="normal" title="Focus"/>
                                 <connections>
                                     <action selector="focusMap:" destination="uzY-xF-TEI" eventType="touchUpInside" id="t9H-xH-HtO"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YbY-4d-6Nt">
+                                <rect key="frame" x="45" y="12" width="934" height="45"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="xWJ-aB-miv" firstAttribute="centerX" secondItem="M2v-oW-0jc" secondAttribute="centerX" id="1Ne-XB-ZKa"/>
-                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerY" secondItem="M2v-oW-0jc" secondAttribute="centerY" id="SZf-eH-D2E"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="YbY-4d-6Nt" secondAttribute="bottom" constant="-1" id="DcW-Y9-Scy"/>
+                            <constraint firstItem="Eq8-H7-X1k" firstAttribute="leading" secondItem="M2v-oW-0jc" secondAttribute="leading" constant="50" id="I9y-SO-rCV"/>
+                            <constraint firstItem="YbY-4d-6Nt" firstAttribute="centerX" secondItem="M2v-oW-0jc" secondAttribute="centerX" id="JvJ-2l-YVn"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerY" secondItem="M2v-oW-0jc" secondAttribute="centerY" constant="-1" id="SZf-eH-D2E"/>
+                            <constraint firstItem="Wpz-tQ-8Uw" firstAttribute="leading" secondItem="M2v-oW-0jc" secondAttribute="leading" constant="50" id="h2L-Sf-0PQ"/>
+                            <constraint firstItem="Eq8-H7-X1k" firstAttribute="top" secondItem="Wpz-tQ-8Uw" secondAttribute="bottom" constant="-1" id="nRl-oJ-xo5"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="Wpz-tQ-8Uw" secondAttribute="bottom" constant="-37" id="nsl-3q-Ki6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="M2v-oW-0jc"/>
                     </view>
                     <connections>
+                        <outlet property="HeightLabel" destination="B97-b5-NVB" id="yy0-KR-5d7"/>
+                        <outlet property="HeightSlider" destination="vCM-a0-bXi" id="N6z-mG-oDc"/>
+                        <outlet property="LatitudeLabel" destination="hEi-yd-DG0" id="DT3-Sn-fOo"/>
+                        <outlet property="LatitudeSlider" destination="QNt-P7-SUO" id="67j-AF-Qg1"/>
+                        <outlet property="LongitudeLabel" destination="yVl-6e-WkS" id="3d6-u6-fpi"/>
+                        <outlet property="LongitudeSlider" destination="yQp-IS-nEr" id="qkN-Lu-dvI"/>
+                        <outlet property="confirmButton" destination="Wpz-tQ-8Uw" id="fpx-eT-ExG"/>
                         <outlet property="mapView" destination="xWJ-aB-miv" id="KHr-LT-ZWS"/>
+                        <outlet property="messageLabel" destination="YbY-4d-6Nt" id="PYV-pG-f0n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gUN-N4-fXV" userLabel="First Responder" sceneMemberID="firstResponder"/>

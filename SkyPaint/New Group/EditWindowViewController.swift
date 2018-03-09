@@ -135,7 +135,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.points = self.points
         pDV.setNeedsDisplay()
 
-        var indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
+        let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
         
         pointTableView.deselectRow(at: indexPath, animated: true)
     }
@@ -180,7 +180,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         var newPath:[Float] = []
         
         if (pathNameTextFeild.text != nil && pathNameTextFeild.text != ""){
-            if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames") as? [String]{
+            if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames"){
                 let name:String = pathNameTextFeild.text!
                 
                 pathNames.append(pathNameTextFeild.text!)
@@ -361,7 +361,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         yzOutlet.tintColor = xyOutlet.tintColor
         xyOutlet.tintColor = UIColor.green
         
-        var addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
+        let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         pDV.addGestureRecognizer(addPointGesture)
         
         updatePointButtonOutlet.isEnabled = false

@@ -71,7 +71,6 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
             print("\n \(i)" + ", ")
             print(mutablemission.allWaypoints().count)
         }
-        let a = 5
     }
     
     @IBAction func speedSliderChange(_ sender: UISlider) {

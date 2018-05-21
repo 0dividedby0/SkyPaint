@@ -19,10 +19,13 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var path: [Float] = []
     var distanceInMeters: Double?
     var pathNames:[String]?
-    var waypoint:DJIWaypoint = DJIWaypoint()
+    var waypoints: [DJIWaypoint] = []
+    let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
+    var mission: DJIWaypointMission = DJIWaypointMission()
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     @IBOutlet weak var speedSliderOutlet: UISlider!
+    @IBOutlet weak var locationLabel: UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -64,12 +67,27 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
             {
                 scaledPoint.1 = path[i] / 3.28
                 scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                waypoint = DJIWaypoint(coordinate: scaledPoint.0)
-                waypoint.altitude = scaledPoint.1
-                mutablemission.add(waypoint)
+                waypoints.append(DJIWaypoint(coordinate: scaledPoint.0))
+                waypoints[i/3].altitude = scaledPoint.1
+                mutablemission.add(waypoints[i/3])
             }
             print("\n \(i)" + ", ")
-            print(mutablemission.allWaypoints().count)
+            print(mutablemission.waypointCount)
+            
+            var error = mutablemission.checkValidity()
+            if (error != nil) {
+                print(error!.localizedDescription)
+            }
+            else {
+                print("Mission is valid!!!")
+            }
+            error = mutablemission.checkParameters()
+            if (error != nil) {
+                print(error!.localizedDescription)
+            }
+            else {
+                print("Mission is checked!!!")
+            }
         }
     }
     
@@ -78,7 +96,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func startButtonTouched(_ sender: UIButton) {
         startMission()
-        performSegue(withIdentifier: "confirmationToStartSegue", sender: nil)
+        //performSegue(withIdentifier: "confirmationToStartSegue", sender: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,23 +114,48 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func startMission() {
-        let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
+        let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+            if (error == nil) {
+                startDidComplete()
+            }
+        }
         
-        mutablemission.maxFlightSpeed = 20
+        let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+            if (error != nil) {
+                self.missionOperator!.startMission(completion: startCompletionHandler)
+            }
+        }
+        
+        mutablemission.maxFlightSpeed = 15
         mutablemission.autoFlightSpeed = speedSliderOutlet.value
         mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
+        mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
+        
+        mission = DJIWaypointMission(mission: mutablemission)
+        
+        missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
+            
+            if event.error != nil {
+                self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
+            }
+            else {
+                // start mission
+                self.missionOperator?.startMission(completion: startCompletionHandler)
+            }
+            
+        })
         
         
-        let mission = DJIWaypointMission(mission: mutablemission)
-
-        missionOperator?.load(mission)
+        missionOperator!.load(mission)
         
-        missionOperator?.uploadMission(completion: nil)
+        missionOperator!.uploadMission(completion: uploadCompletionHandler)
         
-        missionOperator?.startMission(completion: nil)
-        
+        func startDidComplete () {
+            let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
-    
 
     /*
     // MARK: - Navigation

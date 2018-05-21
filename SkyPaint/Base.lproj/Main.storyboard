@@ -604,9 +604,9 @@
                         <viewLayoutGuide key="safeArea" id="Pjf-7I-owb"/>
                     </view>
                     <connections>
+                        <outlet property="locationLabel" destination="3Lz-Hx-LaN" id="6xP-Gi-dJK"/>
                         <outlet property="pathNamesTableView" destination="91i-RH-nMu" id="dj6-lE-joE"/>
                         <outlet property="speedSliderOutlet" destination="5JP-EA-7H0" id="3CG-NK-bHe"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="confirmationToStartSegue" id="mc8-zB-2qW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hLV-sa-IWX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -617,7 +617,4 @@
     <resources>
         <image name="Sky Paint" width="1242" height="341"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="mc8-zB-2qW"/>
-    </inferredMetricsTieBreakers>
 </document>

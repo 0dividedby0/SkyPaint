@@ -58,7 +58,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xWJ-aB-miv">
-                                <rect key="frame" x="-12" y="-11" width="1047" height="789"/>
+                                <rect key="frame" x="-11.5" y="-11" width="1047" height="789"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="789" id="8ef-m2-cQz"/>
                                     <constraint firstAttribute="width" constant="1047" id="d1n-oA-qGp"/>
@@ -79,7 +79,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YbY-4d-6Nt">
-                                <rect key="frame" x="45" y="12" width="934" height="45"/>
+                                <rect key="frame" x="45" y="39" width="934" height="45"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -120,6 +120,18 @@
                                     <action selector="returnToFly:" destination="uzY-xF-TEI" eventType="touchUpInside" id="XDS-4E-JKB"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pfG-OL-Igm">
+                                <rect key="frame" x="806" y="48" width="198" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Standard"/>
+                                    <segment title="Satellite"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="updateMapType:" destination="uzY-xF-TEI" eventType="valueChanged" id="9uc-5D-fX7"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -142,6 +154,7 @@
                         <outlet property="confirmButton" destination="Wpz-tQ-8Uw" id="fpx-eT-ExG"/>
                         <outlet property="mapView" destination="xWJ-aB-miv" id="KHr-LT-ZWS"/>
                         <outlet property="messageLabel" destination="YbY-4d-6Nt" id="PYV-pG-f0n"/>
+                        <outlet property="segmentedControlMapSelector" destination="pfG-OL-Igm" id="r6u-5P-43g"/>
                         <segue destination="MXx-fN-sor" kind="show" identifier="scaleToConfirmSegue" id="FL4-Or-dFf"/>
                         <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" id="vcM-0I-dlE"/>
                         <segue destination="B5o-KZ-xHA" kind="show" identifier="scaleToCreateSegue" id="M7d-1N-zyT"/>
@@ -149,7 +162,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gUN-N4-fXV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="795" y="-1902"/>
+            <point key="canvasLocation" x="794.53125" y="-1902.34375"/>
         </scene>
         <!--Main Menu Controller-->
         <scene sceneID="L2K-ml-MvP">

@@ -14,6 +14,12 @@ class FlightController: UIViewController, DJIVideoFeedListener, DJICameraDelegat
     
     @IBOutlet var liveView: UIView!
     
+    @IBAction func returnToMain(_ sender: Any) {
+        performSegue(withIdentifier: "flyToMainMenuSegue", sender: nil)
+    }
+    @IBAction func loadPath(_ sender: Any) {
+        performSegue(withIdentifier: "flyToScaleSegue", sender: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

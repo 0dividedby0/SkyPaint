@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="14M-Ib-bTi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="14M-Ib-bTi">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,11 +20,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
-                                <rect key="frame" x="897" y="683" width="67" height="30"/>
+                                <rect key="frame" x="896" y="683" width="69" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Map View"/>
+                                <state key="normal" title="Load Path"/>
                                 <connections>
-                                    <segue destination="uzY-xF-TEI" kind="show" id="8r1-UU-L8p"/>
+                                    <action selector="loadPath:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="JWN-Hl-GGg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TvQ-yz-gdG">
+                                <rect key="frame" x="20" y="20" width="76" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Main Menu"/>
+                                <connections>
+                                    <action selector="returnToMain:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="EEo-rh-qJW"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -33,11 +41,13 @@
                     </view>
                     <connections>
                         <outlet property="liveView" destination="9Vn-Tm-hIh" id="U1X-ps-Yua"/>
+                        <segue destination="14M-Ib-bTi" kind="show" identifier="flyToMainMenuSegue" id="iAC-wV-5v9"/>
+                        <segue destination="uzY-xF-TEI" kind="show" identifier="flyToScaleSegue" id="k8t-nY-iD9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1y-qb-Z5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="554.8828125" y="-59.375"/>
+            <point key="canvasLocation" x="128" y="-216"/>
         </scene>
         <!--Map Controller-->
         <scene sceneID="dbh-n4-DAa">
@@ -48,10 +58,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xWJ-aB-miv">
-                                <rect key="frame" x="45" y="56" width="934" height="674"/>
+                                <rect key="frame" x="-12" y="-11" width="1047" height="789"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="674" id="8ef-m2-cQz"/>
-                                    <constraint firstAttribute="width" constant="934" id="d1n-oA-qGp"/>
+                                    <constraint firstAttribute="height" constant="789" id="8ef-m2-cQz"/>
+                                    <constraint firstAttribute="width" constant="1047" id="d1n-oA-qGp"/>
                                 </constraints>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpz-tQ-8Uw">
@@ -102,17 +112,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ca3-jD-qMX">
+                                <rect key="frame" x="49" y="122" width="48" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="returnToFly:" destination="uzY-xF-TEI" eventType="touchUpInside" id="XDS-4E-JKB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="xWJ-aB-miv" firstAttribute="centerX" secondItem="M2v-oW-0jc" secondAttribute="centerX" id="1Ne-XB-ZKa"/>
-                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="YbY-4d-6Nt" secondAttribute="bottom" constant="-1" id="DcW-Y9-Scy"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="YbY-4d-6Nt" secondAttribute="bottom" constant="-68" id="DcW-Y9-Scy"/>
                             <constraint firstItem="Eq8-H7-X1k" firstAttribute="leading" secondItem="M2v-oW-0jc" secondAttribute="leading" constant="50" id="I9y-SO-rCV"/>
                             <constraint firstItem="YbY-4d-6Nt" firstAttribute="centerX" secondItem="M2v-oW-0jc" secondAttribute="centerX" id="JvJ-2l-YVn"/>
-                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerY" secondItem="M2v-oW-0jc" secondAttribute="centerY" constant="-1" id="SZf-eH-D2E"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="centerY" secondItem="M2v-oW-0jc" secondAttribute="centerY" constant="-10.5" id="SZf-eH-D2E"/>
                             <constraint firstItem="Wpz-tQ-8Uw" firstAttribute="leading" secondItem="M2v-oW-0jc" secondAttribute="leading" constant="50" id="h2L-Sf-0PQ"/>
                             <constraint firstItem="Eq8-H7-X1k" firstAttribute="top" secondItem="Wpz-tQ-8Uw" secondAttribute="bottom" constant="-1" id="nRl-oJ-xo5"/>
-                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="Wpz-tQ-8Uw" secondAttribute="bottom" constant="-37" id="nsl-3q-Ki6"/>
+                            <constraint firstItem="xWJ-aB-miv" firstAttribute="top" secondItem="Wpz-tQ-8Uw" secondAttribute="bottom" constant="-104" id="nsl-3q-Ki6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="M2v-oW-0jc"/>
                     </view>
@@ -124,12 +142,14 @@
                         <outlet property="confirmButton" destination="Wpz-tQ-8Uw" id="fpx-eT-ExG"/>
                         <outlet property="mapView" destination="xWJ-aB-miv" id="KHr-LT-ZWS"/>
                         <outlet property="messageLabel" destination="YbY-4d-6Nt" id="PYV-pG-f0n"/>
-                        <segue destination="MXx-fN-sor" kind="show" identifier="mapToConfirmSegue" id="FL4-Or-dFf"/>
+                        <segue destination="MXx-fN-sor" kind="show" identifier="scaleToConfirmSegue" id="FL4-Or-dFf"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" id="vcM-0I-dlE"/>
+                        <segue destination="B5o-KZ-xHA" kind="show" identifier="scaleToCreateSegue" id="M7d-1N-zyT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gUN-N4-fXV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1204.6875" y="-59.375"/>
+            <point key="canvasLocation" x="795" y="-1902"/>
         </scene>
         <!--Main Menu Controller-->
         <scene sceneID="L2K-ml-MvP">
@@ -156,7 +176,7 @@
                                     </attributedString>
                                 </state>
                                 <connections>
-                                    <segue destination="t1m-Xd-6cb" kind="show" id="BgP-C9-NrJ"/>
+                                    <action selector="userTappedFly:" destination="14M-Ib-bTi" eventType="touchUpInside" id="2Zi-Da-xEv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHd-BV-eXu">
@@ -165,7 +185,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
-                                    <segue destination="B5o-KZ-xHA" kind="show" id="tmh-KV-hlO"/>
+                                    <action selector="userTappedEdit:" destination="14M-Ib-bTi" eventType="touchUpInside" id="DUm-fj-jhJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -173,10 +193,14 @@
                         <viewLayoutGuide key="safeArea" id="pvF-Et-1yd"/>
                     </view>
                     <navigationItem key="navigationItem" id="9Ru-hf-YNC"/>
+                    <connections>
+                        <segue destination="B5o-KZ-xHA" kind="show" identifier="mainMenuToCreateSegue" id="ev0-YK-hKb"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="mainMenuToFlySegue" id="TQv-EC-m6A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pnw-fY-2mi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-157.03125" y="-59.375"/>
+            <point key="canvasLocation" x="-768" y="545"/>
         </scene>
         <!--Edit Window View Controller-->
         <scene sceneID="RyO-4P-77V">
@@ -410,7 +434,7 @@
                                 <rect key="frame" x="20" y="14" width="34" height="30"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <segue destination="14M-Ib-bTi" kind="show" id="mpP-GA-RJ3"/>
+                                    <action selector="returnToMain:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="TO9-QB-zNk"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07M-rp-ze2">
@@ -520,11 +544,13 @@
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
                         <outlet property="zPointTextField" destination="orN-Cr-QRN" id="qVx-sg-ARR"/>
                         <outlet property="zSlider" destination="gW0-qX-Nwr" id="mY6-1D-sCM"/>
+                        <segue destination="14M-Ib-bTi" kind="show" identifier="createToMainMenuSegue" id="Jwz-0O-tfR"/>
+                        <segue destination="uzY-xF-TEI" kind="show" identifier="createToScaleSegue" id="RrB-un-iGI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kl5-dA-4s0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-128" y="-770"/>
+            <point key="canvasLocation" x="-94" y="-1159"/>
         </scene>
         <!--Confirmation View Controller-->
         <scene sceneID="2iS-4M-tIc">
@@ -595,6 +621,13 @@
                                     <action selector="startButtonTouched:" destination="MXx-fN-sor" eventType="touchUpInside" id="QlF-zd-Huj"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To be removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1J-Ge-o7c">
+                                <rect key="frame" x="294" y="396" width="611" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="100"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -607,14 +640,21 @@
                         <outlet property="locationLabel" destination="3Lz-Hx-LaN" id="6xP-Gi-dJK"/>
                         <outlet property="pathNamesTableView" destination="91i-RH-nMu" id="dj6-lE-joE"/>
                         <outlet property="speedSliderOutlet" destination="5JP-EA-7H0" id="3CG-NK-bHe"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="confirmToFlySegue" id="a1c-BS-y3c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hLV-sa-IWX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1895.5078124999998" y="-59.375"/>
+            <point key="canvasLocation" x="963" y="-963"/>
         </scene>
     </scenes>
     <resources>
         <image name="Sky Paint" width="1242" height="341"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ev0-YK-hKb"/>
+        <segue reference="iAC-wV-5v9"/>
+        <segue reference="k8t-nY-iD9"/>
+        <segue reference="TQv-EC-m6A"/>
+    </inferredMetricsTieBreakers>
 </document>

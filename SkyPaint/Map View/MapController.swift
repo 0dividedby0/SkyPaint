@@ -65,6 +65,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func returnToFly(_ sender: Any) {
+        performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+    }
+    
     func startUpdateLocation() {
         if (CLLocationManager.locationServicesEnabled()){
             if (self.locationManager == nil){
@@ -137,7 +141,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
              latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
              longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
-            performSegue(withIdentifier: "mapToConfirmSegue", sender: nil)
+            performSegue(withIdentifier: "scaleToConfirmSegue", sender: nil)
         }
     }
     
@@ -190,7 +194,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "mapToConfirmSegue"){
+        if(segue.identifier == "scaleToConfirmSegue"){
             let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
             view.longitudeScale = self.longitudeScale!
             view.latitudeScale = self.latitudeScale!

@@ -154,6 +154,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
             let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
             self.present(alert, animated: true)
+            performSegue(withIdentifier: "confirmToFlySegue", sender: nil)
         }
     }
 

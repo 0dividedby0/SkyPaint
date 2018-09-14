@@ -12,6 +12,13 @@ import VideoPreviewer
 
 class MainMenuController: UIViewController {
     
+    @IBAction func userTappedFly(_ sender: Any) {
+        performSegue(withIdentifier: "mainMenuToFlySegue", sender: nil)
+    }
+    @IBAction func userTappedEdit(_ sender: Any) {
+        performSegue(withIdentifier: "mainMenuToCreateSegue", sender: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

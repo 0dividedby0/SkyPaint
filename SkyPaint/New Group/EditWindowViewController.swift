@@ -77,6 +77,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //********************************************Buttons***********************************************
 
+    @IBAction func returnToMain(_ sender: Any) {
+        performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
+    }
     
     @IBAction func xzButtonTapped(_ sender: UIButton) {
         plane = "XZ"

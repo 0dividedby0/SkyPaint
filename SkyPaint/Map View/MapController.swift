@@ -22,6 +22,23 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
+    
+    @IBAction func updateMapType(_ sender: Any) {
+        if(segmentedControlMapSelector.selectedSegmentIndex == 0){
+            mapView.mapType = .standard
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 1){
+            mapView.mapType = .satellite
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 2){
+            mapView.mapType = .hybrid
+        }
+        else{
+            mapView.mapType = .standard
+        }
+    }
+    
     
     var locationManager: CLLocationManager?
     var userLocation: CLLocationCoordinate2D?
@@ -43,6 +60,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         self.startUpdateLocation()
         messageLabel.text = "Set Center..."
         confirmButton.setTitle("Confirm Center", for: .normal)
+        mapView.mapType = .standard // initializes map in standard
     }
     
     override func viewDidLoad() {
@@ -64,6 +82,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     @IBAction func returnToFly(_ sender: Any) {
         performSegue(withIdentifier: "scaleToFlySegue", sender: nil)

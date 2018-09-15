@@ -24,21 +24,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet var mapView: MKMapView!
     @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
     
-    @IBAction func updateMapType(_ sender: Any) {
-        if(segmentedControlMapSelector.selectedSegmentIndex == 0){
-            mapView.mapType = .standard
-        }
-        else if(segmentedControlMapSelector.selectedSegmentIndex == 1){
-            mapView.mapType = .satellite
-        }
-        else if(segmentedControlMapSelector.selectedSegmentIndex == 2){
-            mapView.mapType = .hybrid
-        }
-        else{
-            mapView.mapType = .standard
-        }
-    }
-    
     
     var locationManager: CLLocationManager?
     var userLocation: CLLocationCoordinate2D?
@@ -72,6 +57,28 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.addGestureRecognizer(touchEvent)
         
         mapView.delegate = self
+        
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        //check for location services
+        if(CLLocationManager.locationServicesEnabled()){
+            locationManager.requestAlwaysAuthorization()
+            locationManager.requestWhenInUseAuthorization()
+        }
+        //Zoom to user location
+        if let userLocation = locationManager.location?.coordinate{
+            let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+            mapView.setRegion(viewRegion, animated: false)
+            }
+        self.locationManager = locationManager
+        
+        DispatchQueue.main.async {
+            self.locationManager?.startUpdatingLocation()
+        }
+        
+    
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,6 +108,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             }
         }
     }
+    
     
     @IBAction func focusMap(_ sender: Any) {
         if (CLLocationCoordinate2DIsValid(self.userLocation!)){
@@ -162,6 +170,21 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
              longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
             performSegue(withIdentifier: "scaleToConfirmSegue", sender: nil)
+        }
+    }
+    
+    @IBAction func updateMapType(_ sender: Any) {
+        if(segmentedControlMapSelector.selectedSegmentIndex == 0){
+            mapView.mapType = .standard
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 1){
+            mapView.mapType = .satellite
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 2){
+            mapView.mapType = .hybrid
+        }
+        else{
+            mapView.mapType = .standard
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import DJISDK
 
-class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ConfirmationViewController: UITableViewController {
 
     var center: CLLocationCoordinate2D?
     var latitudeScale: Double = 1
@@ -33,11 +33,11 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (pathNames?.count)!
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "pathNameIdentifier", for: indexPath)
         
         cell.textLabel?.text = pathNames?[indexPath.row]
@@ -45,7 +45,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
         
         var scaledPoint:(CLLocationCoordinate2D,Float)
@@ -95,8 +95,8 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func startButtonTouched(_ sender: UIButton) {
+        print("Starting mission...")
         startMission()
-        //performSegue(withIdentifier: "confirmationToStartSegue", sender: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +127,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         mutablemission.maxFlightSpeed = 15
-        mutablemission.autoFlightSpeed = speedSliderOutlet.value
+        //mutablemission.autoFlightSpeed = speedSliderOutlet.value
         mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
         mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         

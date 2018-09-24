@@ -77,8 +77,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         DispatchQueue.main.async {
             self.locationManager?.startUpdatingLocation()
         }
-        
-    
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -169,7 +167,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
              latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
              longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
-            performSegue(withIdentifier: "scaleToConfirmSegue", sender: nil)
+            let navigationController = self.splitViewController?.viewControllers.first as? UINavigationController
+            let masterViewController = navigationController?.topViewController as? ConfirmationViewController
+            
+            masterViewController?.longitudeScale = self.longitudeScale!
+            masterViewController?.latitudeScale = self.latitudeScale!
+            masterViewController?.center = self.center
         }
     }
     
@@ -236,12 +239,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         return MKOverlayRenderer()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "scaleToConfirmSegue"){
-            let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
-            view.longitudeScale = self.longitudeScale!
-            view.latitudeScale = self.latitudeScale!
-            view.center = self.center
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if(segue.identifier == "scaleToConfirmSegue"){
+//            let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
+//            view.longitudeScale = self.longitudeScale!
+//            view.latitudeScale = self.latitudeScale!
+//            view.center = self.center
+//        }
+//    }
 }

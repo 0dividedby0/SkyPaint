@@ -34,7 +34,7 @@ class ConfirmationViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (pathNames?.count)!
+        return (pathNames != nil ? pathNames!.count : 0)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -104,7 +104,7 @@ class ConfirmationViewController: UITableViewController {
         pathNamesTableView.dataSource = self
         pathNamesTableView.delegate = self
         
-        pathNames = (UserDefaults.standard.array(forKey: "PathNames") as! [String])
+        pathNames = (UserDefaults.standard.array(forKey: "PathNames") as? [String])
         
     }
 

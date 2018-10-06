@@ -13,7 +13,7 @@ import VideoPreviewer
 class MainMenuController: UIViewController {
     
     @IBAction func userTappedFly(_ sender: Any) {
-        performSegue(withIdentifier: "mainMenuToFlySegue", sender: nil)
+        performSegue(withIdentifier: "mainMenuToPathSegue", sender: nil)
     }
     @IBAction func userTappedEdit(_ sender: Any) {
         performSegue(withIdentifier: "mainMenuToCreateSegue", sender: nil)

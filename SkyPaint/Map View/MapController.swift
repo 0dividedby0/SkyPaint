@@ -81,7 +81,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
-            let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 200, longitudinalMeters: 200)
             mapView.setRegion(viewRegion, animated: false)
             }
         self.locationManager = locationManager
@@ -219,7 +219,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.addAnnotation(regionPins[3])
         
         let region = MKPolygon(coordinates: [regionPins[0].coordinate, regionPins[1].coordinate, regionPins[2].coordinate, regionPins[3].coordinate], count: 4)
-        mapView.add(region)
+        mapView.addOverlay(region)
         
         let pin0 = CLLocation(latitude: regionPins[0].coordinate.latitude, longitude: regionPins[0].coordinate.longitude)
         let pin1 = CLLocation(latitude: regionPins[1].coordinate.latitude, longitude: regionPins[1].coordinate.longitude)

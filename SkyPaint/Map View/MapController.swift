@@ -19,7 +19,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var LongitudeSlider: UISlider!
     @IBOutlet weak var LongitudeLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
     
@@ -57,7 +56,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.startUpdateLocation()
-        messageLabel.text = "Set Center..."
         confirmButton.setTitle("Confirm Center", for: .normal)
         mapView.mapType = .standard // initializes map in standard
     }
@@ -186,7 +184,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             self.center = mapView.annotations[0].coordinate
             NSLog("ORIGIN (\(center?.latitude ?? 0), \(center?.longitude ?? 0))")
             confirmButton.setTitle("Confirm Scale", for: .normal)
-            messageLabel.text = "Set scale using sliders..."
             
             LongitudeSlider.isHidden = false;
             LatitudeSlider.isHidden = false;
@@ -333,9 +330,9 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         missionOperator!.uploadMission(completion: uploadCompletionHandler)
         
         func startDidComplete () {
-            let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-            self.present(alert, animated: true)
+            //let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
+            //alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+            //self.present(alert, animated: true)
             performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
         }
     }

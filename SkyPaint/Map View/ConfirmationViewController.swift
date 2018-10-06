@@ -27,6 +27,10 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     
+    @IBAction func returnToMainMenu(_ sender: Any) {
+        performSegue(withIdentifier: "pathToFlySegue", sender: nil)
+    }
+    
     //MARK: - UIViewController Methods
     
     required init?(coder aDecoder: NSCoder) {

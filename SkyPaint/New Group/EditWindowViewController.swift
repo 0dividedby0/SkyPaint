@@ -211,7 +211,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
             sucessOutlet.text = "Successfully Added Path"
 
-            
+            performSegue(withIdentifier: "createToPathSegue", sender: nil)
             
         }
         else{

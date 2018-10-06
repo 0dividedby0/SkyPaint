@@ -45,6 +45,7 @@ class FlightController: UIViewController, DJIVideoFeedListener, DJICameraDelegat
 
     func setupVideoPreviewer() {
         VideoPreviewer.instance().setView(self.liveView)
+        VideoPreviewer.instance().adjustViewSize()
         
         DJISDKManager.videoFeeder()?.primaryVideoFeed.add(self, with: nil)
         

@@ -260,8 +260,8 @@ ss += ll; \
             memcpy(pVideoBuffer, frame->data, frame->size);
             block(pVideoBuffer, frame->size);
             
-            if(_delegate!=nil && [_delegate respondsToSelector:@selector(processVideoData:length:)]){
-                [_delegate processVideoData:frame->data length:frame->size];
+            if(_delegate!=nil && [self->_delegate respondsToSelector:@selector(processVideoData:length:)]){
+                [self->_delegate processVideoData:frame->data length:frame->size];
             }
         }
     }];
@@ -280,32 +280,32 @@ ss += ll; \
         
         [self popNextFrameUUID];
         
-        outputFrame->frame_uuid = s_frameUuidCounter;
+        outputFrame->frame_uuid = self->s_frameUuidCounter;
         outputFrame->frame_size = frame->size;
         
         { //patch by amanda
-            outputFrame->frame_info.frame_index = _pCodecPaser->frame_num;
-            outputFrame->frame_info.max_frame_index_plus_one = _pCodecPaser->max_frame_num_plus1;
+            outputFrame->frame_info.frame_index = self->_pCodecPaser->frame_num;
+            outputFrame->frame_info.max_frame_index_plus_one = self->_pCodecPaser->max_frame_num_plus1;
             
             if (outputFrame->frame_info.frame_index >= outputFrame->frame_info.max_frame_index_plus_one) {
                 // something wrong;
             }
             
-            if(_pCodecPaser->height_in_pixel == 1088){
+            if(self->_pCodecPaser->height_in_pixel == 1088){
                 //1080p hack
-                _pCodecPaser->height_in_pixel = 1080;
+                self->_pCodecPaser->height_in_pixel = 1080;
             }
             
-            outputFrame->frame_info.width = _pCodecPaser->width_in_pixel;
-            outputFrame->frame_info.height = _pCodecPaser->height_in_pixel;
+            outputFrame->frame_info.width = self->_pCodecPaser->width_in_pixel;
+            outputFrame->frame_info.height = self->_pCodecPaser->height_in_pixel;
             
-            if (_pCodecPaser->frame_rate_den) {
+            if (self->_pCodecPaser->frame_rate_den) {
                 // If the stream is encoded by DJI's encoder, the frame rate
                 // should be double of the value from the parser. 
-                double scale = _usingDJIAircraftEncoder?2.0:1.0;
-                outputFrame->frame_info.fps = ceil(_pCodecPaser->frame_rate_num/(scale*_pCodecPaser->frame_rate_den));
+                double scale = self->_usingDJIAircraftEncoder?2.0:1.0;
+                outputFrame->frame_info.fps = ceil(_pCodecPaser->frame_rate_num/(scale*self->_pCodecPaser->frame_rate_den));
             }
-            outputFrame->frame_info.frame_flag.has_sps = _pCodecPaser->frame_has_sps;
+            outputFrame->frame_info.frame_flag.has_sps = self->_pCodecPaser->frame_has_sps;
             outputFrame->frame_info.frame_flag.has_pps = _pCodecPaser->frame_has_pps;
             outputFrame->frame_info.frame_flag.has_idr = (_pCodecPaser->key_frame ==1)?1:0;
             outputFrame->frame_info.frame_flag.is_fullrange = NO; //we can only get this in sps, set this bit later

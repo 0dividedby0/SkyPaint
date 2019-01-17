@@ -211,7 +211,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
             sucessOutlet.text = "Successfully Added Path"
 
-            
+            performSegue(withIdentifier: "createToPathSegue", sender: nil)
             
         }
         else{
@@ -223,7 +223,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
    //*********************TableView Functions****************************
     
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    private func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete
         {
             points.remove(at: indexPath.row)

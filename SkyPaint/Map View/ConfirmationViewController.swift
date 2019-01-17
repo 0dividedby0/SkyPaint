@@ -10,8 +10,10 @@ import UIKit
 import MapKit
 import DJISDK
 
-class ConfirmationViewController: UITableViewController {
+class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    //MARK: - Variable Declarations
+    
     var center: CLLocationCoordinate2D?
     var latitudeScale: Double = 1
     var longitudeScale: Double = 1
@@ -24,80 +26,17 @@ class ConfirmationViewController: UITableViewController {
     var mission: DJIWaypointMission = DJIWaypointMission()
     
     @IBOutlet weak var pathNamesTableView: UITableView!
-    @IBOutlet weak var speedSliderOutlet: UISlider!
-    @IBOutlet weak var locationLabel: UILabel!
+    
+    @IBAction func returnToMainMenu(_ sender: Any) {
+        performSegue(withIdentifier: "pathToFlySegue", sender: nil)
+    }
+    
+    //MARK: - UIViewController Methods
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (pathNames != nil ? pathNames!.count : 0)
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "pathNameIdentifier", for: indexPath)
-        
-        cell.textLabel?.text = pathNames?[indexPath.row]
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
-        
-        var scaledPoint:(CLLocationCoordinate2D,Float)
-        
-        var lat:Double?
-        var long:Double?
-        
-        for i in 0...path.count - 1{
-            if(i%3 == 0)
-            {
-                long = Double(path[i]) * longitudeScale + center!.longitude
-            }
-            else if(i%3 == 1)
-            {
-                lat = Double(path[i]) * latitudeScale + center!.latitude
-
-            }
-            else if(i%3 == 2)
-            {
-                scaledPoint.1 = path[i] / 3.28
-                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                waypoints.append(DJIWaypoint(coordinate: scaledPoint.0))
-                waypoints[i/3].altitude = scaledPoint.1
-                mutablemission.add(waypoints[i/3])
-            }
-            print("\n \(i)" + ", ")
-            print(mutablemission.waypointCount)
-            
-            var error = mutablemission.checkValidity()
-            if (error != nil) {
-                print(error!.localizedDescription)
-            }
-            else {
-                print("Mission is valid!!!")
-            }
-            error = mutablemission.checkParameters()
-            if (error != nil) {
-                print(error!.localizedDescription)
-            }
-            else {
-                print("Mission is checked!!!")
-            }
-        }
-    }
-    
-    @IBAction func speedSliderChange(_ sender: UISlider) {
-    }
-    
-    @IBAction func startButtonTouched(_ sender: UIButton) {
-        print("Starting mission...")
-        startMission()
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -107,65 +46,39 @@ class ConfirmationViewController: UITableViewController {
         pathNames = (UserDefaults.standard.array(forKey: "PathNames") as? [String])
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func startMission() {
-        let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
-            if (error == nil) {
-                startDidComplete()
-            }
-        }
+    //MARK: - UITableView Methods
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (pathNames != nil ? pathNames!.count : 0)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "pathNameIdentifier", for: indexPath)
         
-        let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
-            if (error != nil) {
-                self.missionOperator!.startMission(completion: startCompletionHandler)
-            }
-        }
+        cell.textLabel?.text = pathNames?[indexPath.row]
         
-        mutablemission.maxFlightSpeed = 15
-        //mutablemission.autoFlightSpeed = speedSliderOutlet.value
-        mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
-        mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
         
-        mission = DJIWaypointMission(mission: mutablemission)
-        
-        missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
-            
-            if event.error != nil {
-                self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
-            }
-            else {
-                // start mission
-                self.missionOperator?.startMission(completion: startCompletionHandler)
-            }
-            
-        })
-        
-        
-        missionOperator!.load(mission)
-        
-        missionOperator!.uploadMission(completion: uploadCompletionHandler)
-        
-        func startDidComplete () {
-            let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-            self.present(alert, animated: true)
-            performSegue(withIdentifier: "confirmToFlySegue", sender: nil)
-        }
+        performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
     }
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "pathToScaleSegue" {
+            let destinationController = segue.destination as! MapController
+            destinationController.path = self.path
+        }
     }
-    */
 
 }

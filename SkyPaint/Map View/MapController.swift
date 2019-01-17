@@ -8,7 +8,6 @@
 
 import UIKit
 import DJISDK
-import VideoPreviewer
 import MapKit
 import CoreLocation
 
@@ -20,20 +19,34 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var LongitudeSlider: UISlider!
     @IBOutlet weak var LongitudeLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
     
-    
+    //Map Variables
     var locationManager: CLLocationManager?
     var userLocation: CLLocationCoordinate2D?
     var placingCenter = true
-    var center: CLLocationCoordinate2D?
     var regionPins: [MKPointAnnotation]
     var latOffset = CLLocationDegrees(0.001)
     var lonOffset = CLLocationDegrees(0.001)
-    var latitudeScale: Double?
-    var longitudeScale: Double?
+    
+    //DJI Variables
+    var center: CLLocationCoordinate2D?
+    var latitudeScale: Double = 1
+    var longitudeScale: Double = 1
+    let mutablemission:DJIMutableWaypointMission = DJIMutableWaypointMission()
+    var path: [Float] = []
+    var distanceInMeters: Double?
+    var pathNames:[String]?
+    var waypoints: [DJIWaypoint] = []
+    let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
+    var mission: DJIWaypointMission = DJIWaypointMission()
+    
+    @IBAction func returnToFly(_ sender: Any) {
+        performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+    }
+    
+    //MARK: - UIViewController Methods
     
     required init?(coder aDecoder: NSCoder) {
         self.regionPins = [MKPointAnnotation]()
@@ -43,7 +56,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.startUpdateLocation()
-        messageLabel.text = "Set Center..."
         confirmButton.setTitle("Confirm Center", for: .normal)
         mapView.mapType = .standard // initializes map in standard
     }
@@ -69,7 +81,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
-            let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 200, longitudinalMeters: 200)
             mapView.setRegion(viewRegion, animated: false)
             }
         self.locationManager = locationManager
@@ -88,11 +100,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
-    @IBAction func returnToFly(_ sender: Any) {
-        performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
-    }
+    //MARK: - Map Methods
     
     func startUpdateLocation() {
         if (CLLocationManager.locationServicesEnabled()){
@@ -119,6 +127,21 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
     }
     
+    @IBAction func updateMapType(_ sender: Any) {
+        if(segmentedControlMapSelector.selectedSegmentIndex == 0){
+            mapView.mapType = .standard
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 1){
+            mapView.mapType = .satellite
+        }
+        else if(segmentedControlMapSelector.selectedSegmentIndex == 2){
+            mapView.mapType = .hybrid
+        }
+        else{
+            mapView.mapType = .standard
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
         self.userLocation = location?.coordinate
@@ -137,17 +160,30 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolygon {
+            let renderer = MKPolygonRenderer(polygon: overlay as! MKPolygon)
+            renderer.fillColor = UIColor.black.withAlphaComponent(0.5)
+            renderer.strokeColor = UIColor.orange
+            renderer.lineWidth = 2
+            return renderer
+        }
+        
+        return MKOverlayRenderer()
+    }
+    
     func clearMap() {
         mapView.removeAnnotations(mapView.annotations)
         mapView.removeOverlays(mapView.overlays)
     }
+    
+    //MARK: - Scale Methods
     
     @IBAction func confirmPoints(_ sender: Any) {
         if (placingCenter){
             self.center = mapView.annotations[0].coordinate
             NSLog("ORIGIN (\(center?.latitude ?? 0), \(center?.longitude ?? 0))")
             confirmButton.setTitle("Confirm Scale", for: .normal)
-            messageLabel.text = "Set scale using sliders..."
             
             LongitudeSlider.isHidden = false;
             LatitudeSlider.isHidden = false;
@@ -166,28 +202,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         else {
              latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
              longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
-            
-            let navigationController = self.splitViewController?.viewControllers.first as? UINavigationController
-            let masterViewController = navigationController?.topViewController as? ConfirmationViewController
-            
-            masterViewController?.longitudeScale = self.longitudeScale!
-            masterViewController?.latitudeScale = self.latitudeScale!
-            masterViewController?.center = self.center
-        }
-    }
-    
-    @IBAction func updateMapType(_ sender: Any) {
-        if(segmentedControlMapSelector.selectedSegmentIndex == 0){
-            mapView.mapType = .standard
-        }
-        else if(segmentedControlMapSelector.selectedSegmentIndex == 1){
-            mapView.mapType = .satellite
-        }
-        else if(segmentedControlMapSelector.selectedSegmentIndex == 2){
-            mapView.mapType = .hybrid
-        }
-        else{
-            mapView.mapType = .standard
         }
     }
     
@@ -205,7 +219,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.addAnnotation(regionPins[3])
         
         let region = MKPolygon(coordinates: [regionPins[0].coordinate, regionPins[1].coordinate, regionPins[2].coordinate, regionPins[3].coordinate], count: 4)
-        mapView.add(region)
+        mapView.addOverlay(region)
         
         let pin0 = CLLocation(latitude: regionPins[0].coordinate.latitude, longitude: regionPins[0].coordinate.longitude)
         let pin1 = CLLocation(latitude: regionPins[1].coordinate.latitude, longitude: regionPins[1].coordinate.longitude)
@@ -226,25 +240,100 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         positionRegionPoints()
     }
     
+    //MARK: Start Sequence Methods
     
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKPolygon {
-            let renderer = MKPolygonRenderer(polygon: overlay as! MKPolygon)
-            renderer.fillColor = UIColor.black.withAlphaComponent(0.5)
-            renderer.strokeColor = UIColor.orange
-            renderer.lineWidth = 2
-            return renderer
-        }
-        
-        return MKOverlayRenderer()
+    @IBAction func startButtonPushed(_ sender: Any) {
+        print("Starting mission...")
+        pathSelected()
+        startMission()
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if(segue.identifier == "scaleToConfirmSegue"){
-//            let view: ConfirmationViewController = segue.destination as! ConfirmationViewController
-//            view.longitudeScale = self.longitudeScale!
-//            view.latitudeScale = self.latitudeScale!
-//            view.center = self.center
-//        }
-//    }
+    func pathSelected () {
+        var scaledPoint:(CLLocationCoordinate2D,Float)
+        
+        var lat:Double?
+        var long:Double?
+        
+        for i in 0...path.count - 1{
+            if(i%3 == 0)
+            {
+                long = Double(path[i]) * longitudeScale + center!.longitude
+            }
+            else if(i%3 == 1)
+            {
+                lat = Double(path[i]) * latitudeScale + center!.latitude
+                
+            }
+            else if(i%3 == 2)
+            {
+                scaledPoint.1 = path[i] / 3.28
+                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+                waypoints.append(DJIWaypoint(coordinate: scaledPoint.0))
+                waypoints[i/3].altitude = scaledPoint.1
+                mutablemission.add(waypoints[i/3])
+            }
+            print("\n \(i)" + ", ")
+            print(mutablemission.waypointCount)
+            
+            var error = mutablemission.checkValidity()
+            if (error != nil) {
+                print(error!.localizedDescription)
+            }
+            else {
+                print("Mission is valid!!!")
+            }
+            error = mutablemission.checkParameters()
+            if (error != nil) {
+                print(error!.localizedDescription)
+            }
+            else {
+                print("Mission is checked!!!")
+            }
+        }
+    }
+    
+    func startMission() {
+        let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+            if (error == nil) {
+                startDidComplete()
+            }
+        }
+        
+        let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+            if (error != nil) {
+                self.missionOperator!.startMission(completion: startCompletionHandler)
+            }
+        }
+        
+        mutablemission.maxFlightSpeed = 15
+        //mutablemission.autoFlightSpeed = speedSliderOutlet.value
+        mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
+        mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
+        
+        mission = DJIWaypointMission(mission: mutablemission)
+        
+        missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
+            
+            if event.error != nil {
+                self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
+            }
+            else {
+                // start mission
+                self.missionOperator?.startMission(completion: startCompletionHandler)
+            }
+            
+        })
+        
+        
+        missionOperator!.load(mission)
+        
+        missionOperator!.uploadMission(completion: uploadCompletionHandler)
+        
+        func startDidComplete () {
+            //let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
+            //alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+            //self.present(alert, animated: true)
+            performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+        }
+    }
 }

@@ -79,8 +79,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stars" translatesAutoresizingMaskIntoConstraints="NO" id="Klo-LU-RGw">
+                                <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eoy-iP-Gui">
-                                <rect key="frame" x="432.5" y="530.5" width="159" height="93.5"/>
+                                <rect key="frame" x="432.5" y="531" width="159" height="93"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
@@ -134,12 +137,16 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="yMn-Qq-q1K" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="5vq-It-1lj"/>
+                            <constraint firstItem="Klo-LU-RGw" firstAttribute="trailing" secondItem="pvF-Et-1yd" secondAttribute="trailing" id="8n2-8m-h5p"/>
+                            <constraint firstItem="Klo-LU-RGw" firstAttribute="leading" secondItem="pvF-Et-1yd" secondAttribute="leading" id="JTG-LO-fJ7"/>
                             <constraint firstItem="pvF-Et-1yd" firstAttribute="trailing" secondItem="yMn-Qq-q1K" secondAttribute="trailing" constant="121" id="MEE-A0-LIt"/>
                             <constraint firstItem="tHd-BV-eXu" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="aIK-2q-wDo"/>
+                            <constraint firstItem="Klo-LU-RGw" firstAttribute="top" secondItem="pvF-Et-1yd" secondAttribute="top" id="bIA-pf-KTK"/>
                             <constraint firstItem="yMn-Qq-q1K" firstAttribute="top" secondItem="pvF-Et-1yd" secondAttribute="top" id="d8a-9e-aw5"/>
                             <constraint firstItem="pvF-Et-1yd" firstAttribute="bottom" secondItem="tHd-BV-eXu" secondAttribute="bottom" constant="41" id="heU-0j-4Ws"/>
                             <constraint firstItem="tHd-BV-eXu" firstAttribute="top" secondItem="Eoy-iP-Gui" secondAttribute="bottom" constant="8.5" id="hve-aU-g9K"/>
                             <constraint firstItem="Eoy-iP-Gui" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="pQo-EY-kWj"/>
+                            <constraint firstItem="Klo-LU-RGw" firstAttribute="bottom" secondItem="pvF-Et-1yd" secondAttribute="bottom" id="ty2-o8-cQ8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pvF-Et-1yd"/>
                     </view>
@@ -151,7 +158,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pnw-fY-2mi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-790.4296875" y="492.96875"/>
+            <point key="canvasLocation" x="-790.76086956521749" y="492.75362318840581"/>
         </scene>
         <!--Edit Window View Controller-->
         <scene sceneID="RyO-4P-77V">
@@ -807,10 +814,11 @@
     </scenes>
     <resources>
         <image name="SkyPaint New" width="1366" height="768"/>
+        <image name="Stars" width="1356" height="668"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
         <segue reference="Jwz-0O-tfR"/>
-        <segue reference="TJt-EP-UiB"/>
+        <segue reference="idR-jf-691"/>
     </inferredMetricsTieBreakers>
 </document>

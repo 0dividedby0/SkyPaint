@@ -66,8 +66,8 @@
         
         if (hasPicture) {
             //render
-            [weakself.extractor getYuvFrame:_renderYUVFrame[_decodeFrameIndex]];
-            [weakself.frameProcessor videoProcessFrame:_renderYUVFrame[_decodeFrameIndex]];
+            [weakself.extractor getYuvFrame:_renderYUVFrame[self->_decodeFrameIndex]];
+            [weakself.frameProcessor videoProcessFrame:_renderYUVFrame[self->_decodeFrameIndex]];
 
             _decodeFrameIndex = (++_decodeFrameIndex)%RENDER_FRAME_NUMBER;
             

@@ -37,6 +37,15 @@ class FlightController: UIViewController, DJIVideoFeedListener, DJICameraDelegat
             self.setupVideoPreviewer()
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let camera = (DJISDKManager.product() as! DJIAircraft).camera
+        if (camera != nil && camera?.delegate as! FlightController == self){
+            camera!.delegate = nil;
+        }
+        self.resetVideoPreview();
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

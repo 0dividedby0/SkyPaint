@@ -64,10 +64,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eoy-iP-Gui">
-                                <rect key="frame" x="429" y="528" width="166" height="95"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="95" id="v4j-0c-8t6"/>
-                                </constraints>
+                                <rect key="frame" x="429" y="529" width="166" height="93.5"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
@@ -90,14 +87,8 @@
                                     <action selector="userTappedFly:" destination="14M-Ib-bTi" eventType="touchUpInside" id="2Zi-Da-xEv"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SkyPaint New" translatesAutoresizingMaskIntoConstraints="NO" id="ymd-qN-iQk">
-                                <rect key="frame" x="20" y="48" width="984" height="324"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="324" id="wcJ-z2-t05"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHd-BV-eXu">
-                                <rect key="frame" x="419" y="631" width="219" height="96"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHd-BV-eXu">
+                                <rect key="frame" x="418.5" y="631" width="187" height="96"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Edit ✎"/>
@@ -105,18 +96,22 @@
                                     <action selector="userTappedEdit:" destination="14M-Ib-bTi" eventType="touchUpInside" id="DUm-fj-jhJ"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SkyPaint New" translatesAutoresizingMaskIntoConstraints="NO" id="yMn-Qq-q1K">
+                                <rect key="frame" x="121" y="20" width="782" height="440"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="yMn-Qq-q1K" secondAttribute="height" multiplier="391:220" id="Glk-N4-CDt"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Eoy-iP-Gui" firstAttribute="centerX" secondItem="tHd-BV-eXu" secondAttribute="centerX" id="0xM-dK-euF"/>
-                            <constraint firstItem="tHd-BV-eXu" firstAttribute="centerX" secondItem="Eoy-iP-Gui" secondAttribute="centerX" id="4Bs-RN-qNY"/>
-                            <constraint firstItem="tHd-BV-eXu" firstAttribute="leading" secondItem="pvF-Et-1yd" secondAttribute="leading" constant="419" id="7CZ-pG-MBD"/>
-                            <constraint firstItem="tHd-BV-eXu" firstAttribute="top" secondItem="Eoy-iP-Gui" secondAttribute="bottom" constant="8" symbolic="YES" id="EbM-9u-beR"/>
-                            <constraint firstItem="ymd-qN-iQk" firstAttribute="trailing" secondItem="doD-wO-Ter" secondAttribute="trailingMargin" id="MSS-1w-QoN"/>
-                            <constraint firstItem="ymd-qN-iQk" firstAttribute="leading" secondItem="doD-wO-Ter" secondAttribute="leadingMargin" id="PG6-8w-gXz"/>
-                            <constraint firstItem="ymd-qN-iQk" firstAttribute="top" secondItem="pvF-Et-1yd" secondAttribute="top" constant="28" id="Xro-te-HnW"/>
-                            <constraint firstItem="pvF-Et-1yd" firstAttribute="bottom" secondItem="tHd-BV-eXu" secondAttribute="bottom" constant="41" id="f1x-Bu-KUn"/>
-                            <constraint firstItem="ymd-qN-iQk" firstAttribute="centerX" secondItem="Eoy-iP-Gui" secondAttribute="centerX" id="m7D-c7-Roa"/>
+                            <constraint firstItem="yMn-Qq-q1K" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="5vq-It-1lj"/>
+                            <constraint firstItem="pvF-Et-1yd" firstAttribute="trailing" secondItem="yMn-Qq-q1K" secondAttribute="trailing" constant="121" id="MEE-A0-LIt"/>
+                            <constraint firstItem="tHd-BV-eXu" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="aIK-2q-wDo"/>
+                            <constraint firstItem="yMn-Qq-q1K" firstAttribute="top" secondItem="pvF-Et-1yd" secondAttribute="top" id="d8a-9e-aw5"/>
+                            <constraint firstItem="pvF-Et-1yd" firstAttribute="bottom" secondItem="tHd-BV-eXu" secondAttribute="bottom" constant="41" id="heU-0j-4Ws"/>
+                            <constraint firstItem="tHd-BV-eXu" firstAttribute="top" secondItem="Eoy-iP-Gui" secondAttribute="bottom" constant="8.5" id="hve-aU-g9K"/>
+                            <constraint firstItem="Eoy-iP-Gui" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="pQo-EY-kWj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pvF-Et-1yd"/>
                     </view>
@@ -128,7 +123,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pnw-fY-2mi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-789.2578125" y="494.53125"/>
+            <point key="canvasLocation" x="-790.4296875" y="492.96875"/>
         </scene>
         <!--Edit Window View Controller-->
         <scene sceneID="RyO-4P-77V">
@@ -294,7 +289,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kvg-Pk-Uk5">
-                                <rect key="frame" x="702" y="551" width="10.5" height="27"/>
+                                <rect key="frame" x="702" y="551" width="10" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -696,6 +691,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
         <segue reference="Jwz-0O-tfR"/>
-        <segue reference="idR-jf-691"/>
+        <segue reference="seN-D3-thk"/>
     </inferredMetricsTieBreakers>
 </document>

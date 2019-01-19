@@ -135,9 +135,15 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${PODS_ROOT}/DJI-SDK-iOS/iOS_Mobile_SDK/DJISDK.framework"
+  install_framework "${PODS_ROOT}/DJI-UXSDK-iOS/iOS_UXSDK/DJIUXSDK.framework"
+  install_framework "${PODS_ROOT}/DJIWidget/FFmpeg/FFmpeg.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DJIWidget/DJIWidget.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${PODS_ROOT}/DJI-SDK-iOS/iOS_Mobile_SDK/DJISDK.framework"
+  install_framework "${PODS_ROOT}/DJI-UXSDK-iOS/iOS_UXSDK/DJIUXSDK.framework"
+  install_framework "${PODS_ROOT}/DJIWidget/FFmpeg/FFmpeg.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DJIWidget/DJIWidget.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

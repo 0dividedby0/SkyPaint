@@ -19,10 +19,15 @@ class FlightController: DUXDefaultLayoutViewController {
         performSegue(withIdentifier: "flyToPathSegue", sender: nil)
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view, typically from a nib.
+        (self.contentViewController as! DUXFPVViewController).fpvView?.showCameraDisplayName = false
     }
     
 }

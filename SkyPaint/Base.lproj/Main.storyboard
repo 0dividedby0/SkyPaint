@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,42 +17,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Igi-oU-fGU">
-                                <rect key="frame" x="20" y="20" width="180" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TvQ-yz-gdG">
-                                        <rect key="frame" x="0.0" y="0.0" width="76" height="30"/>
-                                        <state key="normal" title="Main Menu"/>
-                                        <connections>
-                                            <action selector="returnToMain:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="EEo-rh-qJW"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
-                                        <rect key="frame" x="111" y="0.0" width="69" height="30"/>
-                                        <state key="normal" title="Load Path"/>
-                                        <connections>
-                                            <action selector="loadPath:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="JWN-Hl-GGg"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TvQ-yz-gdG">
+                                <rect key="frame" x="0.0" y="20" width="76" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="76" id="7Qk-r4-UEE"/>
+                                    <constraint firstAttribute="height" constant="30" id="n6h-8a-Sq5"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="returnToMain:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="S5G-EB-kWK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
+                                <rect key="frame" x="25" y="255" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="BC0-eT-wS3"/>
+                                    <constraint firstAttribute="width" constant="50" id="YR6-RR-9Pq"/>
+                                </constraints>
+                                <state key="normal" title="Load Path" image="Waypoint Icon"/>
+                                <connections>
+                                    <action selector="loadPath:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="ETn-p8-5NT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Igi-oU-fGU" firstAttribute="leading" secondItem="yGl-TS-C1v" secondAttribute="leading" constant="20" id="7X2-0v-gII"/>
-                            <constraint firstItem="Igi-oU-fGU" firstAttribute="top" secondItem="yGl-TS-C1v" secondAttribute="top" id="pUo-fp-BRr"/>
+                            <constraint firstItem="TvQ-yz-gdG" firstAttribute="leading" secondItem="yGl-TS-C1v" secondAttribute="leading" id="05J-by-RQ2"/>
+                            <constraint firstItem="rtp-W0-ePH" firstAttribute="leading" secondItem="yGl-TS-C1v" secondAttribute="leading" constant="25" id="BbE-G9-SAZ"/>
+                            <constraint firstItem="rtp-W0-ePH" firstAttribute="top" secondItem="TvQ-yz-gdG" secondAttribute="bottom" constant="205" id="Fir-bI-2tW"/>
+                            <constraint firstItem="yGl-TS-C1v" firstAttribute="top" secondItem="TvQ-yz-gdG" secondAttribute="top" id="sF9-iP-T0T"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yGl-TS-C1v"/>
                     </view>
                     <connections>
-                        <outlet property="liveView" destination="9Vn-Tm-hIh" id="U1X-ps-Yua"/>
-                        <segue destination="14M-Ib-bTi" kind="show" identifier="flyToMainMenuSegue" id="iAC-wV-5v9"/>
-                        <segue destination="LME-JH-YJp" kind="show" identifier="flyToPathSegue" id="lwf-gl-bfJ"/>
+                        <segue destination="14M-Ib-bTi" kind="show" identifier="flyToMainMenuSegue" animates="NO" id="iAC-wV-5v9"/>
+                        <segue destination="LME-JH-YJp" kind="show" identifier="flyToPathSegue" animates="NO" id="lwf-gl-bfJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1y-qb-Z5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-39" y="495"/>
+            <point key="canvasLocation" x="-39.2578125" y="494.53125"/>
         </scene>
         <!--Main Menu Controller-->
         <scene sceneID="L2K-ml-MvP">
@@ -117,8 +119,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="9Ru-hf-YNC"/>
                     <connections>
-                        <segue destination="B5o-KZ-xHA" kind="show" identifier="mainMenuToCreateSegue" id="ev0-YK-hKb"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="mainMenuToFlySegue" id="idR-jf-691"/>
+                        <segue destination="B5o-KZ-xHA" kind="show" identifier="mainMenuToCreateSegue" animates="NO" id="ev0-YK-hKb"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="mainMenuToFlySegue" animates="NO" id="idR-jf-691"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pnw-fY-2mi" sceneMemberID="firstResponder"/>
@@ -485,8 +487,8 @@
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
                         <outlet property="zPointTextField" destination="orN-Cr-QRN" id="qVx-sg-ARR"/>
                         <outlet property="zSlider" destination="gW0-qX-Nwr" id="mY6-1D-sCM"/>
-                        <segue destination="14M-Ib-bTi" kind="show" identifier="createToMainMenuSegue" id="Jwz-0O-tfR"/>
-                        <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" id="Aqn-za-g8R"/>
+                        <segue destination="14M-Ib-bTi" kind="show" identifier="createToMainMenuSegue" animates="NO" id="Jwz-0O-tfR"/>
+                        <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" animates="NO" id="Aqn-za-g8R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kl5-dA-4s0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -625,7 +627,7 @@
                         <outlet property="confirmButton" destination="NDJ-Rw-QEV" id="CeY-RU-Ir1"/>
                         <outlet property="mapView" destination="lNV-e2-grf" id="swN-RS-VTe"/>
                         <outlet property="segmentedControlMapSelector" destination="JXK-OH-IBQ" id="yds-s3-j9i"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" id="TJt-EP-UiB"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" animates="NO" id="TJt-EP-UiB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BH6-EI-O57" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -676,8 +678,8 @@
                     </view>
                     <connections>
                         <outlet property="pathNamesTableView" destination="BTv-Jd-mx3" id="VaH-Xl-fNb"/>
-                        <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" id="nvn-Yb-FW7"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="pathToFlySegue" id="seN-D3-thk"/>
+                        <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" animates="NO" id="nvn-Yb-FW7"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="pathToFlySegue" animates="NO" id="seN-D3-thk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dNE-PQ-t65" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -687,10 +689,11 @@
     </scenes>
     <resources>
         <image name="SkyPaint New" width="1366" height="768"/>
+        <image name="Waypoint Icon" width="1200" height="1200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Aqn-za-g8R"/>
-        <segue reference="Jwz-0O-tfR"/>
-        <segue reference="idR-jf-691"/>
+        <segue reference="lwf-gl-bfJ"/>
+        <segue reference="iAC-wV-5v9"/>
+        <segue reference="TJt-EP-UiB"/>
     </inferredMetricsTieBreakers>
 </document>

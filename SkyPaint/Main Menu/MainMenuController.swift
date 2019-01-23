@@ -8,7 +8,6 @@
 
 import UIKit
 import DJISDK
-import VideoPreviewer
 
 class MainMenuController: UIViewController {
     

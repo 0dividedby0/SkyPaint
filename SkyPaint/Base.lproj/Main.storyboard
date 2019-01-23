@@ -27,7 +27,7 @@
                                     <action selector="returnToMain:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="S5G-EB-kWK"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
+                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
                                 <rect key="frame" x="25" y="255" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="BC0-eT-wS3"/>
@@ -694,6 +694,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="lwf-gl-bfJ"/>
         <segue reference="iAC-wV-5v9"/>
-        <segue reference="idR-jf-691"/>
+        <segue reference="TJt-EP-UiB"/>
     </inferredMetricsTieBreakers>
 </document>

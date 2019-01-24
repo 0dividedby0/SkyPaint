@@ -307,7 +307,7 @@ ss += ll; \
             }
             outputFrame->frame_info.frame_flag.has_sps = self->_pCodecPaser->frame_has_sps;
             outputFrame->frame_info.frame_flag.has_pps = _pCodecPaser->frame_has_pps;
-            outputFrame->frame_info.frame_flag.has_idr = (_pCodecPaser->key_frame ==1)?1:0;
+m            outputFrame->frame_info.frame_flag.has_idr = (_pCodecPaser->key_frame ==1)?1:0;
             outputFrame->frame_info.frame_flag.is_fullrange = NO; //we can only get this in sps, set this bit later
         }
         

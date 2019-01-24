@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -65,6 +66,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stars" translatesAutoresizingMaskIntoConstraints="NO" id="NjS-wI-dgs">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eoy-iP-Gui">
                                 <rect key="frame" x="429" y="529" width="166" height="93.5"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -109,11 +113,16 @@
                         <constraints>
                             <constraint firstItem="yMn-Qq-q1K" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="5vq-It-1lj"/>
                             <constraint firstItem="pvF-Et-1yd" firstAttribute="trailing" secondItem="yMn-Qq-q1K" secondAttribute="trailing" constant="121" id="MEE-A0-LIt"/>
+                            <constraint firstItem="NjS-wI-dgs" firstAttribute="leading" secondItem="doD-wO-Ter" secondAttribute="leading" id="MH6-dX-Ap0"/>
+                            <constraint firstItem="NjS-wI-dgs" firstAttribute="bottom" secondItem="pvF-Et-1yd" secondAttribute="bottom" id="RjC-9z-fIU"/>
                             <constraint firstItem="tHd-BV-eXu" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="aIK-2q-wDo"/>
                             <constraint firstItem="yMn-Qq-q1K" firstAttribute="top" secondItem="pvF-Et-1yd" secondAttribute="top" id="d8a-9e-aw5"/>
                             <constraint firstItem="pvF-Et-1yd" firstAttribute="bottom" secondItem="tHd-BV-eXu" secondAttribute="bottom" constant="41" id="heU-0j-4Ws"/>
                             <constraint firstItem="tHd-BV-eXu" firstAttribute="top" secondItem="Eoy-iP-Gui" secondAttribute="bottom" constant="8.5" id="hve-aU-g9K"/>
+                            <constraint firstAttribute="trailing" secondItem="NjS-wI-dgs" secondAttribute="trailing" id="pIx-3o-K9D"/>
                             <constraint firstItem="Eoy-iP-Gui" firstAttribute="centerX" secondItem="pvF-Et-1yd" secondAttribute="centerX" id="pQo-EY-kWj"/>
+                            <constraint firstItem="NjS-wI-dgs" firstAttribute="centerX" secondItem="doD-wO-Ter" secondAttribute="centerX" id="qk0-DG-8hv"/>
+                            <constraint firstItem="NjS-wI-dgs" firstAttribute="top" secondItem="doD-wO-Ter" secondAttribute="top" id="tuJ-U8-kPx"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pvF-Et-1yd"/>
                     </view>
@@ -689,11 +698,12 @@
     </scenes>
     <resources>
         <image name="SkyPaint New" width="1366" height="768"/>
+        <image name="Stars" width="1356" height="668"/>
         <image name="Waypoint Icon" width="1200" height="1200"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lwf-gl-bfJ"/>
         <segue reference="iAC-wV-5v9"/>
-        <segue reference="TJt-EP-UiB"/>
+        <segue reference="idR-jf-691"/>
     </inferredMetricsTieBreakers>
 </document>

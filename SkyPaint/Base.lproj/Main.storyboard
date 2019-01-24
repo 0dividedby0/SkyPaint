@@ -554,49 +554,44 @@
                                         </connections>
                                     </segmentedControl>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="icq-dl-Dde">
-                                        <rect key="frame" x="30" y="31" width="254" height="30"/>
+                                        <rect key="frame" x="30" y="31" width="179" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8P-x6-PNp">
                                                 <rect key="frame" x="0.0" y="0.0" width="48" height="30"/>
                                                 <state key="normal" title="Cancel"/>
                                                 <connections>
-                                                    <action selector="returnToFly:" destination="5cw-m2-ClR" eventType="touchUpInside" id="h9V-bH-mP8"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlv-n2-8uv">
-                                                <rect key="frame" x="73" y="0.0" width="42" height="30"/>
-                                                <state key="normal" title="Focus"/>
-                                                <connections>
-                                                    <action selector="focusMap:" destination="5cw-m2-ClR" eventType="touchUpInside" id="aDt-tH-8WH"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0TP-9m-if5">
-                                                <rect key="frame" x="140" y="0.0" width="34" height="30"/>
-                                                <state key="normal" title="Start"/>
-                                                <connections>
-                                                    <action selector="startButtonPushed:" destination="5cw-m2-ClR" eventType="touchUpInside" id="N3p-6z-GEq"/>
+                                                    <action selector="cancelButtonPushed:" destination="5cw-m2-ClR" eventType="touchUpInside" id="ZcG-zI-FOw"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NDJ-Rw-QEV">
-                                                <rect key="frame" x="199" y="0.0" width="55" height="30"/>
-                                                <state key="normal" title="Confirm"/>
+                                                <rect key="frame" x="73" y="0.0" width="106" height="30"/>
+                                                <state key="normal" title="Confirm Center"/>
                                                 <connections>
-                                                    <action selector="confirmPoints:" destination="5cw-m2-ClR" eventType="touchUpInside" id="Zos-IE-QOJ"/>
+                                                    <action selector="confirmButtonPushed:" destination="5cw-m2-ClR" eventType="touchUpInside" id="EsJ-1I-Rtt"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlv-n2-8uv">
+                                        <rect key="frame" x="945" y="66" width="42" height="30"/>
+                                        <state key="normal" title="Focus"/>
+                                        <connections>
+                                            <action selector="focusMap:" destination="5cw-m2-ClR" eventType="touchUpInside" id="aDt-tH-8WH"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="JXK-OH-IBQ" firstAttribute="leading" secondItem="lNV-e2-grf" secondAttribute="trailing" constant="-249" id="1e8-9y-hwf"/>
                                     <constraint firstItem="8J8-0E-uih" firstAttribute="centerX" secondItem="xdq-gb-Fuo" secondAttribute="centerX" id="3iA-uI-NcR"/>
+                                    <constraint firstItem="xlv-n2-8uv" firstAttribute="leading" secondItem="JXK-OH-IBQ" secondAttribute="trailing" constant="-42" id="CPw-wI-oKw"/>
                                     <constraint firstItem="z93-h5-hsf" firstAttribute="top" secondItem="umq-jA-rr6" secondAttribute="bottom" constant="8" id="FkY-Sj-ooq"/>
                                     <constraint firstItem="lNV-e2-grf" firstAttribute="leading" secondItem="icq-dl-Dde" secondAttribute="leading" constant="-30" id="Fus-fF-E1z"/>
                                     <constraint firstItem="icq-dl-Dde" firstAttribute="centerY" secondItem="JXK-OH-IBQ" secondAttribute="centerY" id="Hpv-xE-iEH"/>
                                     <constraint firstItem="xdq-gb-Fuo" firstAttribute="top" secondItem="8J8-0E-uih" secondAttribute="bottom" constant="8" id="PXH-xd-XXT"/>
                                     <constraint firstItem="xdq-gb-Fuo" firstAttribute="leading" secondItem="lNV-e2-grf" secondAttribute="trailing" constant="-276" id="R5a-HC-zyg"/>
                                     <constraint firstItem="lNV-e2-grf" firstAttribute="leading" secondItem="z93-h5-hsf" secondAttribute="trailing" constant="-276" id="U8m-XN-Ec2"/>
+                                    <constraint firstItem="xlv-n2-8uv" firstAttribute="top" secondItem="JXK-OH-IBQ" secondAttribute="bottom" constant="6" id="Vg3-GG-uPa"/>
                                     <constraint firstItem="lNV-e2-grf" firstAttribute="bottom" secondItem="Mu2-1j-tro" secondAttribute="bottom" id="WEI-Gk-hF5"/>
                                     <constraint firstItem="Mu2-1j-tro" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JXK-OH-IBQ" secondAttribute="trailing" symbolic="YES" id="bCe-6n-0IJ"/>
                                     <constraint firstAttribute="trailing" secondItem="lNV-e2-grf" secondAttribute="trailing" id="dOy-T3-WcS"/>
@@ -632,7 +627,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BH6-EI-O57" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1502" y="495"/>
+            <point key="canvasLocation" x="1501.7578125" y="494.53125"/>
         </scene>
         <!--Confirmation View Controller-->
         <scene sceneID="FLF-d8-18T">

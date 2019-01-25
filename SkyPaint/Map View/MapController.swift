@@ -26,6 +26,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     var locationManager: CLLocationManager?
     var userLocation: CLLocationCoordinate2D?
     var placingCenter = true
+    var readyToStart = false
     var regionPins: [MKPointAnnotation]
     var latOffset = CLLocationDegrees(0.001)
     var lonOffset = CLLocationDegrees(0.001)
@@ -42,10 +43,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
     var mission: DJIWaypointMission = DJIWaypointMission()
     
-    @IBAction func returnToFly(_ sender: Any) {
-        performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
-    }
-    
     //MARK: - UIViewController Methods
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,6 +55,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         self.startUpdateLocation()
         confirmButton.setTitle("Confirm Center", for: .normal)
         mapView.mapType = .standard // initializes map in standard
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     override func viewDidLoad() {
@@ -81,7 +82,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
-            let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 200, longitudinalMeters: 200)
+            let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 450, longitudinalMeters: 450)
             mapView.setRegion(viewRegion, animated: false)
             }
         self.locationManager = locationManager
@@ -179,10 +180,33 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     
     //MARK: - Scale Methods
     
-    @IBAction func confirmPoints(_ sender: Any) {
+    @IBAction func cancelButtonPushed(_ sender: Any) {
+        if (readyToStart) {
+            readyToStart = false
+            placingCenter = false
+            self.clearMap()
+            self.positionRegionPoints()
+            confirmButton.setTitle("Confirm Scale", for: .normal)
+        }
+        else if (!placingCenter) {
+            readyToStart = false
+            placingCenter = true
+            self.clearMap()
+            LongitudeSlider.isHidden = true;
+            LatitudeSlider.isHidden = true;
+            LongitudeLabel.isHidden = true;
+            LatitudeLabel.isHidden = true;
+            confirmButton.setTitle("Confirm Center", for: .normal)
+        }
+        else {
+            performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+        }
+    }
+    
+    @IBAction func confirmButtonPushed(_ sender: Any) {
         if (placingCenter){
             self.center = mapView.annotations[0].coordinate
-            NSLog("ORIGIN (\(center?.latitude ?? 0), \(center?.longitude ?? 0))")
+            print("ORIGIN (\(center?.latitude ?? 0), \(center?.longitude ?? 0))")
             confirmButton.setTitle("Confirm Scale", for: .normal)
             
             LongitudeSlider.isHidden = false;
@@ -195,13 +219,36 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             regionPins.append(MKPointAnnotation())
             regionPins.append(MKPointAnnotation())
             
+            self.latitudeSliderChanged(self)
+            self.longitudeSliderChanged(self)
+            
             self.positionRegionPoints()
             
             placingCenter = false
+            readyToStart = false
+            
+            
         }
-        else {
+        else if (!readyToStart) {
              latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
              longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
+            
+            confirmButton.setTitle("Start", for: .normal)
+            
+            LongitudeSlider.isHidden = true;
+            LatitudeSlider.isHidden = true;
+            LongitudeLabel.isHidden = true;
+            LatitudeLabel.isHidden = true;
+            
+            readyToStart = true
+        }
+        else if (readyToStart) {
+            print("Starting mission...")
+            pathSelected()
+            startMission()
+        }
+        else {
+            print("Unknown State!!!")
         }
     }
     
@@ -211,7 +258,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         regionPins[2].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude+lonOffset)
         regionPins[3].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude-lonOffset)
         
-        clearMap()
+        self.clearMap()
         
         mapView.addAnnotation(regionPins[0])
         mapView.addAnnotation(regionPins[1])
@@ -219,6 +266,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.addAnnotation(regionPins[3])
         
         let region = MKPolygon(coordinates: [regionPins[0].coordinate, regionPins[1].coordinate, regionPins[2].coordinate, regionPins[3].coordinate], count: 4)
+        
         mapView.addOverlay(region)
         
         let pin0 = CLLocation(latitude: regionPins[0].coordinate.latitude, longitude: regionPins[0].coordinate.longitude)
@@ -232,21 +280,17 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     @IBAction func latitudeSliderChanged(_ sender: Any) {
-        latOffset = CLLocationDegrees(0.001 * LatitudeSlider.value)
+        latOffset = CLLocationDegrees(LatitudeSlider.value/222222)
         positionRegionPoints()
     }
     @IBAction func longitudeSliderChanged(_ sender: Any) {
-        lonOffset = CLLocationDegrees(0.001 * LongitudeSlider.value)
+        let cosine = cos((center?.latitude)!*Double.pi/180)
+        let den: Float = Float(222222*cosine)
+        lonOffset = CLLocationDegrees(LongitudeSlider.value/den)
         positionRegionPoints()
     }
     
     //MARK: Start Sequence Methods
-    
-    @IBAction func startButtonPushed(_ sender: Any) {
-        print("Starting mission...")
-        pathSelected()
-        startMission()
-    }
     
     func pathSelected () {
         var scaledPoint:(CLLocationCoordinate2D,Float)

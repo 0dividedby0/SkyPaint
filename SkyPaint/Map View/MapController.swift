@@ -57,6 +57,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.mapType = .standard // initializes map in standard
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -78,7 +82,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
-            let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 400, longitudinalMeters: 400)
+            let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 450, longitudinalMeters: 450)
             mapView.setRegion(viewRegion, animated: false)
             }
         self.locationManager = locationManager
@@ -215,10 +219,15 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             regionPins.append(MKPointAnnotation())
             regionPins.append(MKPointAnnotation())
             
+            self.latitudeSliderChanged(self)
+            self.longitudeSliderChanged(self)
+            
             self.positionRegionPoints()
             
             placingCenter = false
             readyToStart = false
+            
+            
         }
         else if (!readyToStart) {
              latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
@@ -271,11 +280,13 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     @IBAction func latitudeSliderChanged(_ sender: Any) {
-        latOffset = CLLocationDegrees(0.001 * LatitudeSlider.value)
+        latOffset = CLLocationDegrees(LatitudeSlider.value/222222)
         positionRegionPoints()
     }
     @IBAction func longitudeSliderChanged(_ sender: Any) {
-        lonOffset = CLLocationDegrees(0.001 * LongitudeSlider.value)
+        let cosine = cos((center?.latitude)!*Double.pi/180)
+        let den: Float = Float(222222*cosine)
+        lonOffset = CLLocationDegrees(LongitudeSlider.value/den)
         positionRegionPoints()
     }
     

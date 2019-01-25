@@ -37,6 +37,10 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         super.init(coder: aDecoder)
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

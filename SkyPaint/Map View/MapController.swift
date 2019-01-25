@@ -185,6 +185,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             readyToStart = false
             placingCenter = false
             self.clearMap()
+            LongitudeSlider.isHidden = false;
+            LatitudeSlider.isHidden = false;
+            LongitudeLabel.isHidden = false;
+            LatitudeLabel.isHidden = false;
             self.positionRegionPoints()
             confirmButton.setTitle("Confirm Scale", for: .normal)
         }

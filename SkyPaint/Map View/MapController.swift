@@ -82,9 +82,15 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
+            self.clearMap()
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = userLocation
+            mapView.addAnnotation(newPin)
+            
             let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 450, longitudinalMeters: 450)
             mapView.setRegion(viewRegion, animated: false)
-            }
+        }
+        
         self.locationManager = locationManager
         
         DispatchQueue.main.async {
@@ -195,7 +201,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         else if (!placingCenter) {
             readyToStart = false
             placingCenter = true
+            
             self.clearMap()
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = center!
+            mapView.addAnnotation(newPin)
+            
             LongitudeSlider.isHidden = true;
             LatitudeSlider.isHidden = true;
             LongitudeLabel.isHidden = true;

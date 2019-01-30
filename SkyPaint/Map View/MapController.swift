@@ -13,7 +13,7 @@ import CoreLocation
 
 class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
    
-    
+    //UI Variables
     @IBOutlet weak var LatitudeSlider: UISlider!
     @IBOutlet weak var LatitudeLabel: UILabel!
     @IBOutlet weak var LongitudeSlider: UISlider!
@@ -21,6 +21,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
+    
+    @IBOutlet weak var pathConfirmationView: UIView!
+    @IBOutlet weak var pathDistanceLabel: UILabel!
+    @IBOutlet weak var pathSpeedLabel: UILabel!
+    @IBOutlet weak var pathTimeLabel: UILabel!
+    @IBOutlet weak var pathSpeedSlider: UISlider!
     
     //Map Variables
     var locationManager: CLLocationManager?
@@ -197,6 +203,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             LatitudeLabel.isHidden = false;
             self.positionRegionPoints()
             confirmButton.setTitle("Confirm Scale", for: .normal)
+            
+            pathConfirmationView.isHidden = true;
         }
         else if (!placingCenter) {
             readyToStart = false
@@ -255,6 +263,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             LongitudeLabel.isHidden = true;
             LatitudeLabel.isHidden = true;
             
+            pathConfirmationView.isHidden = false;
+            
+            //Update distance, speed, and time labels
+            
             readyToStart = true
         }
         else if (readyToStart) {
@@ -303,6 +315,10 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         let den: Float = Float(222222*cosine)
         lonOffset = CLLocationDegrees(LongitudeSlider.value/den)
         positionRegionPoints()
+    }
+    
+    @IBAction func pathSpeedSliderChanged(_ sender: Any) {
+        
     }
     
     //MARK: Start Sequence Methods

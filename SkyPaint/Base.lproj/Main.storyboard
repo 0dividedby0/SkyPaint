@@ -660,7 +660,7 @@
                                                             <constraint firstAttribute="width" constant="300" id="rYL-3q-nAe"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="5QX-A5-U4T">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="5QX-A5-U4T">
                                                         <rect key="frame" x="48" y="28.5" width="204" height="31"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="200" id="kYr-ez-X2k"/>

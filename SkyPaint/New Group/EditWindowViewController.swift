@@ -145,14 +145,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
-        /*var newPoint:(Float, Float, Float)
         
-        let xPoint = Float(xPointTextField.text!)
-        let yPoint = Float(yPointTextField.text!)
-        let zPoint = Float(zPointTextField.text!)
-        */
-       
         numPoints += 1
+        
         xSlider.value = 0
         ySlider.value = 0
         zSlider.value = 0
@@ -162,33 +157,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         zPointTextField.text = "\(zSlider.value)"
         
          self.pointTableView.reloadData()
-        
-        /*if(xPoint != nil && yPoint != nil && zPoint != nil)
-        {
-            newPoint = (xPoint!, yPoint!, zPoint!)
-
-            points.append(newPoint)
-            
-            pDV.points = self.points
-            pDV.setNeedsDisplay()
-            
-            sucessOutlet.text = "Point Added: P(\(String(describing: xPoint!)), \(String(describing: yPoint!)), \(String(describing: zPoint!)))"
-            
-            //Reseting values
-            xSlider.value = 0
-            ySlider.value = 0
-            zSlider.value = 0
-            
-            xPointTextField.text = "\(xSlider.value)"
-            yPointTextField.text = "\(ySlider.value)"
-            zPointTextField.text = "\(zSlider.value)"
-            
-            self.pointTableView.reloadData()
-        }
-        else
-        {
-            sucessOutlet.text = "Failed to Add Point"
-        }*/
     }
     
     @IBAction func savePath(_ sender: UIButton) {

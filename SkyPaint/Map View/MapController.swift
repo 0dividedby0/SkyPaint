@@ -280,7 +280,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             mutablemission.autoFlightSpeed = pathSpeedSlider.value;
             pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
             
-            let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded())
+            let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
             let remainingSeconds = seconds % 60
             let minutes = seconds/60
             pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
@@ -340,7 +340,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mutablemission.autoFlightSpeed = pathSpeedSlider.value;
         pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
         
-        let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded())
+        let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
         let remainingSeconds = seconds % 60
         let minutes = seconds/60
         pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"

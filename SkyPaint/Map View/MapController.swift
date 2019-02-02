@@ -13,7 +13,7 @@ import CoreLocation
 
 class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
    
-    
+    //UI Variables
     @IBOutlet weak var LatitudeSlider: UISlider!
     @IBOutlet weak var LatitudeLabel: UILabel!
     @IBOutlet weak var LongitudeSlider: UISlider!
@@ -21,6 +21,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet var mapView: MKMapView!
     @IBOutlet weak var segmentedControlMapSelector: UISegmentedControl!
+    
+    @IBOutlet weak var pathConfirmationView: UIView!
+    @IBOutlet weak var pathDistanceLabel: UILabel!
+    @IBOutlet weak var pathSpeedLabel: UILabel!
+    @IBOutlet weak var pathTimeLabel: UILabel!
+    @IBOutlet weak var pathSpeedSlider: UISlider!
     
     //Map Variables
     var locationManager: CLLocationManager?
@@ -37,9 +43,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     var longitudeScale: Double = 1
     let mutablemission:DJIMutableWaypointMission = DJIMutableWaypointMission()
     var path: [Float] = []
-    var distanceInMeters: Double?
-    var pathNames:[String]?
     var waypoints: [DJIWaypoint] = []
+    var totalDistance = 0.00
     let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
     var mission: DJIWaypointMission = DJIWaypointMission()
     
@@ -82,9 +87,15 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         //Zoom to user location
         if let userLocation = locationManager.location?.coordinate{
+            self.clearMap()
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = userLocation
+            mapView.addAnnotation(newPin)
+            
             let viewRegion = MKCoordinateRegion.init(center: userLocation, latitudinalMeters: 450, longitudinalMeters: 450)
             mapView.setRegion(viewRegion, animated: false)
-            }
+        }
+        
         self.locationManager = locationManager
         
         DispatchQueue.main.async {
@@ -191,11 +202,18 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             LatitudeLabel.isHidden = false;
             self.positionRegionPoints()
             confirmButton.setTitle("Confirm Scale", for: .normal)
+            
+            pathConfirmationView.isHidden = true;
         }
         else if (!placingCenter) {
             readyToStart = false
             placingCenter = true
+            
             self.clearMap()
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = center!
+            mapView.addAnnotation(newPin)
+            
             LongitudeSlider.isHidden = true;
             LatitudeSlider.isHidden = true;
             LongitudeLabel.isHidden = true;
@@ -239,16 +257,40 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             
             confirmButton.setTitle("Start", for: .normal)
             
-            LongitudeSlider.isHidden = true;
-            LatitudeSlider.isHidden = true;
-            LongitudeLabel.isHidden = true;
-            LatitudeLabel.isHidden = true;
+            LongitudeSlider.isHidden = true
+            LatitudeSlider.isHidden = true
+            LongitudeLabel.isHidden = true
+            LatitudeLabel.isHidden = true
+            
+            pathSelected()
+            
+            //Update distance, speed, and time labels
+            let waypoints = mutablemission.allWaypoints()
+            
+            totalDistance = 0.00;
+            for i: Int in 0..<(Int(mutablemission.waypointCount-1)) {
+                let from = CLLocation(latitude: waypoints[i].coordinate.latitude, longitude: waypoints[i].coordinate.longitude)
+                let to = CLLocation(latitude: waypoints[i+1].coordinate.latitude, longitude: waypoints[i+1].coordinate.longitude)
+                let horizontalDistance = from.distance(from: to).magnitude
+                let verticalDistance = abs(waypoints[i].altitude-waypoints[i+1].altitude)
+                totalDistance += sqrt(pow(horizontalDistance,2)+Double(pow(verticalDistance,2)))
+            }
+            pathDistanceLabel.text = String(format: "%.1f", totalDistance) + " m"
+            
+            mutablemission.autoFlightSpeed = pathSpeedSlider.value;
+            pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
+            
+            let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
+            let remainingSeconds = seconds % 60
+            let minutes = seconds/60
+            pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
+            
+            pathConfirmationView.isHidden = false
             
             readyToStart = true
         }
         else if (readyToStart) {
-            print("Starting mission...")
-            pathSelected()
+            print("Starting mission...");
             startMission()
         }
         else {
@@ -292,6 +334,16 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         let den: Float = Float(222222*cosine)
         lonOffset = CLLocationDegrees(LongitudeSlider.value/den)
         positionRegionPoints()
+    }
+    
+    @IBAction func pathSpeedSliderChanged(_ sender: Any) {
+        mutablemission.autoFlightSpeed = pathSpeedSlider.value;
+        pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
+        
+        let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
+        let remainingSeconds = seconds % 60
+        let minutes = seconds/60
+        pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
     }
     
     //MARK: Start Sequence Methods

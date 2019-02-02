@@ -33,7 +33,7 @@
                                     <constraint firstAttribute="height" constant="50" id="BC0-eT-wS3"/>
                                     <constraint firstAttribute="width" constant="50" id="YR6-RR-9Pq"/>
                                 </constraints>
-                                <state key="normal" title="Load Path" image="Waypoint Icon"/>
+                                <state key="normal" image="Waypoint Icon"/>
                                 <connections>
                                     <action selector="loadPath:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="ETn-p8-5NT"/>
                                 </connections>
@@ -561,7 +561,7 @@
                                         <items>
                                             <navigationItem title="Scale Path" id="xTN-FI-OnI">
                                                 <leftBarButtonItems>
-                                                    <barButtonItem style="plain" id="waZ-Ld-Xkn">
+                                                    <barButtonItem id="waZ-Ld-Xkn">
                                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="H8P-x6-PNp">
                                                             <rect key="frame" x="20" y="10" width="48" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -571,7 +571,7 @@
                                                             </connections>
                                                         </button>
                                                     </barButtonItem>
-                                                    <barButtonItem style="plain" id="lIr-eS-QkI">
+                                                    <barButtonItem id="lIr-eS-QkI">
                                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="NDJ-Rw-QEV">
                                                             <rect key="frame" x="76" y="10" width="121" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -584,7 +584,7 @@
                                                     </barButtonItem>
                                                 </leftBarButtonItems>
                                                 <rightBarButtonItems>
-                                                    <barButtonItem title="Focus" image="Current Location Icon" width="30" style="plain" id="bpz-3b-gfS">
+                                                    <barButtonItem title="Focus" image="Current Location Icon" width="30" id="bpz-3b-gfS">
                                                         <button key="customView" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hpo-M4-C6D">
                                                             <rect key="frame" x="620" y="3" width="384" height="44"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -597,7 +597,7 @@
                                                             </connections>
                                                         </button>
                                                     </barButtonItem>
-                                                    <barButtonItem style="plain" id="lfK-kI-u4Q">
+                                                    <barButtonItem id="lfK-kI-u4Q">
                                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="JXK-OH-IBQ">
                                                             <rect key="frame" x="400" y="10.5" width="212" height="29"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -618,10 +618,78 @@
                                             </navigationItem>
                                         </items>
                                     </navigationBar>
+                                    <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWD-f4-9Qa">
+                                        <rect key="frame" x="354.5" y="678" width="315" height="75"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qPV-rc-5ZO">
+                                                <rect key="frame" x="5" y="8" width="300" height="58.5"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="BBP-XB-y0Y">
+                                                        <rect key="frame" x="0.0" y="0.0" width="300" height="20.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es9-j1-EGI">
+                                                                <rect key="frame" x="0.0" y="0.0" width="100" height="20.5"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="100" id="TxG-ey-vZH"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiE-mR-icy">
+                                                                <rect key="frame" x="100" y="0.0" width="100" height="20.5"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="100" id="IaV-Bt-fYC"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2h6-81-b9B">
+                                                                <rect key="frame" x="200" y="0.0" width="100" height="20.5"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="100" id="rDq-D3-bZy"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="300" id="rYL-3q-nAe"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="5QX-A5-U4T">
+                                                        <rect key="frame" x="48" y="28.5" width="204" height="31"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="200" id="kYr-ez-X2k"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <action selector="pathSpeedSliderChanged:" destination="5cw-m2-ClR" eventType="valueChanged" id="dHg-PA-7ZT"/>
+                                                        </connections>
+                                                    </slider>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="315" id="4D2-rr-mtT"/>
+                                            <constraint firstAttribute="height" constant="75" id="nPx-Zd-bkI"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="8J8-0E-uih" firstAttribute="centerX" secondItem="xdq-gb-Fuo" secondAttribute="centerX" id="3iA-uI-NcR"/>
+                                    <constraint firstItem="oWD-f4-9Qa" firstAttribute="centerX" secondItem="lNV-e2-grf" secondAttribute="centerX" id="8Ee-z9-mLS"/>
+                                    <constraint firstItem="oWD-f4-9Qa" firstAttribute="top" secondItem="lNV-e2-grf" secondAttribute="bottom" constant="-90" id="Etz-ZN-zTj"/>
                                     <constraint firstItem="z93-h5-hsf" firstAttribute="top" secondItem="umq-jA-rr6" secondAttribute="bottom" constant="8" id="FkY-Sj-ooq"/>
                                     <constraint firstItem="xdq-gb-Fuo" firstAttribute="top" secondItem="8J8-0E-uih" secondAttribute="bottom" constant="8" id="PXH-xd-XXT"/>
                                     <constraint firstItem="xdq-gb-Fuo" firstAttribute="leading" secondItem="lNV-e2-grf" secondAttribute="trailing" constant="-276" id="R5a-HC-zyg"/>
@@ -654,6 +722,11 @@
                         <outlet property="LongitudeSlider" destination="xdq-gb-Fuo" id="5Gd-T8-Tpe"/>
                         <outlet property="confirmButton" destination="NDJ-Rw-QEV" id="CeY-RU-Ir1"/>
                         <outlet property="mapView" destination="lNV-e2-grf" id="swN-RS-VTe"/>
+                        <outlet property="pathConfirmationView" destination="oWD-f4-9Qa" id="NtQ-SX-eGD"/>
+                        <outlet property="pathDistanceLabel" destination="es9-j1-EGI" id="IlV-et-sXM"/>
+                        <outlet property="pathSpeedLabel" destination="iiE-mR-icy" id="ZsM-bR-kKa"/>
+                        <outlet property="pathSpeedSlider" destination="5QX-A5-U4T" id="m8x-3k-3BM"/>
+                        <outlet property="pathTimeLabel" destination="2h6-81-b9B" id="LiG-VN-z0T"/>
                         <outlet property="segmentedControlMapSelector" destination="JXK-OH-IBQ" id="yds-s3-j9i"/>
                         <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" animates="NO" id="TJt-EP-UiB"/>
                     </connections>
@@ -688,7 +761,7 @@
                                 <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
                                 <items>
                                     <navigationItem title="Saved Paths" id="Jap-iF-g1N">
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="qOy-ge-ic2">
+                                        <barButtonItem key="leftBarButtonItem" id="qOy-ge-ic2">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jr8-bU-qu3">
                                                 <rect key="frame" x="20" y="10" width="34" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

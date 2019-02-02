@@ -163,7 +163,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         let defaults = UserDefaults.standard
         var newPath:[Float] = []
         
-        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != ""){
+        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2){
             if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames"){
                 let name:String = pathNameTextFeild.text!
                 
@@ -196,7 +196,17 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             
         }
         else{
-            sucessOutlet.text = "Please enter a unique PathName"
+            var message:String = ""
+            if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
+                message = "Please enter a unique PathName"
+                if(points.count < 2){
+                    message.append(" and have at least two waypoints")
+                }
+            }
+            else{
+                message = "Please have at least two waypoints"
+            }
+            sucessOutlet.text = message
         }
     }
     

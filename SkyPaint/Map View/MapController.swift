@@ -299,6 +299,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     func positionRegionPoints() {
+        var tempScaledPath: [CLLocationCoordinate2D] = []
+        
         regionPins[0].coordinate = CLLocationCoordinate2D(latitude: center!.latitude+latOffset, longitude: center!.longitude-lonOffset)
         regionPins[1].coordinate = CLLocationCoordinate2D(latitude: center!.latitude+latOffset, longitude: center!.longitude+lonOffset)
         regionPins[2].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude+lonOffset)
@@ -323,6 +325,36 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         LatitudeLabel.text = "\(distance.rounded())m"
         distance = pin0.distance(from: pin1)
         LongitudeLabel.text = "\(distance.rounded())m"
+        
+        latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
+        longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
+        
+        var scaledPoint:(CLLocationCoordinate2D,Float)
+        
+        var lat:Double?
+        var long:Double?
+        
+        for i in 0...path.count - 1{
+            if(i%3 == 0)
+            {
+                long = Double(path[i]) * longitudeScale + center!.longitude
+            }
+            else if(i%3 == 1)
+            {
+                lat = Double(path[i]) * latitudeScale + center!.latitude
+                
+            }
+            else if(i%3 == 2)
+            {
+                scaledPoint.1 = path[i] / 3.28
+                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+                tempScaledPath.append(scaledPoint.0)
+            }
+        }
+        
+        let scaledPathView = MKPolygon(coordinates: tempScaledPath, count: tempScaledPath.count)
+        
+        mapView.addOverlay(scaledPathView)
     }
     
     @IBAction func latitudeSliderChanged(_ sender: Any) {
@@ -433,6 +465,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             //let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
             //alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
             //self.present(alert, animated: true)
+            print("Mission Started!!!")
             performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
         }
     }

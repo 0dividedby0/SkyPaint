@@ -113,7 +113,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     //MARK: - Map Methods
-    
     func startUpdateLocation() {
         if (CLLocationManager.locationServicesEnabled()){
             if (self.locationManager == nil){
@@ -175,8 +174,14 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolygon {
             let renderer = MKPolygonRenderer(polygon: overlay as! MKPolygon)
-            renderer.fillColor = UIColor.black.withAlphaComponent(0.5)
-            renderer.strokeColor = UIColor.orange
+            renderer.fillColor = UIColor.black.withAlphaComponent(0.3)
+            renderer.strokeColor = UIColor.blue
+            renderer.lineWidth = 2
+            return renderer
+        }
+        else if overlay is MKPolyline {
+            let renderer = MKPolylineRenderer(overlay: overlay)
+            renderer.strokeColor = UIColor.white
             renderer.lineWidth = 2
             return renderer
         }
@@ -352,10 +357,11 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             }
         }
         
-        let scaledPathView = MKPolygon(coordinates: tempScaledPath, count: tempScaledPath.count)
+        let scaledPathView = MKPolyline(coordinates: tempScaledPath, count: tempScaledPath.count)
         
         mapView.addOverlay(scaledPathView)
     }
+    
     
     @IBAction func latitudeSliderChanged(_ sender: Any) {
         latOffset = CLLocationDegrees(LatitudeSlider.value/222222)
@@ -462,9 +468,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         missionOperator!.uploadMission(completion: uploadCompletionHandler)
         
         func startDidComplete () {
-            //let alert = UIAlertController(title: "Start Completed!", message: "", preferredStyle: .alert)
-            //alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-            //self.present(alert, animated: true)
             print("Mission Started!!!")
             performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
         }

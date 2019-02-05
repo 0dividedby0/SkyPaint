@@ -58,12 +58,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.startUpdateLocation()
-        confirmButton.setTitle("Confirm Center", for: .normal)
-        mapView.mapType = .standard // initializes map in standard
+        confirmButton.setTitle("Confirm Center", for: .normal) // initial confirm button text
+        mapView.mapType = .standard // initializes map in standard view
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return true //hide the time/status bar for this view
     }
     
     override func viewDidLoad() {
@@ -74,6 +74,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         let touchEvent = UITapGestureRecognizer(target: self, action: #selector(MapController.mapTap(_:)))
         mapView.addGestureRecognizer(touchEvent)
         
+        //set MapController as mapView and locationManager delegate
         mapView.delegate = self
         
         let locationManager = CLLocationManager()
@@ -194,54 +195,68 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         mapView.removeOverlays(mapView.overlays)
     }
     
-    //MARK: - Scale Methods
+    //MARK: - User Interaction Methods
     
     @IBAction func cancelButtonPushed(_ sender: Any) {
         if (readyToStart) {
-            readyToStart = false
-            placingCenter = false
+            //On "Start" step, move back to "Confirm Scale" step
+            
+            //Update UI (Clear map, show scale sliders, and hide path confirmation view)
             self.clearMap()
             LongitudeSlider.isHidden = false;
             LatitudeSlider.isHidden = false;
             LongitudeLabel.isHidden = false;
             LatitudeLabel.isHidden = false;
-            self.positionRegionPoints()
-            confirmButton.setTitle("Confirm Scale", for: .normal)
-            
             pathConfirmationView.isHidden = true;
+            //Place scale region back on map
+            self.positionRegionPoints()
+            //Update status variables
+            readyToStart = false
+            placingCenter = false
+            //Update confirm button text
+            confirmButton.setTitle("Confirm Scale", for: .normal)
+            //Hide path metrics view (distance, speed, time)
         }
         else if (!placingCenter) {
-            readyToStart = false
-            placingCenter = true
+            //On "Confirm Scale" step, move back to "Confirm Center" step
             
+            //Update UI (Clear map and hide scale sliders)
             self.clearMap()
-            let newPin = MKPointAnnotation()
-            newPin.coordinate = center!
-            mapView.addAnnotation(newPin)
-            
             LongitudeSlider.isHidden = true;
             LatitudeSlider.isHidden = true;
             LongitudeLabel.isHidden = true;
             LatitudeLabel.isHidden = true;
+            //Place center pin back on map
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = center!
+            mapView.addAnnotation(newPin)
+            //Update status variables
+            readyToStart = false
+            placingCenter = true
+            //Update confirm button text
             confirmButton.setTitle("Confirm Center", for: .normal)
         }
         else {
+            //On "Confirm Center" step, move back to Flight View
             performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
         }
     }
     
     @IBAction func confirmButtonPushed(_ sender: Any) {
         if (placingCenter){
+            //On "Confirm Center" step, move to "Confirm Scale" step
+            
+            //Record and print out selected center point
             self.center = mapView.annotations[0].coordinate
             print("ORIGIN (\(center?.latitude ?? 0), \(center?.longitude ?? 0))")
-            confirmButton.setTitle("Confirm Scale", for: .normal)
             
+            //Update UI (show scale sliders, get slider values, add scale region to map)
             LongitudeSlider.isHidden = false;
             LatitudeSlider.isHidden = false;
             LongitudeLabel.isHidden = false;
             LatitudeLabel.isHidden = false;
             
-            regionPins.append(MKPointAnnotation())
+            regionPins.append(MKPointAnnotation()) //Initialize regionPins array with 4 elements
             regionPins.append(MKPointAnnotation())
             regionPins.append(MKPointAnnotation())
             regionPins.append(MKPointAnnotation())
@@ -251,28 +266,27 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             
             self.positionRegionPoints()
             
+            //Update status variables
             placingCenter = false
             readyToStart = false
             
-            
+            //Update confirm button text
+            confirmButton.setTitle("Confirm Scale", for: .normal)
         }
         else if (!readyToStart) {
-             latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
-             longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
+            //On "Confirm Scale" step, move to "Start" step
             
-            confirmButton.setTitle("Start", for: .normal)
+            //Record longitude and latitude scale, difference/500 unit scale used when editing
+            latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
+            longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
-            LongitudeSlider.isHidden = true
-            LatitudeSlider.isHidden = true
-            LongitudeLabel.isHidden = true
-            LatitudeLabel.isHidden = true
-            
+            //Generate a waypoint mission with given scale
             pathSelected()
             
             //Update distance, speed, and time labels
             let waypoints = mutablemission.allWaypoints()
             
-            totalDistance = 0.00;
+            totalDistance = 0.00;   //Distance
             for i: Int in 0..<(Int(mutablemission.waypointCount-1)) {
                 let from = CLLocation(latitude: waypoints[i].coordinate.latitude, longitude: waypoints[i].coordinate.longitude)
                 let to = CLLocation(latitude: waypoints[i+1].coordinate.latitude, longitude: waypoints[i+1].coordinate.longitude)
@@ -282,19 +296,29 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             }
             pathDistanceLabel.text = String(format: "%.1f", totalDistance) + " m"
             
-            mutablemission.autoFlightSpeed = pathSpeedSlider.value;
+            mutablemission.autoFlightSpeed = pathSpeedSlider.value; //Speed
             pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
             
-            let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
+            let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount)) //Time
             let remainingSeconds = seconds % 60
             let minutes = seconds/60
             pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
             
+            //Update UI (hide scale sliders, show path confirmation view)
+            LongitudeSlider.isHidden = true
+            LatitudeSlider.isHidden = true
+            LongitudeLabel.isHidden = true
+            LatitudeLabel.isHidden = true
             pathConfirmationView.isHidden = false
             
+            //Update status variables
             readyToStart = true
+            
+            //Update confirm button text
+            confirmButton.setTitle("Start", for: .normal)
         }
         else if (readyToStart) {
+            //On "Start" step, start mission
             print("Starting mission...");
             startMission()
         }
@@ -303,25 +327,24 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
     }
     
+    //Update scaled region and path on map
     func positionRegionPoints() {
-        var tempScaledPath: [CLLocationCoordinate2D] = []
-        
+        //Set corner pins based on confirmed center location and scale slider values (offets)
         regionPins[0].coordinate = CLLocationCoordinate2D(latitude: center!.latitude+latOffset, longitude: center!.longitude-lonOffset)
         regionPins[1].coordinate = CLLocationCoordinate2D(latitude: center!.latitude+latOffset, longitude: center!.longitude+lonOffset)
         regionPins[2].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude+lonOffset)
         regionPins[3].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude-lonOffset)
         
+        //Update map (clear, add corner pins, draw scaled region)
         self.clearMap()
-        
         mapView.addAnnotation(regionPins[0])
         mapView.addAnnotation(regionPins[1])
         mapView.addAnnotation(regionPins[2])
         mapView.addAnnotation(regionPins[3])
-        
         let region = MKPolygon(coordinates: [regionPins[0].coordinate, regionPins[1].coordinate, regionPins[2].coordinate, regionPins[3].coordinate], count: 4)
-        
         mapView.addOverlay(region)
         
+        //Update slider distance labels based on actual distance between pins
         let pin0 = CLLocation(latitude: regionPins[0].coordinate.latitude, longitude: regionPins[0].coordinate.longitude)
         let pin1 = CLLocation(latitude: regionPins[1].coordinate.latitude, longitude: regionPins[1].coordinate.longitude)
         let pin2 = CLLocation(latitude: regionPins[2].coordinate.latitude, longitude: regionPins[2].coordinate.longitude)
@@ -331,10 +354,13 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         distance = pin0.distance(from: pin1)
         LongitudeLabel.text = "\(distance.rounded())m"
         
+        //Record longitude and latitude scale, distance difference/500 unit scale used when editing
         latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
         longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
         
+        //Generate scaled path using scale values and selected path data
         var scaledPoint:(CLLocationCoordinate2D,Float)
+        var tempScaledPath: [CLLocationCoordinate2D] = []
         
         var lat:Double?
         var long:Double?
@@ -351,12 +377,13 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             }
             else if(i%3 == 2)
             {
-                scaledPoint.1 = path[i] / 3.28
+                scaledPoint.1 = path[i] / 3.28 //convert feet to meters
                 scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
                 tempScaledPath.append(scaledPoint.0)
             }
         }
         
+        //Draw scaled path on map inside scaled region
         let scaledPathView = MKPolyline(coordinates: tempScaledPath, count: tempScaledPath.count)
         
         mapView.addOverlay(scaledPathView)
@@ -364,10 +391,12 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     
     
     @IBAction func latitudeSliderChanged(_ sender: Any) {
+        //Convert meters to latitude and update mapview
         latOffset = CLLocationDegrees(LatitudeSlider.value/222222)
         positionRegionPoints()
     }
     @IBAction func longitudeSliderChanged(_ sender: Any) {
+        //convert meters to longitude, based on latitude of center, and update mapview
         let cosine = cos((center?.latitude)!*Double.pi/180)
         let den: Float = Float(222222*cosine)
         lonOffset = CLLocationDegrees(LongitudeSlider.value/den)
@@ -375,18 +404,21 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     @IBAction func pathSpeedSliderChanged(_ sender: Any) {
+        //Update mission speed and speed label
         mutablemission.autoFlightSpeed = pathSpeedSlider.value;
         pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
         
+        //Update time label
         let seconds = Int((Float(totalDistance)/mutablemission.autoFlightSpeed).rounded()+Float(5*mutablemission.waypointCount))
         let remainingSeconds = seconds % 60
         let minutes = seconds/60
         pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
     }
     
-    //MARK: Start Sequence Methods
+    //MARK: - Start Sequence Methods
     
     func pathSelected () {
+        //Generate waypoint mission using scale values and selected path data
         var scaledPoint:(CLLocationCoordinate2D,Float)
         
         var lat:Double?
@@ -444,15 +476,16 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         
         mutablemission.maxFlightSpeed = 15
-        //mutablemission.autoFlightSpeed = speedSliderOutlet.value
         mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
         mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
         
+        //convert mutable mission to standard mission
         mission = DJIWaypointMission(mission: mutablemission)
         
         missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
             
             if event.error != nil {
+                //request upload until no error
                 self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
             }
             else {

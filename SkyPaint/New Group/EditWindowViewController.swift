@@ -370,6 +370,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         yzOutlet.tintColor = xyOutlet.tintColor
         xyOutlet.tintColor = UIColor.green
         
+        // tap to dismiss keyboard
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         pDV.addGestureRecognizer(addPointGesture)
         

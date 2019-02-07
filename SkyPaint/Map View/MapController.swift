@@ -215,13 +215,19 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             placingCenter = false
             //Update confirm button text
             confirmButton.setTitle("Confirm Scale", for: .normal)
+
             //Hide path metrics view (distance, speed, time)
         }
         else if (!placingCenter) {
             //On "Confirm Scale" step, move back to "Confirm Center" step
             
             //Update UI (Clear map and hide scale sliders)
+
             self.clearMap()
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = center!
+            mapView.addAnnotation(newPin)
+            
             LongitudeSlider.isHidden = true;
             LatitudeSlider.isHidden = true;
             LongitudeLabel.isHidden = true;
@@ -280,12 +286,15 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             latitudeScale = abs(regionPins[1].coordinate.latitude-regionPins[2].coordinate.latitude)/500
             longitudeScale = abs(regionPins[0].coordinate.longitude-regionPins[1].coordinate.longitude)/500
             
+
             //Generate a waypoint mission with given scale
+
             pathSelected()
             
             //Update distance, speed, and time labels
             let waypoints = mutablemission.allWaypoints()
             
+
             totalDistance = 0.00;   //Distance
             for i: Int in 0..<(Int(mutablemission.waypointCount-1)) {
                 let from = CLLocation(latitude: waypoints[i].coordinate.latitude, longitude: waypoints[i].coordinate.longitude)
@@ -296,6 +305,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             }
             pathDistanceLabel.text = String(format: "%.1f", totalDistance) + " m"
             
+
             mutablemission.autoFlightSpeed = pathSpeedSlider.value; //Speed
             pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
             
@@ -318,6 +328,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             confirmButton.setTitle("Start", for: .normal)
         }
         else if (readyToStart) {
+
             //On "Start" step, start mission
             print("Starting mission...");
             startMission()
@@ -404,6 +415,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     @IBAction func pathSpeedSliderChanged(_ sender: Any) {
+
         //Update mission speed and speed label
         mutablemission.autoFlightSpeed = pathSpeedSlider.value;
         pathSpeedLabel.text = String(format: "%.1f", mutablemission.autoFlightSpeed) + " m/s"
@@ -415,6 +427,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         pathTimeLabel.text = "\(minutes)m \(remainingSeconds)s"
     }
     
+
     //MARK: - Start Sequence Methods
     
     func pathSelected () {

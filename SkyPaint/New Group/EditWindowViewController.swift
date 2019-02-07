@@ -15,6 +15,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var points:[(Float, Float, Float)] = []
     var plane:String = "XY"
     var updateRow:Int = 0
+    var numPoints:Int = 0;
 
     
     @IBOutlet weak var pDV: pathDisplayView!
@@ -144,45 +145,25 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
-        var newPoint:(Float, Float, Float)
         
-        let xPoint = Float(xPointTextField.text!)
-        let yPoint = Float(yPointTextField.text!)
-        let zPoint = Float(zPointTextField.text!)
+        numPoints += 1
         
-        if(xPoint != nil && yPoint != nil && zPoint != nil)
-        {
-            newPoint = (xPoint!, yPoint!, zPoint!)
-
-            points.append(newPoint)
-            
-            pDV.points = self.points
-            pDV.setNeedsDisplay()
-            
-            sucessOutlet.text = "Point Added: P(\(String(describing: xPoint!)), \(String(describing: yPoint!)), \(String(describing: zPoint!)))"
-            
-            //Reseting values
-            xSlider.value = 0
-            ySlider.value = 0
-            zSlider.value = 0
-            
-            xPointTextField.text = "\(xSlider.value)"
-            yPointTextField.text = "\(ySlider.value)"
-            zPointTextField.text = "\(zSlider.value)"
-            
-            self.pointTableView.reloadData()
-        }
-        else
-        {
-            sucessOutlet.text = "Failed to Add Point"
-        }
+        xSlider.value = 0
+        ySlider.value = 0
+        zSlider.value = 0
+        
+        xPointTextField.text = "\(xSlider.value)"
+        yPointTextField.text = "\(ySlider.value)"
+        zPointTextField.text = "\(zSlider.value)"
+        
+         self.pointTableView.reloadData()
     }
     
     @IBAction func savePath(_ sender: UIButton) {
         let defaults = UserDefaults.standard
         var newPath:[Float] = []
         
-        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != ""){
+        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2){
             if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames"){
                 let name:String = pathNameTextFeild.text!
                 
@@ -215,7 +196,17 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             
         }
         else{
-            sucessOutlet.text = "Please enter a unique PathName"
+            var message:String = ""
+            if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
+                message = "Please enter a unique PathName"
+                if(points.count < 2){
+                    message.append(" and have at least two waypoints")
+                }
+            }
+            else{
+                message = "Please have at least two waypoints"
+            }
+            sucessOutlet.text = message
         }
     }
     
@@ -332,6 +323,21 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
         
+        var tmpPoint:(Float, Float, Float)
+        
+        let xPoint = Float(xPointTextField.text!)
+        let yPoint = Float(yPointTextField.text!)
+        let zPoint = Float(zPointTextField.text!)
+        
+        tmpPoint = (xPoint!, yPoint!, zPoint!)
+        
+        if (points.count == numPoints + 1){
+            points.remove(at: numPoints)
+        }
+        points.append(tmpPoint)
+        
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
         
     }
     
@@ -363,6 +369,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xzOutlet.tintColor = xyOutlet.tintColor
         yzOutlet.tintColor = xyOutlet.tintColor
         xyOutlet.tintColor = UIColor.green
+        
+        // tap to dismiss keyboard
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         pDV.addGestureRecognizer(addPointGesture)

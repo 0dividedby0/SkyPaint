@@ -12,13 +12,18 @@ public class pathDisplayView: UIView {
 
     var path: UIBezierPath!
     
+    let dot = UIImage(named: "Circle")!
+    
     var points:[(Float, Float, Float)] = []
 
     var plane: String?
     
+
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -48,7 +53,9 @@ public class pathDisplayView: UIView {
         }
         
         newPoint = CGPoint(x: coor1, y: coor2) //initial point
+        
         path.move(to: newPoint)
+        
     }
     
     func addPoints() -> Void
@@ -78,6 +85,12 @@ public class pathDisplayView: UIView {
             
             newPoint = CGPoint(x: coor1, y: coor2) //initial point
             path.addLine(to: newPoint)
+            
+            let area = CGRect(x: (newPoint.x - 10), y: (newPoint.y - 10), width: 20, height: 20)
+            //dot.draw(at: newPoint)
+            dot.draw(in: area)
+            
+          
         }
     }
     
@@ -97,6 +110,7 @@ public class pathDisplayView: UIView {
         self.createPath()
         
         UIColor.white.setStroke()
+    
         
         path.stroke()
     }

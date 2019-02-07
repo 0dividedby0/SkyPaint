@@ -222,11 +222,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             //On "Confirm Scale" step, move back to "Confirm Center" step
             
             //Update UI (Clear map and hide scale sliders)
-
             self.clearMap()
-            let newPin = MKPointAnnotation()
-            newPin.coordinate = center!
-            mapView.addAnnotation(newPin)
             
             LongitudeSlider.isHidden = true;
             LatitudeSlider.isHidden = true;

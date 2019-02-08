@@ -164,72 +164,41 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         var newPath: RawPathMO!
         var latitude: [Float] = [], longitude: [Float] = [], altitude: [Float] = []
         
-        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
-            
-            newPath.name = pathNameTextFeild.text!
-            newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
-            
-            for point in points {
-                latitude.append(point.0)
-                longitude.append(point.1)
-                altitude.append(point.2)
+        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2){
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
+                
+                newPath.name = pathNameTextFeild.text!
+                newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
+                
+                for point in points {
+                    latitude.append(point.0)
+                    longitude.append(point.1)
+                    altitude.append(point.2)
+                }
+                
+                newPath.latitude = latitude as NSObject
+                newPath.longitude = longitude as NSObject
+                newPath.altitude = altitude as NSObject
+                
+                appDelegate.saveContext()
+                
+                performSegue(withIdentifier: "createToPathSegue", sender: nil)
             }
-            
-            newPath.latitude = latitude as NSObject
-            newPath.longitude = longitude as NSObject
-            newPath.altitude = altitude as NSObject
-            
-            appDelegate.saveContext()
-            
-            performSegue(withIdentifier: "createToPathSegue", sender: nil)
         }
-        
-//        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2){
-//            if var pathNames = UserDefaults.standard.stringArray(forKey: "PathNames"){
-//                let name:String = pathNameTextFeild.text!
-//
-//                pathNames.append(pathNameTextFeild.text!)
-//                defaults.set(pathNames, forKey: "PathNames")
-//                for point in points
-//                {
-//                    newPath.append(contentsOf: [point.0, point.1, point.2])
-//                }
-//
-//                defaults.set(newPath, forKey: name)
-//
-//            }
-//            else
-//            {
-//                var pathNames:[String] = []
-//                let name:String = pathNameTextFeild.text!
-//
-//                pathNames.append(pathNameTextFeild.text!)
-//                defaults.set(pathNames, forKey: "PathNames")
-//                for point in points
-//                {
-//                    newPath.append(contentsOf: [point.0, point.1, point.2])
-//                }
-//                defaults.set(newPath, forKey: name)
-//            }
-//            sucessOutlet.text = "Successfully Added Path"
-//
-//            performSegue(withIdentifier: "createToPathSegue", sender: nil)
-//
-//        }
-//        else{
-//            var message:String = ""
-//            if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
-//                message = "Please enter a unique PathName"
-//                if(points.count < 2){
-//                    message.append(" and have at least two waypoints")
-//                }
-//            }
-//            else{
-//                message = "Please have at least two waypoints"
-//            }
-//            sucessOutlet.text = message
-//        }
+        else{
+            var message:String = ""
+            if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
+                message = "Please enter a unique PathName"
+                if(points.count < 2){
+                    message.append(" and have at least two waypoints")
+                }
+            }
+            else{
+                message = "Please have at least two waypoints"
+            }
+            sucessOutlet.text = message
+        }
     }
     
    //*********************TableView Functions****************************
@@ -278,10 +247,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         updatePointButtonOutlet.isEnabled = false
     }
-    
-
-    
-    
     
     //******************************************Gesture Recognition*******************************************
     

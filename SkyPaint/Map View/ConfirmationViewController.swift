@@ -8,22 +8,14 @@
 
 import UIKit
 import MapKit
-import DJISDK
+import CoreData
 
-class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ConfirmationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     //MARK: - Variable Declarations
-    
-    var center: CLLocationCoordinate2D?
-    var latitudeScale: Double = 1
-    var longitudeScale: Double = 1
-    let mutablemission:DJIMutableWaypointMission = DJIMutableWaypointMission()
-    var path: [Float] = []
-    var distanceInMeters: Double?
-    var pathNames:[String]?
-    var waypoints: [DJIWaypoint] = []
-    let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
-    var mission: DJIWaypointMission = DJIWaypointMission()
+    var paths: [RawPathMO] = []
+    var path: RawPathMO!
+    var fetchResultController: NSFetchedResultsController<RawPathMO>!
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     
@@ -47,8 +39,24 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         pathNamesTableView.dataSource = self
         pathNamesTableView.delegate = self
         
-        pathNames = (UserDefaults.standard.array(forKey: "PathNames") as? [String])
+        let fetchRequest: NSFetchRequest<RawPathMO> = RawPathMO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultController.delegate = self
+            
+            do {
+                try fetchResultController.performFetch()
+                if let fetchedObjects = fetchResultController.fetchedObjects {
+                    paths = fetchedObjects
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,23 +67,71 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     //MARK: - UITableView Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (pathNames != nil ? pathNames!.count : 0)
+        return paths.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "pathNameIdentifier", for: indexPath)
         
-        cell.textLabel?.text = pathNames?[indexPath.row]
+        cell.textLabel?.text = paths[indexPath.row].name
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        path = UserDefaults.standard.array(forKey: pathNames![indexPath.row]) as! [Float]
+        path = paths[indexPath.row]
         
         performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") {
+            (action, sourceView, completionHandler) in
+            
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                let context = appDelegate.persistentContainer.viewContext
+                let pathToDelete = self.fetchResultController.object(at: indexPath)
+                context.delete(pathToDelete)
+                
+                appDelegate.saveContext()
+            }
+            completionHandler(true)
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 
+    // MARK: - CoreDataController Methods
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        pathNamesTableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            if let newIndexPath = newIndexPath {
+                pathNamesTableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                pathNamesTableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                pathNamesTableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        default:
+            pathNamesTableView.reloadData()
+        }
+        if let fetchedObjects = controller.fetchedObjects {
+            paths = fetchedObjects as! [RawPathMO]
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        pathNamesTableView.endUpdates()
+    }
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

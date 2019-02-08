@@ -18,9 +18,6 @@ public class pathDisplayView: UIView {
 
     var plane: String?
     
-
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

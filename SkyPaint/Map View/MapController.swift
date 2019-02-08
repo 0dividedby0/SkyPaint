@@ -42,7 +42,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     var latitudeScale: Double = 1
     var longitudeScale: Double = 1
     let mutablemission:DJIMutableWaypointMission = DJIMutableWaypointMission()
-    var path: [Float] = []
+    var path: RawPathMO!
     var waypoints: [DJIWaypoint] = []
     var totalDistance = 0.00
     let missionOperator = DJISDKManager.missionControl()?.waypointMissionOperator()
@@ -372,22 +372,13 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         var lat:Double?
         var long:Double?
         
-        for i in 0...path.count - 1{
-            if(i%3 == 0)
-            {
-                long = Double(path[i]) * longitudeScale + center!.longitude
-            }
-            else if(i%3 == 1)
-            {
-                lat = Double(path[i]) * latitudeScale + center!.latitude
-                
-            }
-            else if(i%3 == 2)
-            {
-                scaledPoint.1 = path[i] / 3.28 //convert feet to meters
-                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                tempScaledPath.append(scaledPoint.0)
-            }
+        for i: Int in 0...(path.numPoints as! Int)-1 {
+            long = Double((path.longitude as! [Float])[i]) * longitudeScale + center!.longitude
+            lat = Double((path.latitude as! [Float])[i]) * latitudeScale + center!.latitude
+            
+            scaledPoint.1 = (path.altitude as! [Float])[i] / 3.28 //convert feet to meters
+            scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+            tempScaledPath.append(scaledPoint.0)
         }
         
         //Draw scaled path on map inside scaled region
@@ -433,24 +424,16 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         var lat:Double?
         var long:Double?
         
-        for i in 0...path.count - 1{
-            if(i%3 == 0)
-            {
-                long = Double(path[i]) * longitudeScale + center!.longitude
-            }
-            else if(i%3 == 1)
-            {
-                lat = Double(path[i]) * latitudeScale + center!.latitude
-                
-            }
-            else if(i%3 == 2)
-            {
-                scaledPoint.1 = path[i] / 3.28
-                scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                waypoints.append(DJIWaypoint(coordinate: scaledPoint.0))
-                waypoints[i/3].altitude = scaledPoint.1
-                mutablemission.add(waypoints[i/3])
-            }
+        for i: Int in 0...(path.numPoints as! Int)-1 {
+            long = Double((path.longitude as! [Float])[i]) * longitudeScale + center!.longitude
+            lat = Double((path.latitude as! [Float])[i]) * latitudeScale + center!.latitude
+            
+            scaledPoint.1 = (path.altitude as! [Float])[i] / 3.28
+            scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+            waypoints.append(DJIWaypoint(coordinate: scaledPoint.0))
+            waypoints[i].altitude = scaledPoint.1
+            mutablemission.add(waypoints[i])
+            
             print("\n \(i)" + ", ")
             print(mutablemission.waypointCount)
             

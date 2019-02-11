@@ -7,16 +7,12 @@
 //
 
 import UIKit
-import DJISDK
 import DJIUXSDK
 
 class FlightController: DUXDefaultLayoutViewController {
     
     @IBAction func returnToMain(_ sender: Any) {
         performSegue(withIdentifier: "flyToMainMenuSegue", sender: nil)
-    }
-    @IBAction func loadPath(_ sender: Any) {
-        performSegue(withIdentifier: "flyToPathSegue", sender: nil)
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -26,8 +22,16 @@ class FlightController: DUXDefaultLayoutViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view, typically from a nib.
         (self.contentViewController as! DUXFPVViewController).fpvView?.showCameraDisplayName = false
+        let widget = LoadPathWidget(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        self.leadingViewController!.addWidget(widget)
+        
+        let gesture = UITapGestureRecognizer(target: self, action:  #selector (self.moveToSelect (_:)))
+        widget.addGestureRecognizer(gesture)
+    }
+    
+    @objc func moveToSelect(_ sender:UITapGestureRecognizer){
+        performSegue(withIdentifier: "flyToPathSegue", sender: nil)
     }
     
 }

@@ -28,23 +28,10 @@
                                     <action selector="returnToMain:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="S5G-EB-kWK"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtp-W0-ePH">
-                                <rect key="frame" x="25" y="255" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="BC0-eT-wS3"/>
-                                    <constraint firstAttribute="width" constant="50" id="YR6-RR-9Pq"/>
-                                </constraints>
-                                <state key="normal" image="Waypoint Icon"/>
-                                <connections>
-                                    <action selector="loadPath:" destination="t1m-Xd-6cb" eventType="touchUpInside" id="ETn-p8-5NT"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="TvQ-yz-gdG" firstAttribute="leading" secondItem="yGl-TS-C1v" secondAttribute="leading" id="05J-by-RQ2"/>
-                            <constraint firstItem="rtp-W0-ePH" firstAttribute="leading" secondItem="yGl-TS-C1v" secondAttribute="leading" constant="25" id="BbE-G9-SAZ"/>
-                            <constraint firstItem="rtp-W0-ePH" firstAttribute="top" secondItem="TvQ-yz-gdG" secondAttribute="bottom" constant="205" id="Fir-bI-2tW"/>
                             <constraint firstItem="yGl-TS-C1v" firstAttribute="top" secondItem="TvQ-yz-gdG" secondAttribute="top" id="sF9-iP-T0T"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yGl-TS-C1v"/>
@@ -745,14 +732,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BTv-Jd-mx3">
-                                <rect key="frame" x="0.0" y="70" width="1024" height="698"/>
+                                <rect key="frame" x="0.0" y="70" width="512" height="698"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="pathNameIdentifier" id="hZk-gt-zk1">
-                                        <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="512" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hZk-gt-zk1" id="tt5-CR-nKB">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="512" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -772,17 +759,32 @@
                                                 </connections>
                                             </button>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="JeP-Kz-3nH">
+                                            <connections>
+                                                <action selector="confirmPath:" destination="LME-JH-YJp" id="J6X-Fb-Cjv"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Xi-Zy-b0E" customClass="pathDisplayView" customModule="SkyPaint" customModuleProvider="target">
+                                <rect key="frame" x="520" y="172" width="494" height="494"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="9Xi-Zy-b0E" secondAttribute="height" multiplier="1:1" id="Dbp-7I-PzA"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="BTv-Jd-mx3" firstAttribute="bottom" secondItem="SN3-A0-caa" secondAttribute="bottom" id="1Hy-Jx-nCX"/>
+                            <constraint firstItem="9Xi-Zy-b0E" firstAttribute="centerY" secondItem="BTv-Jd-mx3" secondAttribute="centerY" id="5Rv-rf-42S"/>
                             <constraint firstItem="QS9-Oq-NRg" firstAttribute="leading" secondItem="SN3-A0-caa" secondAttribute="leading" id="5ay-3Y-jjA"/>
                             <constraint firstItem="BTv-Jd-mx3" firstAttribute="leading" secondItem="SN3-A0-caa" secondAttribute="leading" id="PvH-rf-Koz"/>
                             <constraint firstItem="SN3-A0-caa" firstAttribute="top" secondItem="QS9-Oq-NRg" secondAttribute="top" id="Run-iF-tvZ"/>
-                            <constraint firstItem="BTv-Jd-mx3" firstAttribute="trailing" secondItem="SN3-A0-caa" secondAttribute="trailing" id="cZq-iQ-syG"/>
+                            <constraint firstItem="9Xi-Zy-b0E" firstAttribute="leading" secondItem="BTv-Jd-mx3" secondAttribute="trailing" constant="8" id="Zs6-KV-WBl"/>
+                            <constraint firstItem="SN3-A0-caa" firstAttribute="trailing" secondItem="9Xi-Zy-b0E" secondAttribute="trailing" constant="10" id="axV-Ga-yJ9"/>
+                            <constraint firstItem="BTv-Jd-mx3" firstAttribute="trailing" secondItem="SN3-A0-caa" secondAttribute="centerX" id="cZq-iQ-syG"/>
                             <constraint firstItem="QS9-Oq-NRg" firstAttribute="centerX" secondItem="SN3-A0-caa" secondAttribute="centerX" id="don-3g-mXl"/>
                             <constraint firstItem="SN3-A0-caa" firstAttribute="trailing" secondItem="QS9-Oq-NRg" secondAttribute="trailing" id="hAd-zU-hb6"/>
                             <constraint firstItem="BTv-Jd-mx3" firstAttribute="top" secondItem="QS9-Oq-NRg" secondAttribute="bottom" id="wwm-vZ-TKT"/>
@@ -791,6 +793,7 @@
                     </view>
                     <connections>
                         <outlet property="pathNamesTableView" destination="BTv-Jd-mx3" id="VaH-Xl-fNb"/>
+                        <outlet property="pathPreviewView" destination="9Xi-Zy-b0E" id="7li-Lh-md2"/>
                         <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" animates="NO" id="nvn-Yb-FW7"/>
                         <segue destination="t1m-Xd-6cb" kind="show" identifier="pathToFlySegue" animates="NO" id="seN-D3-thk"/>
                     </connections>
@@ -804,11 +807,10 @@
         <image name="Current Location Icon" width="384" height="384"/>
         <image name="SkyPaint New" width="1366" height="768"/>
         <image name="Stars" width="1356" height="668"/>
-        <image name="Waypoint Icon" width="1200" height="1200"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
         <segue reference="Jwz-0O-tfR"/>
-        <segue reference="TJt-EP-UiB"/>
+        <segue reference="seN-D3-thk"/>
     </inferredMetricsTieBreakers>
 </document>

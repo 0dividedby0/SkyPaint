@@ -342,12 +342,8 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         regionPins[2].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude+lonOffset)
         regionPins[3].coordinate = CLLocationCoordinate2D(latitude: center!.latitude-latOffset, longitude: center!.longitude-lonOffset)
         
-        //Update map (clear, add corner pins, draw scaled region)
+        //Update map (clear, draw scaled region)
         self.clearMap()
-        mapView.addAnnotation(regionPins[0])
-        mapView.addAnnotation(regionPins[1])
-        mapView.addAnnotation(regionPins[2])
-        mapView.addAnnotation(regionPins[3])
         let region = MKPolygon(coordinates: [regionPins[0].coordinate, regionPins[1].coordinate, regionPins[2].coordinate, regionPins[3].coordinate], count: 4)
         mapView.addOverlay(region)
         

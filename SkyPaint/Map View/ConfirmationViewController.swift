@@ -18,6 +18,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var fetchResultController: NSFetchedResultsController<RawPathMO>!
     
     @IBOutlet weak var pathNamesTableView: UITableView!
+    @IBOutlet weak var pathPreviewView: pathDisplayView!
     
     @IBAction func returnToMainMenu(_ sender: Any) {
         performSegue(withIdentifier: "pathToFlySegue", sender: nil)
@@ -80,8 +81,18 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         path = paths[indexPath.row]
+        var tmpPoint: (Float, Float, Float)
         
-        performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+        pathPreviewView.points = []
+        
+        for i: Int in 0...(path.numPoints as! Int)-1 {
+            tmpPoint.0 = (path.longitude as! [Float])[i]
+            tmpPoint.1 = (path.latitude as! [Float])[i]
+            tmpPoint.2 = (path.altitude as! [Float])[i]
+            pathPreviewView.points.append(tmpPoint)
+        }
+        
+        pathPreviewView.setNeedsDisplay()
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -133,7 +144,10 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: - Navigation
-
+    @IBAction func confirmPath(_ sender: Any) {
+        performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pathToScaleSegue" {
             let destinationController = segue.destination as! MapController

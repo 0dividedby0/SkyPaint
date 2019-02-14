@@ -46,7 +46,7 @@ public class pathDisplayView: UIView {
             coor1 = (CGFloat(points[0].0)+250)/CGFloat(scale)
             coor2 = CGFloat(points[0].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
         }
-        else if(plane == "YZ") //broken
+        else if(plane == "YZ")
         {
             coor1 = CGFloat(points[0].1)/CGFloat(scale) + CGFloat(250/scale)
             coor2 = CGFloat(points[0].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
@@ -78,7 +78,7 @@ public class pathDisplayView: UIView {
                 coor1 = (CGFloat(points[i].0)+250)/CGFloat(scale)
                 coor2 = CGFloat(points[i].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
             }
-            else if(plane == "YZ") //broken
+            else if(plane == "YZ")
             {
                 coor1 = CGFloat(points[i].1)/CGFloat(scale) + CGFloat(250/scale)
                 coor2 = CGFloat(points[i].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)

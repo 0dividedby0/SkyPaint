@@ -18,6 +18,13 @@ public class pathDisplayView: UIView {
 
     var plane: String?
     
+    var scale:Float!
+    
+    var zScale:Float!
+
+    
+
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -27,6 +34,7 @@ public class pathDisplayView: UIView {
         super.init(coder: aDecoder)
     }
     
+    
     func addStartPoint() -> Void
     {
         var newPoint:CGPoint
@@ -35,19 +43,20 @@ public class pathDisplayView: UIView {
         
         if(plane == "XZ")
         {
-            coor1 = CGFloat(points[0].0) + 250
-            coor2 = CGFloat(points[0].2) * -1 + 400
+            coor1 = (CGFloat(points[0].0)+250)/CGFloat(scale)
+            coor2 = CGFloat(points[0].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
         }
-        else if(plane == "YZ")
+        else if(plane == "YZ") //broken
         {
-            coor1 = CGFloat(points[0].1) + 250
-            coor2 = CGFloat(points[0].2) * -1 + 400
+            coor1 = CGFloat(points[0].1)/CGFloat(scale) + CGFloat(250/scale)
+            coor2 = CGFloat(points[0].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
         }
         else
         {
-            coor1 = CGFloat(points[0].0) + 250
-            coor2 = CGFloat(points[0].1) * -1 + 250
+            coor1 = (CGFloat(points[0].0) + 250)/CGFloat(scale)
+            coor2 = CGFloat(points[0].1)/CGFloat(scale) * -1 + CGFloat(250/scale)
         }
+        
         
         newPoint = CGPoint(x: coor1, y: coor2) //initial point
         
@@ -66,24 +75,26 @@ public class pathDisplayView: UIView {
             
             if(plane == "XZ")
             {
-                coor1 = CGFloat(points[i].0) + 250
-                coor2 = CGFloat(points[i].2) * -1 + 400
+                coor1 = (CGFloat(points[i].0)+250)/CGFloat(scale)
+                coor2 = CGFloat(points[i].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
             }
-            else if(plane == "YZ")
+            else if(plane == "YZ") //broken
             {
-                coor1 = CGFloat(points[i].1) + 250
-                coor2 = CGFloat(points[i].2) * -1 + 400
+                coor1 = CGFloat(points[i].1)/CGFloat(scale) + CGFloat(250/scale)
+                coor2 = CGFloat(points[i].2)/CGFloat(zScale) * -1 + CGFloat(400/zScale)
             }
             else
             {
-                coor1 = CGFloat(points[i].0) + 250
-                coor2 = CGFloat(points[i].1) * -1 + 250
+                coor1 = (CGFloat(points[i].0) + 250)/CGFloat(scale)
+                coor2 = CGFloat(points[i].1)/CGFloat(scale) * -1 + CGFloat(250/scale)
             }
+
             
             newPoint = CGPoint(x: coor1, y: coor2) //initial point
             path.addLine(to: newPoint)
             
-            let area = CGRect(x: (newPoint.x - 10), y: (newPoint.y - 10), width: 20, height: 20)
+            let area = CGRect(x: ((newPoint.x - 10)), y: (newPoint.y - 10), width: 20, height: 20)
+            
             //dot.draw(at: newPoint)
             dot.draw(in: area)
             

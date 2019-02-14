@@ -222,8 +222,8 @@
                                     <action selector="yzButtonTapped:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="hRZ-ND-xFf"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Z:400" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgu-oG-rtH">
-                                <rect key="frame" x="199" y="53" width="42" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Z: 400" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgu-oG-rtH">
+                                <rect key="frame" x="215" y="73" width="54" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -278,11 +278,6 @@
                             <constraint firstItem="jUF-TN-AYg" firstAttribute="top" secondItem="gW0-qX-Nwr" secondAttribute="bottom" constant="8" id="yy4-sc-3sc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bb0-8k-ZKv"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="lgu-oG-rtH"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=compact">
                             <mask key="subviews">
                                 <include reference="lgu-oG-rtH"/>
@@ -314,13 +309,14 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="dynamicSlider" destination="gW0-qX-Nwr" id="0Qs-mT-FaC"/>
                         <outlet property="pDV" destination="Fhq-Ap-j6D" id="xa5-61-uw3"/>
                         <outlet property="pathNameTextFeild" destination="Kwc-Wr-Qhk" id="kPA-cz-Nd9"/>
                         <outlet property="pointTableView" destination="q92-rl-CXH" id="JEi-qD-aYK"/>
+                        <outlet property="sliderText" destination="lgu-oG-rtH" id="SB6-Le-8xd"/>
                         <outlet property="xyOutlet" destination="dYD-Ld-Eeo" id="g6U-5n-HrD"/>
                         <outlet property="xzOutlet" destination="KhY-Ql-N4b" id="eu9-H8-aeB"/>
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
-                        <outlet property="zSlider" destination="gW0-qX-Nwr" id="mY6-1D-sCM"/>
                         <segue destination="14M-Ib-bTi" kind="show" identifier="createToMainMenuSegue" animates="NO" id="Jwz-0O-tfR"/>
                         <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" animates="NO" id="Aqn-za-g8R"/>
                     </connections>

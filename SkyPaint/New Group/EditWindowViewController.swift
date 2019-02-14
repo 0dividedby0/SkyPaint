@@ -42,14 +42,32 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func zSliderChanged(_ sender: UISlider) {
         if(plane == "XY"){
             sliderText.text = "Z:"
+            zCord = dynamicSlider.value
         }
         else if(plane == "XZ"){
             sliderText.text = "Y: "
+            yCord = dynamicSlider.value
+
         }
         else if(plane == "YZ"){
             sliderText.text = "X: "
+            xCord = dynamicSlider.value
+
         }
         sliderText.text?.append("\(Int(dynamicSlider.value))")
+        
+        var tmpPoint:(Float, Float, Float)
+
+        tmpPoint = (xCord, yCord, zCord)
+        
+        if (points.count == numPoints + 1){
+            points.remove(at: numPoints)
+        }
+        points.append(tmpPoint)
+        
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
+        
     }
 
     
@@ -67,6 +85,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         plane = "XZ"
         pDV.plane = "XZ"
         pDV.setNeedsDisplay()
+        dynamicSlider.minimumValue = -250
+        dynamicSlider.maximumValue = 250
         
         if(points.count > 0)
         {
@@ -93,6 +113,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         plane = "YZ"
         pDV.plane = "YZ"
         pDV.setNeedsDisplay()
+        dynamicSlider.minimumValue = -250
+        dynamicSlider.maximumValue = 250
         
         if(points.count > 0)
         {
@@ -116,6 +138,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         plane = "XY"
         pDV.plane = "XY"
         pDV.setNeedsDisplay()
+        dynamicSlider.minimumValue = 20
+        dynamicSlider.maximumValue = 400
         
         if(points.count > 0)
         {
@@ -155,7 +179,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         numPoints += 1
  
-       // dynamicSlider.value = 0
         if(plane == "XY"){
             sliderText.text = "Z: "
         }
@@ -199,7 +222,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         else{
             var message:String = ""
             if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
-                message = "Please enter a unique PathName"
+                message = "Please enter a unique path name"
                 if(points.count < 2){
                     message.append(" and have at least two waypoints")
                 }
@@ -207,7 +230,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             else{
                 message = "Please have at least two waypoints"
             }
-            //sucessOutlet.text = message
+            
+            let alertController = UIAlertController(title: "Error:", message:
+                "\(message)", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     

@@ -37,9 +37,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     //***************************************TextFields and Sliders**************************************
 
     @IBOutlet weak var sliderText: UILabel!
-
     @IBOutlet weak var dynamicSlider: UISlider!
-    @IBAction func zSliderChanged(_ sender: UISlider) {
+    
+    
+    @IBAction func zSliderChanged(_ sender: UISlider) { //Updates text outlets and golabl cordiantes when slider is changed
         if(plane == "XY"){
             sliderText.text = "Z:"
             zCord = dynamicSlider.value
@@ -56,6 +57,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
         sliderText.text?.append("\(Int(dynamicSlider.value))")
         
+        //updates point with new slider axis value
         var tmpPoint:(Float, Float, Float)
 
         tmpPoint = (xCord, yCord, zCord)
@@ -81,7 +83,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
     }
     
-    @IBAction func xzButtonTapped(_ sender: UIButton) {
+    @IBAction func xzButtonTapped(_ sender: UIButton) { //sets plane to XZ axis and sets correspoing sliders
         plane = "XZ"
         pDV.plane = "XZ"
         pDV.setNeedsDisplay()
@@ -109,7 +111,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
-    @IBAction func yzButtonTapped(_ sender: UIButton) {
+    @IBAction func yzButtonTapped(_ sender: UIButton) {//sets plane to YZ axis and sets correspoing sliders
         plane = "YZ"
         pDV.plane = "YZ"
         pDV.setNeedsDisplay()
@@ -134,7 +136,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         yzOutlet.tintColor = UIColor.green
     }
     
-    @IBAction func xyButtonTapped(_ sender: UIButton) {
+    @IBAction func xyButtonTapped(_ sender: UIButton) {//sets plane to XY axis and sets correspoing sliders
         plane = "XY"
         pDV.plane = "XY"
         pDV.setNeedsDisplay()
@@ -314,10 +316,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         let newPoint:CGPoint = sender.location(in: self.pDV)
         
         
-        if(plane == "XY")
+        if(plane == "XY") //tests for plane
         {
             
-            xCord = scale * Float(newPoint.x)-250
+            xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
             yCord = (scale * Float(newPoint.y)) * -1 + 250
             
             if(points.count > 0)
@@ -386,7 +388,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) { //sets scale of pDV based on screen size
         scale = Float(500 / pDV.frame.width)
         zScale = Float(400 / pDV.frame.width)
     }

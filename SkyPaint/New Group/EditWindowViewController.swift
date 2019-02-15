@@ -201,6 +201,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "createToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = false
+        }
+    }
+    
    //*********************TableView Functions****************************
     
     private func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

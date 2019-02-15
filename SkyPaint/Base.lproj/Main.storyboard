@@ -63,10 +63,10 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHd-BV-eXu">
-                                <rect key="frame" x="418.5" y="631" width="187" height="96"/>
+                                <rect key="frame" x="377.5" y="631" width="269" height="96"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Edit ✎"/>
+                                <state key="normal" title="Create ✎"/>
                                 <connections>
                                     <action selector="userTappedEdit:" destination="14M-Ib-bTi" eventType="touchUpInside" id="DUm-fj-jhJ"/>
                                 </connections>
@@ -755,7 +755,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Back"/>
                                                 <connections>
-                                                    <action selector="returnToMainMenu:" destination="LME-JH-YJp" eventType="touchUpInside" id="Vbn-Af-gjR"/>
+                                                    <action selector="back:" destination="LME-JH-YJp" eventType="touchUpInside" id="gjs-8S-Urk"/>
                                                 </connections>
                                             </button>
                                         </barButtonItem>
@@ -796,6 +796,7 @@
                         <outlet property="pathPreviewView" destination="9Xi-Zy-b0E" id="7li-Lh-md2"/>
                         <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" animates="NO" id="nvn-Yb-FW7"/>
                         <segue destination="t1m-Xd-6cb" kind="show" identifier="pathToFlySegue" animates="NO" id="seN-D3-thk"/>
+                        <segue destination="B5o-KZ-xHA" kind="show" identifier="pathToCreateSegue" animates="NO" id="SPT-Fw-kJQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dNE-PQ-t65" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -810,7 +811,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
+        <segue reference="ev0-YK-hKb"/>
         <segue reference="Jwz-0O-tfR"/>
-        <segue reference="seN-D3-thk"/>
+        <segue reference="TJt-EP-UiB"/>
     </inferredMetricsTieBreakers>
 </document>

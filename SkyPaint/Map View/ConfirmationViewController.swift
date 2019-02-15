@@ -16,12 +16,18 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var paths: [RawPathMO] = []
     var path: RawPathMO!
     var fetchResultController: NSFetchedResultsController<RawPathMO>!
+    var previousViewIsFlight = true
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     @IBOutlet weak var pathPreviewView: pathDisplayView!
     
-    @IBAction func returnToMainMenu(_ sender: Any) {
-        performSegue(withIdentifier: "pathToFlySegue", sender: nil)
+    @IBAction func back(_ sender: Any) {
+        if (previousViewIsFlight) {
+            performSegue(withIdentifier: "pathToFlySegue", sender: nil)
+        }
+        else {
+            performSegue(withIdentifier: "pathToCreateSegue", sender: nil)
+        }
     }
     
     //MARK: - UIViewController Methods

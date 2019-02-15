@@ -34,4 +34,10 @@ class FlightController: DUXDefaultLayoutViewController {
         performSegue(withIdentifier: "flyToPathSegue", sender: nil)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "flyToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = true
+        }
+    }
 }

@@ -83,6 +83,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
     }
     
+
+    @IBAction func unwindToCreate(segue:UIStoryboardSegue) { }
+
     @IBAction func xzButtonTapped(_ sender: UIButton) { //sets plane to XZ axis and sets correspoing sliders
         plane = "XZ"
         pDV.plane = "XZ"
@@ -238,6 +241,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
             
             self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "createToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = false
         }
     }
     

@@ -15,6 +15,8 @@ class FlightController: DUXDefaultLayoutViewController {
         performSegue(withIdentifier: "flyToMainMenuSegue", sender: nil)
     }
     
+    @IBAction func unwindToFlight(segue:UIStoryboardSegue) { }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -34,4 +36,10 @@ class FlightController: DUXDefaultLayoutViewController {
         performSegue(withIdentifier: "flyToPathSegue", sender: nil)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "flyToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = true
+        }
+    }
 }

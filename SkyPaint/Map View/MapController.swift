@@ -240,7 +240,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         else {
             //On "Confirm Center" step, move back to Flight View
-            performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+            performSegue(withIdentifier: "scaleToConfirmationSegue", sender: nil)
         }
     }
     

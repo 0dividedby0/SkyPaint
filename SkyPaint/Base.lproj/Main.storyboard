@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Flight Controller-->
+        <!--flyToMainMenuSegue-->
         <scene sceneID="8eI-gB-yNP">
             <objects>
-                <viewController id="t1m-Xd-6cb" customClass="FlightController" customModule="SkyPaint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="flyToMainMenuSegue" id="t1m-Xd-6cb" customClass="FlightController" customModule="SkyPaint" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Vn-Tm-hIh">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -37,11 +37,12 @@
                         <viewLayoutGuide key="safeArea" id="yGl-TS-C1v"/>
                     </view>
                     <connections>
-                        <segue destination="14M-Ib-bTi" kind="show" identifier="flyToMainMenuSegue" animates="NO" id="iAC-wV-5v9"/>
                         <segue destination="LME-JH-YJp" kind="show" identifier="flyToPathSegue" animates="NO" id="lwf-gl-bfJ"/>
+                        <segue destination="W7s-pa-QL1" kind="unwind" identifier="flyToMainMenuSegue" unwindAction="unwindToMainMenuWithSegue:" id="tg4-Fq-2bB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1y-qb-Z5H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="W7s-pa-QL1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-39.2578125" y="494.53125"/>
         </scene>
@@ -123,8 +124,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="9Ru-hf-YNC"/>
                     <connections>
-                        <segue destination="B5o-KZ-xHA" kind="show" identifier="mainMenuToCreateSegue" animates="NO" id="ev0-YK-hKb"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="mainMenuToFlySegue" animates="NO" id="idR-jf-691"/>
+                        <segue destination="B5o-KZ-xHA" kind="show" identifier="mainMenuToCreateSegue" id="ev0-YK-hKb"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="mainMenuToFlySegue" id="idR-jf-691"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pnw-fY-2mi" sceneMemberID="firstResponder"/>
@@ -362,7 +363,7 @@
                                 <rect key="frame" x="20" y="14" width="40" height="30"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <action selector="returnToMain:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="TO9-QB-zNk"/>
+                                    <action selector="returnToMain:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="hiP-QD-axA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07M-rp-ze2">
@@ -378,7 +379,7 @@
                             <constraint firstItem="gW0-qX-Nwr" firstAttribute="top" secondItem="orN-Cr-QRN" secondAttribute="bottom" constant="10" id="0J8-ba-1YX"/>
                             <constraint firstItem="MFM-AC-SJu" firstAttribute="top" secondItem="jUF-TN-AYg" secondAttribute="bottom" constant="55" id="1bZ-i5-7XB"/>
                             <constraint firstItem="Bgv-45-jvG" firstAttribute="leading" secondItem="bb0-8k-ZKv" secondAttribute="leading" constant="26" id="1kZ-wz-6H7"/>
-                            <constraint firstItem="740-wk-OYw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KhY-Ql-N4b" secondAttribute="trailing" symbolic="YES" id="1oB-hp-mRO"/>
+                            <constraint firstItem="740-wk-OYw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KhY-Ql-N4b" secondAttribute="trailing" constant="8" symbolic="YES" id="1oB-hp-mRO"/>
                             <constraint firstItem="1zy-w5-9fC" firstAttribute="leading" secondItem="gW0-qX-Nwr" secondAttribute="trailing" constant="221" id="2d3-Mf-ksC"/>
                             <constraint firstItem="orN-Cr-QRN" firstAttribute="top" secondItem="SDx-6B-YJF" secondAttribute="bottom" constant="29" id="3tE-MO-XOp"/>
                             <constraint firstItem="7xm-gU-1zf" firstAttribute="leading" secondItem="bb0-8k-ZKv" secondAttribute="leading" constant="82" id="3uF-QO-1dv"/>
@@ -491,11 +492,12 @@
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
                         <outlet property="zPointTextField" destination="orN-Cr-QRN" id="qVx-sg-ARR"/>
                         <outlet property="zSlider" destination="gW0-qX-Nwr" id="mY6-1D-sCM"/>
-                        <segue destination="14M-Ib-bTi" kind="show" identifier="createToMainMenuSegue" animates="NO" id="Jwz-0O-tfR"/>
                         <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" animates="NO" id="Aqn-za-g8R"/>
+                        <segue destination="goU-27-YM5" kind="unwind" identifier="createToMainMenuSegue" unwindAction="unwindToMainMenuWithSegue:" id="btC-To-zam"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kl5-dA-4s0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="goU-27-YM5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-39" y="-334"/>
         </scene>
@@ -716,10 +718,12 @@
                         <outlet property="pathSpeedSlider" destination="5QX-A5-U4T" id="m8x-3k-3BM"/>
                         <outlet property="pathTimeLabel" destination="2h6-81-b9B" id="LiG-VN-z0T"/>
                         <outlet property="segmentedControlMapSelector" destination="JXK-OH-IBQ" id="yds-s3-j9i"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegue" animates="NO" id="TJt-EP-UiB"/>
+                        <segue destination="1iM-Jv-t1S" kind="unwind" identifier="scaleToConfirmationSegue" unwindAction="unwindToConfirmationWithSegue:" id="IaO-SO-nGV"/>
+                        <segue destination="1iM-Jv-t1S" kind="unwind" identifier="scaleToFlySegue" unwindAction="unwindToFlightWithSegue:" id="Jfu-v9-glw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BH6-EI-O57" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1iM-Jv-t1S" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1501.7578125" y="494.53125"/>
         </scene>
@@ -795,11 +799,12 @@
                         <outlet property="pathNamesTableView" destination="BTv-Jd-mx3" id="VaH-Xl-fNb"/>
                         <outlet property="pathPreviewView" destination="9Xi-Zy-b0E" id="7li-Lh-md2"/>
                         <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" animates="NO" id="nvn-Yb-FW7"/>
-                        <segue destination="t1m-Xd-6cb" kind="show" identifier="pathToFlySegue" animates="NO" id="seN-D3-thk"/>
-                        <segue destination="B5o-KZ-xHA" kind="show" identifier="pathToCreateSegue" animates="NO" id="SPT-Fw-kJQ"/>
+                        <segue destination="laO-4K-DLH" kind="unwind" identifier="pathToCreateSegue" unwindAction="unwindToCreateWithSegue:" id="Sv8-ix-0jy"/>
+                        <segue destination="laO-4K-DLH" kind="unwind" identifier="pathToFlySegue" unwindAction="unwindToFlightWithSegue:" id="Ai6-Lr-mNs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dNE-PQ-t65" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="laO-4K-DLH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="737.6953125" y="494.53125"/>
         </scene>
@@ -811,8 +816,5 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
-        <segue reference="ev0-YK-hKb"/>
-        <segue reference="Jwz-0O-tfR"/>
-        <segue reference="TJt-EP-UiB"/>
     </inferredMetricsTieBreakers>
 </document>

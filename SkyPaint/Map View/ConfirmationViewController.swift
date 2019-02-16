@@ -30,6 +30,8 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    @IBAction func unwindToConfirmation(segue:UIStoryboardSegue) { }
+    
     //MARK: - UIViewController Methods
     
     required init?(coder aDecoder: NSCoder) {

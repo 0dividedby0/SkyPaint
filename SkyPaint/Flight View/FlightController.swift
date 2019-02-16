@@ -15,6 +15,8 @@ class FlightController: DUXDefaultLayoutViewController {
         performSegue(withIdentifier: "flyToMainMenuSegue", sender: nil)
     }
     
+    @IBAction func unwindToFlight(segue:UIStoryboardSegue) { }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }

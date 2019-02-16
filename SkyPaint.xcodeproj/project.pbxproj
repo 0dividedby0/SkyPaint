@@ -20,6 +20,8 @@
 		31621D14204C2F94009380F8 /* pathDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31621D12204C2F93009380F8 /* pathDisplayView.swift */; };
 		31621D15204C2F94009380F8 /* EditWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31621D13204C2F93009380F8 /* EditWindowViewController.swift */; };
 		7CCBE0BD85C594836244A59D /* Pods_SkyPaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41075E2A50414E69BEF12AE7 /* Pods_SkyPaint.framework */; };
+		CFAA63112212495100873E3E /* SkyPaintPath.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CFAA630E2212495000873E3E /* SkyPaintPath.xcdatamodeld */; };
+		CFAA63132212497C00873E3E /* LoadPathWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAA63122212497C00873E3E /* LoadPathWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,8 @@
 		31621D13204C2F93009380F8 /* EditWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWindowViewController.swift; sourceTree = "<group>"; };
 		386CE929806BEE70AFFD6FBE /* Pods-SkyPaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPaint/Pods-SkyPaint.release.xcconfig"; sourceTree = "<group>"; };
 		41075E2A50414E69BEF12AE7 /* Pods_SkyPaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SkyPaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFAA630F2212495000873E3E /* SkyPaintPath.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SkyPaintPath.xcdatamodel; sourceTree = "<group>"; };
+		CFAA63122212497C00873E3E /* LoadPathWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadPathWidget.swift; sourceTree = "<group>"; };
 		F5A1607807DB6DA814412D6F /* Pods-SkyPaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPaint/Pods-SkyPaint.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +119,7 @@
 		25584538204B863E00B89AB2 /* Flight View */ = {
 			isa = PBXGroup;
 			children = (
+				CFAA63122212497C00873E3E /* LoadPathWidget.swift */,
 				25ED179C2048EA9700F038C5 /* FlightController.swift */,
 			);
 			path = "Flight View";
@@ -141,6 +146,7 @@
 		25ED17992048EA9700F038C5 /* SkyPaint */ = {
 			isa = PBXGroup;
 			children = (
+				CFAA630E2212495000873E3E /* SkyPaintPath.xcdatamodeld */,
 				251625CA20524291002D3099 /* Edit View */,
 				25ED179A2048EA9700F038C5 /* AppDelegate.swift */,
 				25ED179E2048EA9700F038C5 /* Main.storyboard */,
@@ -301,7 +307,9 @@
 			files = (
 				251249D9204B3D3D00B2FDAD /* ProductCommunicationManager.swift in Sources */,
 				2570533A204B481400B92E65 /* MainMenuController.swift in Sources */,
+				CFAA63132212497C00873E3E /* LoadPathWidget.swift in Sources */,
 				25ED179D2048EA9700F038C5 /* FlightController.swift in Sources */,
+				CFAA63112212495100873E3E /* SkyPaintPath.xcdatamodeld in Sources */,
 				2558452F204B74BD00B89AB2 /* MapController.swift in Sources */,
 				31621D14204C2F94009380F8 /* pathDisplayView.swift in Sources */,
 				25ADB1A5204C2A4400D5A7F2 /* ConfirmationViewController.swift in Sources */,
@@ -497,6 +505,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CFAA630E2212495000873E3E /* SkyPaintPath.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CFAA630F2212495000873E3E /* SkyPaintPath.xcdatamodel */,
+			);
+			currentVersion = CFAA630F2212495000873E3E /* SkyPaintPath.xcdatamodel */;
+			path = SkyPaintPath.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 25ED178F2048EA9700F038C5 /* Project object */;
 }

@@ -68,6 +68,11 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        pathPreviewView.scale = Float(500 / pathPreviewView.frame.width)
+        pathPreviewView.zScale = Float(400 / pathPreviewView.frame.width)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -92,6 +97,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         var tmpPoint: (Float, Float, Float)
         
         pathPreviewView.points = []
+        
         
         for i: Int in 0...(path.numPoints as! Int)-1 {
             tmpPoint.0 = (path.longitude as! [Float])[i]

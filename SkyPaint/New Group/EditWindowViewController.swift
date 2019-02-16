@@ -16,20 +16,16 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var plane:String = "XY"
     var updateRow:Int = 0
     var numPoints:Int = 0;
+    
+    var xCord:Float = 0.0
+    var yCord:Float = 0.0
+    var zCord:Float = 0.0
 
+    var scale:Float = 0.0
+    var zScale:Float = 0.0
     
     @IBOutlet weak var pDV: pathDisplayView!
-    @IBOutlet weak var horizantalAxisLabel: UILabel!
-    @IBOutlet weak var verticalAxisLabel: UILabel!
-    
-    @IBOutlet weak var rightHorizantalAxisLabel: UILabel!
-    @IBOutlet weak var midHorizantalAxisLabel: UILabel!
-    @IBOutlet weak var leftHorizantalAxisLabel: UILabel!
-    
-    @IBOutlet weak var topVerticalAxisLabel: UILabel!
-    @IBOutlet weak var midVerticalAxisLabel: UILabel!
-    @IBOutlet weak var bottomVerticalAxisLabel: UILabel!
-    
+
     
     @IBOutlet weak var yzOutlet: UIButton!
     @IBOutlet weak var xzOutlet: UIButton!
@@ -40,59 +36,76 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //***************************************TextFields and Sliders**************************************
 
-    
-    @IBOutlet weak var xPointTextField: UITextField!
-    @IBOutlet weak var xSlider: UISlider!
-    @IBAction func xSliderChanged(_ sender: UISlider) {
-        xPointTextField.text = "\(xSlider.value)"
-    }
-    @IBAction func xTexFieldChanged(_ sender: UITextField) {
-        xSlider.value = Float(xPointTextField.text!)!
-    }
+    @IBOutlet weak var sliderText: UILabel!
+    @IBOutlet weak var dynamicSlider: UISlider!
     
     
-    @IBOutlet weak var yPointTextField: UITextField!
-    @IBOutlet weak var ySlider: UISlider!
-    @IBAction func ySliderChanged(_ sender: UISlider) {
-        yPointTextField.text = "\(ySlider.value)"
-    }
-    @IBAction func yTexFieldChanged(_ sender: UITextField) {
-        ySlider.value = Float(yPointTextField.text!)!
-    }
-    
+    @IBAction func zSliderChanged(_ sender: UISlider) { //Updates text outlets and golabl cordiantes when slider is changed
+        if(plane == "XY"){
+            sliderText.text = "Z:"
+            zCord = dynamicSlider.value
+        }
+        else if(plane == "XZ"){
+            sliderText.text = "Y: "
+            yCord = dynamicSlider.value
 
-    @IBOutlet weak var zPointTextField: UITextField!
-    @IBOutlet weak var zSlider: UISlider!
-    @IBAction func zSliderChanged(_ sender: UISlider) {
-        zPointTextField.text = "\(zSlider.value)"
+        }
+        else if(plane == "YZ"){
+            sliderText.text = "X: "
+            xCord = dynamicSlider.value
+
+        }
+        sliderText.text?.append("\(Int(dynamicSlider.value))")
+        
+        //updates point with new slider axis value
+        var tmpPoint:(Float, Float, Float)
+
+        tmpPoint = (xCord, yCord, zCord)
+        
+        if (points.count == numPoints + 1){
+            points.remove(at: numPoints)
+        }
+        points.append(tmpPoint)
+        
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
+        
     }
-    @IBAction func zTexFieldChanged(_ sender: UITextField) {
-        zSlider.value = Float(zPointTextField.text!)!
-    }
+
     
     @IBOutlet weak var pointTableView: UITableView!
-    @IBOutlet weak var sucessOutlet: UILabel!
     
 
-    @IBOutlet weak var updatePointButtonOutlet: UIButton!
     
-    //********************************************Buttons***********************************************
+//    ********************************************Buttons***********************************************
 
     @IBAction func returnToMain(_ sender: Any) {
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
     }
     
+
     @IBAction func unwindToCreate(segue:UIStoryboardSegue) { }
-    
-    @IBAction func xzButtonTapped(_ sender: UIButton) {
+
+    @IBAction func xzButtonTapped(_ sender: UIButton) { //sets plane to XZ axis and sets correspoing sliders
         plane = "XZ"
         pDV.plane = "XZ"
         pDV.setNeedsDisplay()
-        verticalAxisLabel.text = "Z-Axis"
-        horizantalAxisLabel.text = "X-Axis"
-        midVerticalAxisLabel.isHidden = true
-        bottomVerticalAxisLabel.text = "0"
-        topVerticalAxisLabel.text = "400"
+        dynamicSlider.minimumValue = -250
+        dynamicSlider.maximumValue = 250
+        
+        if(points.count > 0)
+        {
+            dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
+            yCord = dynamicSlider.value
+            sliderText.text = "Y: \(Int(dynamicSlider.value))"
+        }
+        else
+        {
+            dynamicSlider.value = 0
+            yCord = dynamicSlider.value
+            sliderText.text = "Y: \(Int(dynamicSlider.value))"
+        }
+        
         
         
         xyOutlet.tintColor = xzOutlet.tintColor
@@ -101,31 +114,50 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
-    @IBAction func yzButtonTapped(_ sender: UIButton) {
+    @IBAction func yzButtonTapped(_ sender: UIButton) {//sets plane to YZ axis and sets correspoing sliders
         plane = "YZ"
         pDV.plane = "YZ"
         pDV.setNeedsDisplay()
-        verticalAxisLabel.text = "Z-Axis"
-        horizantalAxisLabel.text = "Y-Axis"
-        midVerticalAxisLabel.isHidden = true
-        bottomVerticalAxisLabel.text = "0"
-        topVerticalAxisLabel.text = "400"
+        dynamicSlider.minimumValue = -250
+        dynamicSlider.maximumValue = 250
         
+        if(points.count > 0)
+        {
+            dynamicSlider.value = points[points.count-1].0//getting the previous points x value
+            xCord = dynamicSlider.value
+            sliderText.text = "X: \(Int(dynamicSlider.value))"
+        }
+        else
+        {
+            dynamicSlider.value = 0
+            xCord = dynamicSlider.value
+            sliderText.text = "X: \(Int(dynamicSlider.value))"
+        }
         
         xzOutlet.tintColor = yzOutlet.tintColor
         xyOutlet.tintColor = yzOutlet.tintColor
         yzOutlet.tintColor = UIColor.green
     }
     
-    @IBAction func xyButtonTapped(_ sender: UIButton) {
+    @IBAction func xyButtonTapped(_ sender: UIButton) {//sets plane to XY axis and sets correspoing sliders
         plane = "XY"
         pDV.plane = "XY"
         pDV.setNeedsDisplay()
-        verticalAxisLabel.text = "Y-Axis"
-        horizantalAxisLabel.text = "X-Axis"
-        midVerticalAxisLabel.isHidden = false
-        bottomVerticalAxisLabel.text = "-250"
-        topVerticalAxisLabel.text = "250"
+        dynamicSlider.minimumValue = 20
+        dynamicSlider.maximumValue = 400
+        
+        if(points.count > 0)
+        {
+            dynamicSlider.value = points[points.count-1].2//getting the previous points z value
+            zCord = dynamicSlider.value
+            sliderText.text = "Z: \(Int(dynamicSlider.value))"
+        }
+        else
+        {
+            dynamicSlider.value = 20
+            zCord = dynamicSlider.value
+            sliderText.text = "Z: \(Int(dynamicSlider.value))"
+        }
         
         
         xzOutlet.tintColor = xyOutlet.tintColor
@@ -133,7 +165,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
     }
     
-    @IBAction func updatePointButtonTapped(_ sender: UIButton) {
+  /*  @IBAction func updatePointButtonTapped(_ sender: UIButton) {
         points[updateRow].0 = xSlider.value
         points[updateRow].1 = ySlider.value
         points[updateRow].2 = zSlider.value
@@ -144,25 +176,29 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
         
         pointTableView.deselectRow(at: indexPath, animated: true)
-    }
+    }*/
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
         
+        
+        
         numPoints += 1
+ 
+        if(plane == "XY"){
+            sliderText.text = "Z: "
+        }
+        else if(plane == "XZ"){
+            sliderText.text = "Y: "
+        }
+        else if(plane == "YZ"){
+            sliderText.text = "X: "
+        }
+        sliderText.text?.append("\(Int(dynamicSlider.value))")
         
-        xSlider.value = 0
-        ySlider.value = 0
-        zSlider.value = 0
-        
-        xPointTextField.text = "\(xSlider.value)"
-        yPointTextField.text = "\(ySlider.value)"
-        zPointTextField.text = "\(zSlider.value)"
-        
-         self.pointTableView.reloadData()
+        self.pointTableView.reloadData()
     }
     
     @IBAction func savePath(_ sender: UIButton) {
-        //let defaults = UserDefaults.standard
         var newPath: RawPathMO!
         var latitude: [Float] = [], longitude: [Float] = [], altitude: [Float] = []
         
@@ -191,7 +227,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         else{
             var message:String = ""
             if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
-                message = "Please enter a unique PathName"
+                message = "Please enter a unique path name"
                 if(points.count < 2){
                     message.append(" and have at least two waypoints")
                 }
@@ -199,7 +235,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             else{
                 message = "Please have at least two waypoints"
             }
-            sucessOutlet.text = message
+            
+            let alertController = UIAlertController(title: "Error:", message:
+                "\(message)", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -217,7 +258,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         {
             points.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            sucessOutlet.text = ""
+            //sucessOutlet.text = ""
         }
     }
     
@@ -240,90 +281,112 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(points.count > indexPath.row)
         {
-            xSlider.value = points[indexPath.row].0
-            ySlider.value = points[indexPath.row].1
-            zSlider.value = points[indexPath.row].2
             
-            xPointTextField.text = "\(xSlider.value)"
-            yPointTextField.text = "\(ySlider.value)"
-            zPointTextField.text = "\(zSlider.value)"
             
-            updatePointButtonOutlet.isEnabled = true
+            xCord = points[indexPath.row].0
+            yCord = points[indexPath.row].1
+            zCord = points[indexPath.row].2
+            
+            
+            if(plane == "XY"){
+                sliderText.text = "Z: "
+                dynamicSlider.value = zCord
+                sliderText.text?.append("\(Int(dynamicSlider.value))")
+
+            }
+            else if(plane == "XZ"){
+                sliderText.text = "Y: "
+                dynamicSlider.value = yCord
+                sliderText.text?.append("\(Int(dynamicSlider.value))")
+
+            }
+            else if(plane == "YZ"){
+                sliderText.text = "X: "
+                dynamicSlider.value = xCord
+                sliderText.text?.append("\(Int(dynamicSlider.value))")
+
+            }
+     
+            
+            //updatePointButtonOutlet.isEnabled = true
             updateRow = indexPath.row
         }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        updatePointButtonOutlet.isEnabled = false
+       // updatePointButtonOutlet.isEnabled = false
     }
     
     //******************************************Gesture Recognition*******************************************
     
     @objc func tapToPoint(_ sender:UITapGestureRecognizer)
     {
+        pDV.scale = scale
+        pDV.zScale = zScale
         let newPoint:CGPoint = sender.location(in: self.pDV)
         
         
-        if(plane == "XY")
+        if(plane == "XY") //tests for plane
         {
-            xSlider.value = Float(newPoint.x - 250)
-            ySlider.value = Float(newPoint.y * -1 + 500 - 250)
-            xPointTextField.text = "\(xSlider.value)"
-            yPointTextField.text = "\(ySlider.value)"
+            
+            xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
+            yCord = (scale * Float(newPoint.y)) * -1 + 250
             
             if(points.count > 0)
             {
-                zSlider.value = points[points.count-1].2//getting the previous points z value
-                zPointTextField.text = "\(zSlider.value)"
+                dynamicSlider.value = points[points.count-1].2//getting the previous points z value
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
             }
             else
             {
-                zSlider.value = 0
-                zPointTextField.text = "\(0)"
+                dynamicSlider.value = 20
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
             }
         }
         else if(plane == "XZ")
         {
-            xSlider.value = Float(newPoint.x - 250)
-            zSlider.value = Float(newPoint.y * -1 + 400)
-            xPointTextField.text = "\(xSlider.value)"
-            zPointTextField.text = "\(zSlider.value)"
+            xCord = scale * Float(newPoint.x)-250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
             if(points.count > 0)
             {
-                ySlider.value = points[points.count-1].1 //getting the previous points y value
-                yPointTextField.text = "\(ySlider.value)"
+                dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
             }
             else
             {
-                ySlider.value = 0
-                yPointTextField.text = "\(0)"
+                dynamicSlider.value = 0
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
             }
         }
         else if(plane == "YZ")
         {
-            ySlider.value = Float(newPoint.x - 250)
-            zSlider.value = Float(newPoint.y * -1 + 400)
-            yPointTextField.text = "\(ySlider.value)"
-            zPointTextField.text = "\(zSlider.value)"
+            yCord = (scale * Float(newPoint.x)) - 250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
             if(points.count > 0)
             {
-                xSlider.value = points[points.count-1].0//getting the previous points x value
-                xPointTextField.text = "\(xSlider.value)"
+                dynamicSlider.value = points[points.count-1].0//getting the previous points x value
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
             }
             else
             {
-                xSlider.value = 0
-                xPointTextField.text = "\(0)"
+                dynamicSlider.value = 0
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
             }
         }
         
         var tmpPoint:(Float, Float, Float)
         
-        let xPoint = Float(xPointTextField.text!)
-        let yPoint = Float(yPointTextField.text!)
-        let zPoint = Float(zPointTextField.text!)
+
         
-        tmpPoint = (xPoint!, yPoint!, zPoint!)
+        tmpPoint = (xCord, yCord, zCord)
         
         if (points.count == numPoints + 1){
             points.remove(at: numPoints)
@@ -335,29 +398,24 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
+    override func viewDidAppear(_ animated: Bool) { //sets scale of pDV based on screen size
+        scale = Float(500 / pDV.frame.width)
+        zScale = Float(400 / pDV.frame.width)
+    }
+    
     override func viewDidLoad() {
+
         super.viewDidLoad()
         pointTableView.dataSource = self
         pointTableView.delegate = self
-        sucessOutlet.text = ""
         
-        xSlider.maximumValue = 250
-        ySlider.maximumValue = 250
-        zSlider.maximumValue = 400
-        
-        xSlider.minimumValue = -250
-        ySlider.minimumValue = -250
-        zSlider.minimumValue = 0
+        dynamicSlider.maximumValue = 400
+        dynamicSlider.minimumValue = 20
         
         
-        xSlider.value = 0
-        ySlider.value = 0
-        zSlider.value = 0
-        
-        
-        xPointTextField.text = "\(xSlider.value)"
-        yPointTextField.text = "\(ySlider.value)"
-        zPointTextField.text = "\(zSlider.value)"
+
+        dynamicSlider.value = 20
+        sliderText.text = "Z: \(Int(dynamicSlider.value))"
 
         
         xzOutlet.tintColor = xyOutlet.tintColor
@@ -369,11 +427,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         pDV.addGestureRecognizer(addPointGesture)
+        pDV.scale = scale
         
-        updatePointButtonOutlet.isEnabled = false
         
-        verticalAxisLabel.text = "Y-Axis"
-        horizantalAxisLabel.text = "X-Axis"
+//        updatePointButtonOutlet.isEnabled = false
+//
+//        verticalAxisLabel.text = "Y-Axis"
+//        horizantalAxisLabel.text = "X-Axis"
  
         
         // Do any additional setup after loading the view.

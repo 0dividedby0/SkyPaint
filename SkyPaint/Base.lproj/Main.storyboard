@@ -212,9 +212,6 @@
                                         <exclude reference="rs5-cm-736"/>
                                     </mask>
                                 </variation>
-                                <connections>
-                                    <action selector="zSliderChanged:" destination="B5o-KZ-xHA" eventType="valueChanged" id="0JV-pD-aFl"/>
-                                </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="740-wk-OYw">
                                 <rect key="frame" x="239" y="27" width="30" height="30"/>
@@ -245,7 +242,6 @@
                                     </mask>
                                 </variation>
                             </textField>
-
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
@@ -319,9 +315,6 @@
                         <outlet property="xyOutlet" destination="dYD-Ld-Eeo" id="g6U-5n-HrD"/>
                         <outlet property="xzOutlet" destination="KhY-Ql-N4b" id="eu9-H8-aeB"/>
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
-                        <outlet property="zPointTextField" destination="orN-Cr-QRN" id="qVx-sg-ARR"/>
-                        <outlet property="zSlider" destination="gW0-qX-Nwr" id="mY6-1D-sCM"/>
-
                         <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" animates="NO" id="Aqn-za-g8R"/>
                         <segue destination="goU-27-YM5" kind="unwind" identifier="createToMainMenuSegue" unwindAction="unwindToMainMenuWithSegue:" id="btC-To-zam"/>
                     </connections>

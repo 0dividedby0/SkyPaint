@@ -212,6 +212,9 @@
                                         <exclude reference="rs5-cm-736"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <action selector="zSliderChanged:" destination="B5o-KZ-xHA" eventType="valueChanged" id="fTd-Wj-094"/>
+                                </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="740-wk-OYw">
                                 <rect key="frame" x="239" y="27" width="30" height="30"/>

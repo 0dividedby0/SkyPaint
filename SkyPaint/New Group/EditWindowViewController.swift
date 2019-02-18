@@ -319,6 +319,90 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //******************************************Gesture Recognition*******************************************
     
+    @IBAction func panPiece(_ gestureRecognizer : UIPanGestureRecognizer) {
+        guard gestureRecognizer.view != nil else {return}
+        let location = gestureRecognizer.location(in: gestureRecognizer.view!)
+        // Update the position for the .began, .changed, and .ended states
+        if gestureRecognizer.state != .cancelled {
+            if (location.x > 0 && location.y > 0 && location.x < pDV.frame.width && location.y < pDV.frame.height) {
+                pDV.scale = scale
+                pDV.zScale = zScale
+                let newPoint:CGPoint = location
+                
+                
+                if(plane == "XY") //tests for plane
+                {
+                    
+                    xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
+                    yCord = (scale * Float(newPoint.y)) * -1 + 250
+                    
+                    if(points.count > 0)
+                    {
+                        dynamicSlider.value = points[points.count-1].2//getting the previous points z value
+                        zCord = dynamicSlider.value
+                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
+                    }
+                    else
+                    {
+                        dynamicSlider.value = 20
+                        zCord = dynamicSlider.value
+                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
+                    }
+                }
+                else if(plane == "XZ")
+                {
+                    xCord = scale * Float(newPoint.x)-250
+                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
+                    
+                    if(points.count > 0)
+                    {
+                        dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
+                        yCord = dynamicSlider.value
+                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
+                    }
+                    else
+                    {
+                        dynamicSlider.value = 0
+                        yCord = dynamicSlider.value
+                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
+                    }
+                }
+                else if(plane == "YZ")
+                {
+                    yCord = (scale * Float(newPoint.x)) - 250
+                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
+                    
+                    if(points.count > 0)
+                    {
+                        dynamicSlider.value = points[points.count-1].0//getting the previous points x value
+                        xCord = dynamicSlider.value
+                        sliderText.text = "X: \(Int(dynamicSlider.value))"
+                    }
+                    else
+                    {
+                        dynamicSlider.value = 0
+                        xCord = dynamicSlider.value
+                        sliderText.text = "X: \(Int(dynamicSlider.value))"
+                    }
+                }
+                
+                var tmpPoint:(Float, Float, Float)
+                
+                
+                
+                tmpPoint = (xCord, yCord, zCord)
+                
+                if (points.count == numPoints + 1){
+                    points.remove(at: numPoints)
+                }
+                points.append(tmpPoint)
+                
+                pDV.points = self.points
+                pDV.setNeedsDisplay()
+            }
+        }
+    }
+    
     @objc func tapToPoint(_ sender:UITapGestureRecognizer)
     {
         pDV.scale = scale
@@ -426,7 +510,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
+        let addPanGesture = UIPanGestureRecognizer(target: self, action: #selector (EditWindowViewController.panPiece(_:)))
         pDV.addGestureRecognizer(addPointGesture)
+        pDV.addGestureRecognizer(addPanGesture)
         pDV.scale = scale
         
         

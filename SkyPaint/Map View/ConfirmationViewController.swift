@@ -102,8 +102,8 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
         
         
         for i: Int in 0...(path.numPoints as! Int)-1 {
-            tmpPoint.0 = (path.longitude as! [Float])[i]
-            tmpPoint.1 = (path.latitude as! [Float])[i]
+            tmpPoint.0 = (path.latitude as! [Float])[i]
+            tmpPoint.1 = (path.longitude as! [Float])[i]
             tmpPoint.2 = (path.altitude as! [Float])[i]
             pathPreviewView.points.append(tmpPoint)
         }

@@ -1,11 +1,3 @@
-//
-//  EditWindowViewController.swift
-//  SkyPaint
-//
-//  Created by Addisalem Kebede on 3/3/18.
-//  Copyright © 2018 SkyPaint. All rights reserved.
-//
-
 import UIKit
 import SpriteKit
 import CoreData
@@ -24,8 +16,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var scale:Float = 0.0
     var zScale:Float = 0.0
     
+    var modified = false
+    
     @IBOutlet weak var pDV: pathDisplayView!
-
+    
     
     @IBOutlet weak var yzOutlet: UIButton!
     @IBOutlet weak var xzOutlet: UIButton!
@@ -84,7 +78,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
 
-    @IBAction func unwindToCreate(segue:UIStoryboardSegue) { }
+    @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
+        modified = false
+        pDV.scale = self.scale
+        pDV.zScale = self.zScale
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
+    }
 
     @IBAction func xzButtonTapped(_ sender: UIButton) { //sets plane to XZ axis and sets correspoing sliders
         plane = "XZ"
@@ -180,7 +180,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
         
-        
+        modified = true
         
         numPoints += 1
  
@@ -196,6 +196,19 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         sliderText.text?.append("\(Int(dynamicSlider.value))")
         
         self.pointTableView.reloadData()
+    }
+    
+    @IBAction func loadPath(_ sender: Any) {
+        if (!modified) {
+            performSegue(withIdentifier: "createToPathSegue", sender: nil)
+        }
+        else {
+            let alertController = UIAlertController(title: "Error:", message:
+                "Current path has not been saved", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     @IBAction func savePath(_ sender: UIButton) {
@@ -248,6 +261,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         if segue.identifier == "createToPathSegue" {
             let destinationController = segue.destination as! ConfirmationViewController
             destinationController.previousViewIsFlight = false
+            if (!modified) {
+                destinationController.loadingPath = true;
+            }
+            else {
+                destinationController.loadingPath = false;
+            }
         }
     }
     
@@ -306,7 +325,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 sliderText.text?.append("\(Int(dynamicSlider.value))")
 
             }
-     
             
             //updatePointButtonOutlet.isEnabled = true
             updateRow = indexPath.row
@@ -408,14 +426,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.scale = scale
         pDV.zScale = zScale
         let newPoint:CGPoint = sender.location(in: self.pDV)
-        
-        
+
+
         if(plane == "XY") //tests for plane
         {
-            
+
             xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
             yCord = (scale * Float(newPoint.y)) * -1 + 250
-            
+
             if(points.count > 0)
             {
                 dynamicSlider.value = points[points.count-1].2//getting the previous points z value
@@ -433,7 +451,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         {
             xCord = scale * Float(newPoint.x)-250
             zCord = (zScale * Float(newPoint.y)) * -1 + 400
-            
+
             if(points.count > 0)
             {
                 dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
@@ -451,7 +469,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         {
             yCord = (scale * Float(newPoint.x)) - 250
             zCord = (zScale * Float(newPoint.y)) * -1 + 400
-            
+
             if(points.count > 0)
             {
                 dynamicSlider.value = points[points.count-1].0//getting the previous points x value
@@ -465,13 +483,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 sliderText.text = "X: \(Int(dynamicSlider.value))"
             }
         }
-        
+
         var tmpPoint:(Float, Float, Float)
         
 
         
         tmpPoint = (xCord, yCord, zCord)
-        
+
         if (points.count == numPoints + 1){
             points.remove(at: numPoints)
         }
@@ -495,7 +513,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         dynamicSlider.maximumValue = 400
         dynamicSlider.minimumValue = 20
-        
+        modified = false
         
 
         dynamicSlider.value = 20
@@ -530,7 +548,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         // Dispose of any resources that can be recreated.
     }
     
-
     /*
     // MARK: - Navigation
 

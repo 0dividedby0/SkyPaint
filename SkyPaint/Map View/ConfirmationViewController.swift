@@ -17,6 +17,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     var path: RawPathMO!
     var fetchResultController: NSFetchedResultsController<RawPathMO>!
     var previousViewIsFlight = true
+    var loadingPath = false
     
     @IBOutlet weak var pathNamesTableView: UITableView!
     @IBOutlet weak var pathPreviewView: pathDisplayView!
@@ -26,6 +27,7 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
             performSegue(withIdentifier: "pathToFlySegue", sender: nil)
         }
         else {
+            loadingPath = false
             performSegue(withIdentifier: "pathToCreateSegue", sender: nil)
         }
     }
@@ -159,13 +161,35 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Navigation
     @IBAction func confirmPath(_ sender: Any) {
-        performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+        if (!loadingPath) {
+            performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+        }
+        else {
+            performSegue(withIdentifier: "pathToCreateSegue", sender: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "pathToScaleSegue" {
+        if (segue.identifier == "pathToScaleSegue") {
             let destinationController = segue.destination as! MapController
             destinationController.path = self.path
+        }
+        else if (segue.identifier == "pathToCreateSegue" && loadingPath) {
+            let destinationController = segue.destination as! EditWindowViewController
+            var point: (Float, Float, Float)
+            destinationController.points = []
+            
+            for i: Int in 0...(path.numPoints as! Int)-1 {
+                point.0 = (path.latitude as! [Float])[i]
+                point.1 = (path.longitude as! [Float])[i]
+                point.2 = (path.altitude as! [Float])[i]
+                
+                destinationController.points.append(point)
+            }
+            
+            destinationController.numPoints = path.numPoints as! Int
+            destinationController.modified = false
+            destinationController.pathNameTextFeild.text = path.name
         }
     }
 

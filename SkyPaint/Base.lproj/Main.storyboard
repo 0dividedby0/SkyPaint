@@ -245,9 +245,17 @@
                                     </mask>
                                 </variation>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOE-CO-lwf">
+                                <rect key="frame" x="103.5" y="734" width="69" height="30"/>
+                                <state key="normal" title="Load Path"/>
+                                <connections>
+                                    <action selector="loadPath:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="Q0M-dC-xPg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="bb0-8k-ZKv" firstAttribute="bottom" secondItem="fOE-CO-lwf" secondAttribute="bottom" constant="4" id="00g-kr-LZT"/>
                             <constraint firstItem="lgu-oG-rtH" firstAttribute="centerY" secondItem="gW0-qX-Nwr" secondAttribute="centerY" id="0EN-hd-0m4"/>
                             <constraint firstItem="q92-rl-CXH" firstAttribute="top" secondItem="jUF-TN-AYg" secondAttribute="bottom" constant="10" id="13s-42-XAr"/>
                             <constraint firstItem="0GU-sY-CEI" firstAttribute="leading" secondItem="bb0-8k-ZKv" secondAttribute="leading" constant="7" id="3xf-Bg-Yad"/>
@@ -264,6 +272,7 @@
                             <constraint firstItem="KhY-Ql-N4b" firstAttribute="leading" secondItem="dYD-Ld-Eeo" secondAttribute="trailing" constant="8" id="RWw-Am-jtx"/>
                             <constraint firstItem="bb0-8k-ZKv" firstAttribute="bottom" secondItem="MFM-AC-SJu" secondAttribute="bottom" constant="4" id="WYB-wN-KmN"/>
                             <constraint firstItem="Fhq-Ap-j6D" firstAttribute="leading" secondItem="740-wk-OYw" secondAttribute="trailing" constant="8" id="aAJ-5k-G1H"/>
+                            <constraint firstItem="fOE-CO-lwf" firstAttribute="centerX" secondItem="q92-rl-CXH" secondAttribute="centerX" id="ayd-mz-Kjy"/>
                             <constraint firstItem="KhY-Ql-N4b" firstAttribute="top" secondItem="bb0-8k-ZKv" secondAttribute="top" constant="7" id="c1y-h7-2uM"/>
                             <constraint firstItem="bb0-8k-ZKv" firstAttribute="bottom" secondItem="Fhq-Ap-j6D" secondAttribute="bottom" id="fVe-lz-zSa"/>
                             <constraint firstItem="dYD-Ld-Eeo" firstAttribute="top" secondItem="bb0-8k-ZKv" secondAttribute="top" constant="7" id="ffd-fc-Dq0"/>

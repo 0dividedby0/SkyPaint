@@ -289,7 +289,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointCellIdentifier", for: indexPath)
         
-        let text:String = "P" + "(" + (String)(describing: points[indexPath.row].0) + "," + (String)(describing: points[indexPath.row].1) + "," + (String)(describing: points[indexPath.row].2) + ")"
+        let text:String = "X: " + (String)(describing: points[indexPath.row].0.rounded()) + ", Y: " + (String)(describing: points[indexPath.row].1.rounded()) + ", Z: " + (String)(describing: points[indexPath.row].2.rounded())
         
         cell.textLabel?.text = text
         

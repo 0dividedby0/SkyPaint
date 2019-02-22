@@ -369,18 +369,52 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         var long:Double?
         
         for i: Int in 0...(path.numPoints as! Int)-1 {
+            
             long = Double((path.longitude as! [Float])[i]) * longitudeScale + center!.longitude
             lat = Double((path.latitude as! [Float])[i]) * latitudeScale + center!.latitude
             
             scaledPoint.1 = (path.altitude as! [Float])[i] / 3.28 //convert feet to meters
             scaledPoint.0 = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
             tempScaledPath.append(scaledPoint.0)
+            
+            if (i == 0) {
+                let startingPoint = MKPointAnnotation()
+                startingPoint.coordinate = scaledPoint.0
+                startingPoint.title = "start"
+                mapView.addAnnotation(startingPoint)
+            }
+            else if (i == (path.numPoints as! Int)-1) {
+                let finishPoint = MKPointAnnotation()
+                finishPoint.coordinate = scaledPoint.0
+                finishPoint.title = "finish"
+                mapView.addAnnotation(finishPoint)
+            }
         }
         
         //Draw scaled path on map inside scaled region
         let scaledPathView = MKPolyline(coordinates: tempScaledPath, count: tempScaledPath.count)
         
         mapView.addOverlay(scaledPathView)
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if (annotation is MKUserLocation) {
+            return nil
+        }
+        else if (annotation.title == "start") {
+            let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "marker")
+            pinView.pinTintColor = .green
+            pinView.canShowCallout = false
+            return pinView
+        }
+        else if (annotation.title == "finish") {
+            let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "marker")
+            pinView.pinTintColor = .red
+            pinView.canShowCallout = false
+            return pinView
+        }
+        
+        return nil
     }
     
     

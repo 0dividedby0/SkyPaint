@@ -2,7 +2,7 @@ import UIKit
 import SpriteKit
 import CoreData
 
-class EditWindowViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
+class EditWindowViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate {
     
     var points:[(Float, Float, Float)] = []
     var plane:String = "XY"
@@ -212,30 +212,61 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func savePath(_ sender: UIButton) {
+        var paths: [RawPathMO] = []
+        
+        var fetchResultController: NSFetchedResultsController<RawPathMO>!
+
+        let fetchRequest: NSFetchRequest<RawPathMO> = RawPathMO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultController.delegate = self
+            
+            do {
+                try fetchResultController.performFetch()
+                if let fetchedObjects = fetchResultController.fetchedObjects {
+                    paths = fetchedObjects
+                }
+            } catch {
+                print(error)
+            }
+        }
+        
         var newPath: RawPathMO!
         var latitude: [Float] = [], longitude: [Float] = [], altitude: [Float] = []
+        var isDuplicate:Bool = false
         
-        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2){
-            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-                newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
-                
-                newPath.name = pathNameTextFeild.text!
-                newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
-                
-                for point in points {
-                    latitude.append(point.0)
-                    longitude.append(point.1)
-                    altitude.append(point.2)
-                }
-                
-                newPath.latitude = latitude as NSObject
-                newPath.longitude = longitude as NSObject
-                newPath.altitude = altitude as NSObject
-                
-                appDelegate.saveContext()
-                
-                performSegue(withIdentifier: "createToPathSegue", sender: nil)
+        for path in paths{
+            if(path.name == pathNameTextFeild.text){
+                isDuplicate = true
+                break
             }
+        }
+        
+        if (pathNameTextFeild.text != nil && pathNameTextFeild.text != "" && points.count >= 2 && isDuplicate == false){
+                if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                    newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
+                    
+                    newPath.name = pathNameTextFeild.text!
+                    newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
+                    
+                    for point in points {
+                        latitude.append(point.0)
+                        longitude.append(point.1)
+                        altitude.append(point.2)
+                    }
+                    
+                    newPath.latitude = latitude as NSObject
+                    newPath.longitude = longitude as NSObject
+                    newPath.altitude = altitude as NSObject
+                    
+                    appDelegate.saveContext()
+                    
+                    performSegue(withIdentifier: "createToPathSegue", sender: nil)
+                }
         }
         else{
             var message:String = ""
@@ -245,8 +276,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                     message.append(" and have at least two waypoints")
                 }
             }
-            else{
+            if(points.count < 2){
                 message = "Please have at least two waypoints"
+            }
+            if(isDuplicate){
+                message = "Please have a unique flight path name"
             }
             
             let alertController = UIAlertController(title: "Error:", message:

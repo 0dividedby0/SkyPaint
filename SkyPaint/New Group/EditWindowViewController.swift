@@ -17,6 +17,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var zScale:Float = 0.0
     
     var modified = false
+    var isNewPointToAdd = false
     
     @IBOutlet weak var pDV: pathDisplayView!
     
@@ -179,23 +180,24 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }*/
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
-        
-        modified = true
-        
-        numPoints += 1
- 
-        if(plane == "XY"){
-            sliderText.text = "Z: "
+        if(isNewPointToAdd){
+            modified = true
+            numPoints += 1
+     
+            if(plane == "XY"){
+                sliderText.text = "Z: "
+            }
+            else if(plane == "XZ"){
+                sliderText.text = "Y: "
+            }
+            else if(plane == "YZ"){
+                sliderText.text = "X: "
+            }
+            sliderText.text?.append("\(Int(dynamicSlider.value))")
+            
+            self.pointTableView.reloadData()
+            isNewPointToAdd = false;
         }
-        else if(plane == "XZ"){
-            sliderText.text = "Y: "
-        }
-        else if(plane == "YZ"){
-            sliderText.text = "X: "
-        }
-        sliderText.text?.append("\(Int(dynamicSlider.value))")
-        
-        self.pointTableView.reloadData()
     }
     
     @IBAction func loadPath(_ sender: Any) {
@@ -457,6 +459,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     @objc func tapToPoint(_ sender:UITapGestureRecognizer)
     {
+        isNewPointToAdd = true
         pDV.scale = scale
         pDV.zScale = zScale
         let newPoint:CGPoint = sender.location(in: self.pDV)

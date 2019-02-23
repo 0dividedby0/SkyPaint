@@ -201,6 +201,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func loadPath(_ sender: Any) {
+        if (points.count < numPoints){
+            points.removeLast()
+        }
         if (!modified) {
             performSegue(withIdentifier: "createToPathSegue", sender: nil)
         }
@@ -217,7 +220,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         var paths: [RawPathMO] = []
         
         var fetchResultController: NSFetchedResultsController<RawPathMO>!
-
+        
         let fetchRequest: NSFetchRequest<RawPathMO> = RawPathMO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -240,6 +243,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         var newPath: RawPathMO!
         var latitude: [Float] = [], longitude: [Float] = [], altitude: [Float] = []
         var isDuplicate:Bool = false
+        
+        if (points.count < numPoints){
+            points.removeLast()
+        }
         
         for path in paths{
             if(path.name == pathNameTextFeild.text){

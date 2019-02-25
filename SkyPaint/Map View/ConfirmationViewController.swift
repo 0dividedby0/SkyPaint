@@ -116,6 +116,9 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
             (action, sourceView, completionHandler) in
             
             if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                self.pathPreviewView.points = []
+                self.pathPreviewView.setNeedsDisplay()
+                
                 let context = appDelegate.persistentContainer.viewContext
                 let pathToDelete = self.fetchResultController.object(at: indexPath)
                 context.delete(pathToDelete)
@@ -161,11 +164,20 @@ class ConfirmationViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Navigation
     @IBAction func confirmPath(_ sender: Any) {
-        if (!loadingPath) {
-            performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+        if (self.pathNamesTableView.indexPathForSelectedRow?.row == nil) {
+            let alertController = UIAlertController(title: "Error:", message:
+                "Please select a path first!", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            
+            self.present(alertController, animated: true, completion: nil)
         }
         else {
-            performSegue(withIdentifier: "pathToCreateSegue", sender: nil)
+            if (!loadingPath) {
+                performSegue(withIdentifier: "pathToScaleSegue", sender: nil)
+            }
+            else {
+                performSegue(withIdentifier: "pathToCreateSegue", sender: nil)
+            }
         }
     }
     

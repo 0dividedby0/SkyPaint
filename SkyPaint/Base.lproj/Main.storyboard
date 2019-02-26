@@ -319,6 +319,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addUpdateBtn" destination="MFM-AC-SJu" id="6eN-oJ-P1m"/>
                         <outlet property="dynamicSlider" destination="gW0-qX-Nwr" id="0Qs-mT-FaC"/>
                         <outlet property="pDV" destination="Fhq-Ap-j6D" id="xa5-61-uw3"/>
                         <outlet property="pathNameTextFeild" destination="Kwc-Wr-Qhk" id="kPA-cz-Nd9"/>

@@ -19,8 +19,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var modified = false
     var isNewPointToAdd = false
     var isTextBoxEditing = false
-    
+    var isUpdatingPoint = false
+        
     @IBOutlet weak var pDV: pathDisplayView!
+
     
     
     @IBOutlet weak var yzOutlet: UIButton!
@@ -32,6 +34,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //***************************************TextFields and Sliders**************************************
     
+    @IBOutlet weak var addUpdateBtn: UIButton!
     @IBOutlet weak var sliderText: UILabel!
     @IBOutlet weak var dynamicSlider: UISlider!
     
@@ -61,7 +64,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         if (points.count == numPoints + 1){
             points.remove(at: numPoints)
         }
-        points.append(tmpPoint)
+        if(isUpdatingPoint){
+            points[updateRow] = tmpPoint
+        }
+        else{
+            points.append(tmpPoint)
+        }
         
         pDV.points = self.points
         pDV.setNeedsDisplay()
@@ -167,23 +175,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
     }
     
-    /*  @IBAction func updatePointButtonTapped(_ sender: UIButton) {
-     points[updateRow].0 = xSlider.value
-     points[updateRow].1 = ySlider.value
-     points[updateRow].2 = zSlider.value
-     self.pointTableView.reloadData()
-     pDV.points = self.points
-     pDV.setNeedsDisplay()
-     
-     let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
-     
-     pointTableView.deselectRow(at: indexPath, animated: true)
-     }*/
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
         if(isNewPointToAdd){
             modified = true
+            if(!isUpdatingPoint){
             numPoints += 1
+            }
             
             if(plane == "XY"){
                 sliderText.text = "Z: "
@@ -198,6 +196,35 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             
             self.pointTableView.reloadData()
             isNewPointToAdd = false;
+        }
+        if(isUpdatingPoint){
+            if(plane == "XY"){
+                sliderText.text = "Z: "
+                dynamicSlider.value = points[updateRow].2
+            }
+            else if(plane == "XZ"){
+                sliderText.text = "Y: "
+                dynamicSlider.value = points[updateRow].1
+            }
+            else if(plane == "YZ"){
+                sliderText.text = "X: "
+                dynamicSlider.value = points[updateRow].0
+
+            }
+            sliderText.text?.append("\(Int(dynamicSlider.value))")
+            
+//             points[updateRow].0 = xSlider.value
+//             points[updateRow].1 = ySlider.value
+//             points[updateRow].2 = zSlider.value
+             self.pointTableView.reloadData()
+             pDV.points = self.points
+             pDV.setNeedsDisplay()
+             
+             let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
+             
+             pointTableView.deselectRow(at: indexPath, animated: true)
+            isUpdatingPoint = false
+            addUpdateBtn.setTitle("Add Point", for: .normal)
         }
     }
     
@@ -279,8 +306,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
         else{
+            var nonDuplicateError = false
             var message:String = ""
+            
             if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
+                nonDuplicateError = true
                 message = "Please enter a unique path name"
                 if(points.count < 2){
                     message.append(" and have at least two waypoints")
@@ -289,17 +319,89 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             if(points.count < 2){
                 message = "Please have at least two waypoints"
             }
-            if(isDuplicate){
-                message = "Please have a unique flight path name"
+            
+            if(isDuplicate && !nonDuplicateError){
+                let duplicateAlertController = UIAlertController(title: "Duplicate name detected!", message: "Are you sure you want to replace the existing flight path with the same name with this path?", preferredStyle: .alert )
+                let overwriteBtn = UIAlertAction(title:"OVERWRITE", style: .default, handler:  {(_ action: UIAlertAction) -> Void in
+                    
+                    
+                    
+                    var matchLocation = 0 // duplicate path to delete index
+                    for path in paths{
+                        if(path.name == self.pathNameTextFeild.text){
+                            break
+                        }
+                        matchLocation += 1
+                    }
+                    
+                    var fetchResultController: NSFetchedResultsController<RawPathMO>!
+                    
+                    let fetchRequest: NSFetchRequest<RawPathMO> = RawPathMO.fetchRequest()
+                    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+                    fetchRequest.sortDescriptors = [sortDescriptor]
+                    
+                    if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                        
+                        let context = appDelegate.persistentContainer.viewContext
+                        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                        fetchResultController.delegate = self
+                        
+                        do {
+                            try fetchResultController.performFetch()
+                            if let fetchedObjects = fetchResultController.fetchedObjects {
+                                paths = fetchedObjects
+                            }
+                        } catch {
+                            print(error)
+                        }
+                        
+                        let indexPath = IndexPath(row: matchLocation, section: 0)
+                        let pathToDelete = fetchResultController.object(at: indexPath)
+                        context.delete(pathToDelete)
+                        
+                        appDelegate.saveContext()
+                        //add delete fucntion here
+                        
+                        
+                        newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
+                        
+                        newPath.name = self.pathNameTextFeild.text!
+                        newPath.numPoints = NSDecimalNumber(integerLiteral: self.points.count)
+                        
+                        for point in self.points {
+                            latitude.append(point.0)
+                            longitude.append(point.1)
+                            altitude.append(point.2)
+                        }
+                        
+                        newPath.latitude = latitude as NSObject
+                        newPath.longitude = longitude as NSObject
+                        newPath.altitude = altitude as NSObject
+                        
+                        appDelegate.saveContext()
+                        
+                        self.performSegue(withIdentifier: "createToPathSegue", sender: nil)
+                    }
+                })
+                
+                let noBtn = UIAlertAction(title:"wait I want to go back...", style: .default, handler: nil)
+                duplicateAlertController.addAction(overwriteBtn)
+                duplicateAlertController.addAction(noBtn)
+                self.present(duplicateAlertController, animated: true, completion: nil)
+                
+                
+            if(nonDuplicateError){
+                let alertController = UIAlertController(title: "Error:", message:
+                    "\(message)", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+                
+                self.present(alertController, animated: true, completion: nil)
             }
-            
-            let alertController = UIAlertController(title: "Error:", message:
-                "\(message)", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            
-            self.present(alertController, animated: true, completion: nil)
+            nonDuplicateError = false
+            }
         }
     }
+                    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "createToPathSegue" {
@@ -314,9 +416,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    //*********************TableView Functions****************************
-
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    //*********************TableView Functions***************************
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { //Deleting a point from tableview
         if editingStyle == UITableViewCell.EditingStyle.delete {
             points.remove(at: indexPath.row)
             numPoints -= 1
@@ -325,11 +427,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // Counts number of points to populate
         return numPoints
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //Provides data to tableview
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointCellIdentifier", for: indexPath)
         
@@ -338,10 +440,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         cell.textLabel?.text = text
         
         return cell
-        
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { //Selecting a row
         if(points.count > indexPath.row)
         {
             
@@ -370,13 +472,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 
             }
             
-            //updatePointButtonOutlet.isEnabled = true
+            isUpdatingPoint = true
+            addUpdateBtn.setTitle("Update Point", for: .normal)
             updateRow = indexPath.row
+            
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        // updatePointButtonOutlet.isEnabled = false
     }
     
     //******************************************Gesture Recognition*******************************************
@@ -390,14 +490,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 pDV.scale = scale
                 pDV.zScale = zScale
                 let newPoint:CGPoint = location
-                
-                
+
+
                 if(plane == "XY") //tests for plane
                 {
-                    
+
                     xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
                     yCord = (scale * Float(newPoint.y)) * -1 + 250
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].2//getting the previous points z value
@@ -415,7 +515,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 {
                     xCord = scale * Float(newPoint.x)-250
                     zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
@@ -433,7 +533,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 {
                     yCord = (scale * Float(newPoint.x)) - 250
                     zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].0//getting the previous points x value
@@ -447,23 +547,30 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         sliderText.text = "X: \(Int(dynamicSlider.value))"
                     }
                 }
-                
+
                 var tmpPoint:(Float, Float, Float)
-                
-                
-                
+
+
+
                 tmpPoint = (xCord, yCord, zCord)
-                
+
+
                 if (points.count == numPoints + 1){
                     points.remove(at: numPoints)
                 }
-                points.append(tmpPoint)
+                if(isUpdatingPoint){
+                    points[updateRow] = tmpPoint
+                }
+                else{
+                    points.append(tmpPoint)
+                }
                 
                 pDV.points = self.points
                 pDV.setNeedsDisplay()
             }
         }
     }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         isTextBoxEditing = true
     }
@@ -479,14 +586,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             pDV.scale = scale
             pDV.zScale = zScale
             let newPoint:CGPoint = sender.location(in: self.pDV)
-            
-            
+
+
             if(plane == "XY") //tests for plane
             {
-                
+
                 xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
                 yCord = (scale * Float(newPoint.y)) * -1 + 250
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].2//getting the previous points z value
@@ -504,7 +611,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             {
                 xCord = scale * Float(newPoint.x)-250
                 zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
@@ -522,7 +629,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             {
                 yCord = (scale * Float(newPoint.x)) - 250
                 zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].0//getting the previous points x value
@@ -536,22 +643,27 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                     sliderText.text = "X: \(Int(dynamicSlider.value))"
                 }
             }
-            
+
             var tmpPoint:(Float, Float, Float)
-            
-            
-            
+
+
+
             tmpPoint = (xCord, yCord, zCord)
-            
+
             if (points.count == numPoints + 1){
                 points.remove(at: numPoints)
             }
-            points.append(tmpPoint)
-            
+            if(isUpdatingPoint){
+                points[updateRow] = tmpPoint
+            }
+            else{
+                points.append(tmpPoint)
+            }
+
             pDV.points = self.points
             pDV.setNeedsDisplay()
         }
-        
+
     }
     
     override func viewDidAppear(_ animated: Bool) { //sets scale of pDV based on screen size
@@ -574,6 +686,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         dynamicSlider.value = 20
         sliderText.text = "Z: \(Int(dynamicSlider.value))"
+        addUpdateBtn.setTitle("Add Point", for: .normal)
         
         
         xzOutlet.tintColor = xyOutlet.tintColor
@@ -581,7 +694,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
         
         // tap to dismiss keyboard
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        let tapToDismissKeyboard = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tapToDismissKeyboard.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapToDismissKeyboard)
         
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         addPointGesture.addTarget(self.view, action: #selector(UIView.endEditing(_:)))
@@ -589,7 +704,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.addGestureRecognizer(addPointGesture)
         pDV.addGestureRecognizer(addPanGesture)
         pDV.scale = scale
-        
         
         //        updatePointButtonOutlet.isEnabled = false
         //

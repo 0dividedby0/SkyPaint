@@ -315,18 +315,18 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //*********************TableView Functions****************************
-    
-    private func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete
-        {
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             points.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            //sucessOutlet.text = ""
+            numPoints -= 1
+            pDV.points = self.points
+            pDV.setNeedsDisplay();
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return points.count
+        return numPoints
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

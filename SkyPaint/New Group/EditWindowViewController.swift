@@ -20,7 +20,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var isNewPointToAdd = false
     var isTextBoxEditing = false
     var isUpdatingPoint = false
-    
+        
     @IBOutlet weak var pDV: pathDisplayView!
     
     
@@ -335,8 +335,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    //*********************TableView Functions****************************
-
+    //*********************TableView Functions***************************
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { //Deleting a point from tableview
         if editingStyle == UITableViewCell.EditingStyle.delete {
             points.remove(at: indexPath.row)
@@ -409,14 +409,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 pDV.scale = scale
                 pDV.zScale = zScale
                 let newPoint:CGPoint = location
-                
-                
+
+
                 if(plane == "XY") //tests for plane
                 {
-                    
+
                     xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
                     yCord = (scale * Float(newPoint.y)) * -1 + 250
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].2//getting the previous points z value
@@ -434,7 +434,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 {
                     xCord = scale * Float(newPoint.x)-250
                     zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
@@ -452,7 +452,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 {
                     yCord = (scale * Float(newPoint.x)) - 250
                     zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                    
+
                     if(points.count > 0)
                     {
                         dynamicSlider.value = points[points.count-1].0//getting the previous points x value
@@ -466,14 +466,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         sliderText.text = "X: \(Int(dynamicSlider.value))"
                     }
                 }
-                
+
                 var tmpPoint:(Float, Float, Float)
-                
-                
-                
+
+
+
                 tmpPoint = (xCord, yCord, zCord)
-                
- 
+
+
                 if(isUpdatingPoint){
                     points[updateRow] = tmpPoint
                 }
@@ -485,6 +485,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
     }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         isTextBoxEditing = true
     }
@@ -500,14 +501,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             pDV.scale = scale
             pDV.zScale = zScale
             let newPoint:CGPoint = sender.location(in: self.pDV)
-            
-            
+
+
             if(plane == "XY") //tests for plane
             {
-                
+
                 xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
                 yCord = (scale * Float(newPoint.y)) * -1 + 250
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].2//getting the previous points z value
@@ -525,7 +526,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             {
                 xCord = scale * Float(newPoint.x)-250
                 zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
@@ -543,7 +544,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             {
                 yCord = (scale * Float(newPoint.x)) - 250
                 zCord = (zScale * Float(newPoint.y)) * -1 + 400
-                
+
                 if(points.count > 0)
                 {
                     dynamicSlider.value = points[points.count-1].0//getting the previous points x value
@@ -557,13 +558,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                     sliderText.text = "X: \(Int(dynamicSlider.value))"
                 }
             }
-            
+
             var tmpPoint:(Float, Float, Float)
-            
-            
-            
+
+
+
             tmpPoint = (xCord, yCord, zCord)
-            
+
             if (points.count == numPoints + 1){
                 points.remove(at: numPoints)
             }
@@ -573,11 +574,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             else{
                 points.append(tmpPoint)
             }
-            
+
             pDV.points = self.points
             pDV.setNeedsDisplay()
         }
-        
+
     }
     
     override func viewDidAppear(_ animated: Bool) { //sets scale of pDV based on screen size
@@ -616,7 +617,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.addGestureRecognizer(addPointGesture)
         pDV.addGestureRecognizer(addPanGesture)
         pDV.scale = scale
-        
         
         //        updatePointButtonOutlet.isEnabled = false
         //

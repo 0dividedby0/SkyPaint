@@ -22,6 +22,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var isUpdatingPoint = false
         
     @IBOutlet weak var pDV: pathDisplayView!
+    var fetchResultController: NSFetchedResultsController<RawPathMO>!
+
     
     
     @IBOutlet weak var yzOutlet: UIButton!
@@ -63,7 +65,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         if (points.count == numPoints + 1){
             points.remove(at: numPoints)
         }
-        points.append(tmpPoint)
+        if(isUpdatingPoint){
+            points[updateRow] = tmpPoint
+        }
+        else{
+            points.append(tmpPoint)
+        }
         
         pDV.points = self.points
         pDV.setNeedsDisplay()
@@ -300,8 +307,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
         else{
+            var nonDuplicateError = false
             var message:String = ""
+            
             if(pathNameTextFeild.text == nil || pathNameTextFeild.text == ""){
+                nonDuplicateError = true
                 message = "Please enter a unique path name"
                 if(points.count < 2){
                     message.append(" and have at least two waypoints")
@@ -310,17 +320,70 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             if(points.count < 2){
                 message = "Please have at least two waypoints"
             }
-            if(isDuplicate){
-                message = "Please have a unique flight path name"
+            
+            if(isDuplicate && !nonDuplicateError){
+                let duplicateAlertController = UIAlertController(title: "Duplicate name detected!", message: "Are you sure you want to replace the existing flight path with the same name with this path?", preferredStyle: .alert )
+                let overwriteBtn = UIAlertAction(title:"OVERWRITE", style: .default, handler:  {(_ action: UIAlertAction) -> Void in
+                    
+                    
+                    
+                    var matchLocation = 0 // duplicate path to delete index
+                    for path in paths{
+                        matchLocation += 1
+                        if(path.name == self.pathNameTextFeild.text){
+                            break
+                        }
+                    }
+                    
+                    if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                        
+                        let indexPath = IndexPath(index: matchLocation)
+                        let context = appDelegate.persistentContainer.viewContext
+                        let pathToDelete = NSFetchRequest(entityName: ) //this 
+                        context.delete(pathToDelete)
+                        appDelegate.saveContext()
+                        //add delete fucntion here
+                        
+                        
+                        newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
+                        
+                        newPath.name = self.pathNameTextFeild.text!
+                        newPath.numPoints = NSDecimalNumber(integerLiteral: self.points.count)
+                        
+                        for point in self.points {
+                            latitude.append(point.0)
+                            longitude.append(point.1)
+                            altitude.append(point.2)
+                        }
+                        
+                        newPath.latitude = latitude as NSObject
+                        newPath.longitude = longitude as NSObject
+                        newPath.altitude = altitude as NSObject
+                        
+                        appDelegate.saveContext()
+                        
+                        self.performSegue(withIdentifier: "createToPathSegue", sender: nil)
+                    }
+                })
+                
+                let noBtn = UIAlertAction(title:"wait I want to go back...", style: .default, handler: nil)
+                duplicateAlertController.addAction(overwriteBtn)
+                duplicateAlertController.addAction(noBtn)
+                self.present(duplicateAlertController, animated: true, completion: nil)
+                
+                
+            if(nonDuplicateError){
+                let alertController = UIAlertController(title: "Error:", message:
+                    "\(message)", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+                
+                self.present(alertController, animated: true, completion: nil)
             }
-            
-            let alertController = UIAlertController(title: "Error:", message:
-                "\(message)", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            
-            self.present(alertController, animated: true, completion: nil)
+            nonDuplicateError = false
+            }
         }
     }
+                    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "createToPathSegue" {
@@ -474,12 +537,16 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 tmpPoint = (xCord, yCord, zCord)
 
 
+                if (points.count == numPoints + 1){
+                    points.remove(at: numPoints)
+                }
                 if(isUpdatingPoint){
                     points[updateRow] = tmpPoint
                 }
                 else{
                     points.append(tmpPoint)
                 }
+                
                 pDV.points = self.points
                 pDV.setNeedsDisplay()
             }
@@ -609,7 +676,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
         
         // tap to dismiss keyboard
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        let tapToDismissKeyboard = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tapToDismissKeyboard.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapToDismissKeyboard)
         
         let addPointGesture = UITapGestureRecognizer(target: self, action: #selector (EditWindowViewController.tapToPoint(_:)))
         addPointGesture.addTarget(self.view, action: #selector(UIView.endEditing(_:)))

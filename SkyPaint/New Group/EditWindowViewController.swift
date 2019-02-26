@@ -19,6 +19,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var modified = false
     var isNewPointToAdd = false
     var isTextBoxEditing = false
+    var isUpdatingPoint = false
     
     @IBOutlet weak var pDV: pathDisplayView!
     
@@ -32,6 +33,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //***************************************TextFields and Sliders**************************************
     
+    @IBOutlet weak var addUpdateBtn: UIButton!
     @IBOutlet weak var sliderText: UILabel!
     @IBOutlet weak var dynamicSlider: UISlider!
     
@@ -167,23 +169,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
     }
     
-    /*  @IBAction func updatePointButtonTapped(_ sender: UIButton) {
-     points[updateRow].0 = xSlider.value
-     points[updateRow].1 = ySlider.value
-     points[updateRow].2 = zSlider.value
-     self.pointTableView.reloadData()
-     pDV.points = self.points
-     pDV.setNeedsDisplay()
-     
-     let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
-     
-     pointTableView.deselectRow(at: indexPath, animated: true)
-     }*/
     
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
         if(isNewPointToAdd){
             modified = true
+            if(!isUpdatingPoint){
             numPoints += 1
+            }
             
             if(plane == "XY"){
                 sliderText.text = "Z: "
@@ -198,6 +190,35 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             
             self.pointTableView.reloadData()
             isNewPointToAdd = false;
+        }
+        if(isUpdatingPoint){
+            if(plane == "XY"){
+                sliderText.text = "Z: "
+                dynamicSlider.value = points[updateRow].2
+            }
+            else if(plane == "XZ"){
+                sliderText.text = "Y: "
+                dynamicSlider.value = points[updateRow].1
+            }
+            else if(plane == "YZ"){
+                sliderText.text = "X: "
+                dynamicSlider.value = points[updateRow].0
+
+            }
+            sliderText.text?.append("\(Int(dynamicSlider.value))")
+            
+//             points[updateRow].0 = xSlider.value
+//             points[updateRow].1 = ySlider.value
+//             points[updateRow].2 = zSlider.value
+             self.pointTableView.reloadData()
+             pDV.points = self.points
+             pDV.setNeedsDisplay()
+             
+             let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
+             
+             pointTableView.deselectRow(at: indexPath, animated: true)
+            isUpdatingPoint = false
+            addUpdateBtn.setTitle("Add Point", for: .normal)
         }
     }
     
@@ -316,7 +337,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     //*********************TableView Functions****************************
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { //Deleting a point from tableview
         if editingStyle == UITableViewCell.EditingStyle.delete {
             points.remove(at: indexPath.row)
             numPoints -= 1
@@ -325,11 +346,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // Counts number of points to populate
         return numPoints
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //Provides data to tableview
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointCellIdentifier", for: indexPath)
         
@@ -338,10 +359,10 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         cell.textLabel?.text = text
         
         return cell
-        
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { //Selecting a row
         if(points.count > indexPath.row)
         {
             
@@ -370,13 +391,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 
             }
             
-            //updatePointButtonOutlet.isEnabled = true
+            isUpdatingPoint = true
+            addUpdateBtn.setTitle("Update Point", for: .normal)
             updateRow = indexPath.row
+            
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        // updatePointButtonOutlet.isEnabled = false
     }
     
     //******************************************Gesture Recognition*******************************************
@@ -454,11 +473,13 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 
                 tmpPoint = (xCord, yCord, zCord)
                 
-                if (points.count == numPoints + 1){
-                    points.remove(at: numPoints)
+ 
+                if(isUpdatingPoint){
+                    points[updateRow] = tmpPoint
                 }
-                points.append(tmpPoint)
-                
+                else{
+                    points.append(tmpPoint)
+                }
                 pDV.points = self.points
                 pDV.setNeedsDisplay()
             }
@@ -546,7 +567,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             if (points.count == numPoints + 1){
                 points.remove(at: numPoints)
             }
-            points.append(tmpPoint)
+            if(isUpdatingPoint){
+                points[updateRow] = tmpPoint
+            }
+            else{
+                points.append(tmpPoint)
+            }
             
             pDV.points = self.points
             pDV.setNeedsDisplay()
@@ -574,6 +600,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
         dynamicSlider.value = 20
         sliderText.text = "Z: \(Int(dynamicSlider.value))"
+        addUpdateBtn.setTitle("Add Point", for: .normal)
         
         
         xzOutlet.tintColor = xyOutlet.tintColor

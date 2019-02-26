@@ -22,7 +22,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var isUpdatingPoint = false
         
     @IBOutlet weak var pDV: pathDisplayView!
-    var fetchResultController: NSFetchedResultsController<RawPathMO>!
 
     
     
@@ -329,18 +328,37 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                     
                     var matchLocation = 0 // duplicate path to delete index
                     for path in paths{
-                        matchLocation += 1
                         if(path.name == self.pathNameTextFeild.text){
                             break
                         }
+                        matchLocation += 1
                     }
+                    
+                    var fetchResultController: NSFetchedResultsController<RawPathMO>!
+                    
+                    let fetchRequest: NSFetchRequest<RawPathMO> = RawPathMO.fetchRequest()
+                    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+                    fetchRequest.sortDescriptors = [sortDescriptor]
                     
                     if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
                         
-                        let indexPath = IndexPath(index: matchLocation)
                         let context = appDelegate.persistentContainer.viewContext
-                        let pathToDelete = NSFetchRequest(entityName: ) //this 
+                        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+                        fetchResultController.delegate = self
+                        
+                        do {
+                            try fetchResultController.performFetch()
+                            if let fetchedObjects = fetchResultController.fetchedObjects {
+                                paths = fetchedObjects
+                            }
+                        } catch {
+                            print(error)
+                        }
+                        
+                        let indexPath = IndexPath(row: matchLocation, section: 0)
+                        let pathToDelete = fetchResultController.object(at: indexPath)
                         context.delete(pathToDelete)
+                        
                         appDelegate.saveContext()
                         //add delete fucntion here
                         

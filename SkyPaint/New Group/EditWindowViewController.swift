@@ -51,6 +51,16 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     
     /*******************************************************************************
+     // Function: textFieldDidBeginEditing
+     // Called when: textbox for path name is tapped
+     // Usage: to keep track of whether or not keyboard is being displayed
+     ********************************************************************************/
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isTextBoxEditing = true
+    }
+    
+    
+    /*******************************************************************************
     // Function: zSliderChanged
     // Called when: dynamic slider has been chagned
     // Usage: to update corresponding slider X/Y/S, slider amount,
@@ -552,8 +562,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     /*******************************************************************************
      // Function: panPiece
-     // Called when: pan gesture is detected on pDV
-     // Usage: to create + click and drag point to add
+     // Called when: pDV has been dragged
+     // Usage: to send new coordinates to newPointAt to add new location
      ********************************************************************************/
     @IBAction func panPiece(_ gestureRecognizer : UIPanGestureRecognizer) {
         guard gestureRecognizer.view != nil else {return}
@@ -564,100 +574,15 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 pDV.scale = scale
                 pDV.zScale = zScale
                 let newPoint:CGPoint = location
-
-
-                if(plane == "XY") //tests for plane
-                {
-
-                    xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
-                    yCord = (scale * Float(newPoint.y)) * -1 + 250
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].2 /// getting the previous points z value
-                        zCord = dynamicSlider.value
-                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 20
-                        zCord = dynamicSlider.value
-                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                    }
-                }
-                else if(plane == "XZ")
-                {
-                    xCord = scale * Float(newPoint.x)-250
-                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].1 /// getting the previous points y value
-                        yCord = dynamicSlider.value
-                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 0
-                        yCord = dynamicSlider.value
-                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                    }
-                }
-                else if(plane == "YZ")
-                {
-                    yCord = (scale * Float(newPoint.x)) - 250
-                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].0 /// Getting the previous points x value
-                        xCord = dynamicSlider.value
-                        sliderText.text = "X: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 0
-                        xCord = dynamicSlider.value
-                        sliderText.text = "X: \(Int(dynamicSlider.value))"
-                    }
-                }
-
-                var tmpPoint:(Float, Float, Float)
-
-
-
-                tmpPoint = (xCord, yCord, zCord)
-
-
-                if (points.count == numPoints + 1){
-                    points.remove(at: numPoints)
-                }
-                if(isUpdatingPoint){
-                    points[updateRow] = tmpPoint
-                }
-                else{
-                    points.append(tmpPoint)
-                }
-                
-                pDV.points = self.points
-                pDV.setNeedsDisplay()
+                newPointAt(newPoint: newPoint)
             }
         }
     }
     
     /*******************************************************************************
-     // Function: textFieldDidBeginEditing
-     // Called when: textbox for path name is tapped
-     // Usage: to keep track of whether or not keyboard is being displayed
-     ********************************************************************************/
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        isTextBoxEditing = true
-    }
-    
-    /*******************************************************************************
      // Function: tapToPoint
      // Called when: pDV has been tapped
-     // Usage: to create new point at tap locaiton on pDV
+     // Usage: to send new coordinates to newPointAt to add new location
      ********************************************************************************/
     @objc func tapToPoint(_ sender:UITapGestureRecognizer)
     {
@@ -669,82 +594,92 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             pDV.scale = scale
             pDV.zScale = zScale
             let newPoint:CGPoint = sender.location(in: self.pDV)
-
-
-            if(plane == "XY") //tests for plane
-            {
-
-                xCord = scale * Float(newPoint.x)-250 ///changes Cordiantes to standard -250,250 scale,
-                yCord = (scale * Float(newPoint.y)) * -1 + 250
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].2 ///getting the previous points z value
-                    zCord = dynamicSlider.value
-                    sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 20
-                    zCord = dynamicSlider.value
-                    sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                }
-            }
-            else if(plane == "XZ")
-            {
-                xCord = scale * Float(newPoint.x)-250
-                zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].1 ///getting the previous points y value
-                    yCord = dynamicSlider.value
-                    sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 0
-                    yCord = dynamicSlider.value
-                    sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                }
-            }
-            else if(plane == "YZ")
-            {
-                yCord = (scale * Float(newPoint.x)) - 250
-                zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].0 ///getting the previous points x value
-                    xCord = dynamicSlider.value
-                    sliderText.text = "X: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 0
-                    xCord = dynamicSlider.value
-                    sliderText.text = "X: \(Int(dynamicSlider.value))"
-                }
-            }
-
-            var tmpPoint:(Float, Float, Float)
-            tmpPoint = (xCord, yCord, zCord)
-
-            if (points.count == numPoints + 1){
-                points.remove(at: numPoints)
-            }
-            if(isUpdatingPoint){
-                points[updateRow] = tmpPoint
-            }
-            else{
-                points.append(tmpPoint)
-            }
-
-            pDV.points = self.points
-            pDV.setNeedsDisplay()
+            newPointAt(newPoint: newPoint)
         }
-
     }
+    
+    
+    //************************************************* misc functions **********************************************************
+    /*******************************************************************************
+     // Function: newPointAt
+     // Called when: pDV has been tapped or panned
+     // Usage: to create new point at tap locaiton on pDV
+     ********************************************************************************/
+    func newPointAt(newPoint:CGPoint){
+        if(plane == "XY") //tests for plane and sets slider value to corresponding xyz value
+        {
+            
+            xCord = scale * Float(newPoint.x)-250 ///changes Cordiantes to standard -250,250 scale,
+            yCord = (scale * Float(newPoint.y)) * -1 + 250
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].2 ///getting the previous points z value
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 20
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
+            }
+        }
+        else if(plane == "XZ")
+        {
+            xCord = scale * Float(newPoint.x)-250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].1 ///getting the previous points y value
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 0
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
+            }
+        }
+        else if(plane == "YZ")
+        {
+            yCord = (scale * Float(newPoint.x)) - 250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].0 ///getting the previous points x value
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 0
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
+            }
+        }
+        
+        var tmpPoint:(Float, Float, Float)  /// new temporary point created with x,y,z coords
+        tmpPoint = (xCord, yCord, zCord)
+        
+        if (points.count == numPoints + 1){ /// if points.count is greater than local count, remove last point since addButtonPressed has not been called
+            points.remove(at: numPoints)
+        }
+        if(isUpdatingPoint){
+            points[updateRow] = tmpPoint
+        }
+        else{
+            points.append(tmpPoint)
+        }
+        
+        pDV.points = self.points
+        pDV.setNeedsDisplay() /// Refreshing pDV display
+    }
+    
+    //******************************************* screen loading functions **********************************************************************
     
     /*******************************************************************************
      // Function: viewDidAppear

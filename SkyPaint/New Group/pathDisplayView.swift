@@ -3,6 +3,8 @@
 //  SkyPaint
 //
 //  Created by Addisalem Kebede on 3/3/18.
+//  Most recent edit by Connor Easton on 2/26/19
+//
 //  Copyright © 2018 SkyPaint. All rights reserved.
 //
 
@@ -10,12 +12,12 @@ import UIKit
 
 public class pathDisplayView: UIView {
 
-    var path: UIBezierPath!
-    let dot = UIImage(named: "Circle")!
-    var points:[(Float, Float, Float)] = []
-    var plane: String?
-    var scale:Float!
-    var zScale:Float!
+    var path: UIBezierPath!                 /// path connecting dots
+    let dot = UIImage(named: "Circle")!     /// image used to display point icon on pDV
+    var points:[(Float, Float, Float)] = [] /// points displayed on pDV
+    var plane: String?                      /// xy, xz, yz
+    var scale:Float!                        /// calculated from device size
+    var zScale:Float!                       /// calculated from device size
 
     
     override init(frame: CGRect) {

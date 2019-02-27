@@ -1,4 +1,4 @@
-/*
+//
 // EditWindowViewController.swift
 // SkyPaint
 //
@@ -6,7 +6,7 @@
 // Most recent edit by Connor Easton on 2/26/19
 //
 // Copyright © 2018 SkyPaint. All rights reserved.
-*/
+//
 
 import UIKit
 import SpriteKit
@@ -14,26 +14,28 @@ import CoreData
 
 class EditWindowViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate {
     
-    var points:[(Float, Float, Float)] = []
-    var plane:String = "XY"
-    var updateRow:Int = 0
-    var numPoints:Int = 0;
+    //************************************************* variables **********************************************************************
     
-    var xCord:Float = 0.0
-    var yCord:Float = 0.0
-    var zCord:Float = 0.0
+    var points:[(Float, Float, Float)] = [] /// points displayed on pDV and tableView
+    var plane:String = "XY"         /// tracks what xyz plane should be displayed
+    var updateRow:Int = 0           /// tracks what point is being updated if updating
+    var numPoints:Int = 0;          /// tracks num points *Different from points.count*
     
-    var scale:Float = 0.0
-    var zScale:Float = 0.0
+    var xCord:Float = 0.0           /// current x coordinate
+    var yCord:Float = 0.0           /// current y coordinate
+    var zCord:Float = 0.0           /// current z coordinate
     
-    var modified = false
-    var isNewPointToAdd = false
-    var isTextBoxEditing = false
-    var isUpdatingPoint = false
-        
+    var scale:Float = 0.0           /// scale of x and y determined by device screen size
+    var zScale:Float = 0.0          /// scale of z determined by device scren size
+    
+    var modified = false            /// tracks if pDV has points that has not been saved
+    var isNewPointToAdd = false     /// tracks if a new point has been added to pDV but not pushed to points[]
+    var isTextBoxEditing = false    /// tracks if keyboard is being displayed
+    var isUpdatingPoint = false     /// tracks if a point has been tapped on tableview for updating
+    
+    //********************************************* button outlets *************************************************************
+    
     @IBOutlet weak var pDV: pathDisplayView!
-
-    
     
     @IBOutlet weak var yzOutlet: UIButton!
     @IBOutlet weak var xzOutlet: UIButton!
@@ -46,8 +48,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var dynamicSlider: UISlider!
     @IBOutlet weak var pointTableView: UITableView!
     
-    
     //***************************************TextFields and Slider Functions**************************************
+    
+    
+    
+    
     
     
     /*******************************************************************************
@@ -59,14 +64,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         isTextBoxEditing = true
     }
     
-    
     /*******************************************************************************
-    // Function: zSliderChanged
-    // Called when: dynamic slider has been chagned
-    // Usage: to update corresponding slider X/Y/S, slider amount,
-    //    update global tmpPoint variable for pDV with new slider information
-    ********************************************************************************/
-    
+     // Function: zSliderChanged
+     // Called when: dynamic slider has been chagned
+     // Usage: to update corresponding slider X/Y/S, slider amount,
+     //    update global tmpPoint variable for pDV with new slider information
+     ********************************************************************************/
     @IBAction func zSliderChanged(_ sender: UISlider) {
         if(plane == "XY"){
             sliderText.text = "Z: "
@@ -112,7 +115,11 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
     }
     
-    
+    /*******************************************************************************
+     // Function: unwindToCreate
+     // Called when: ??????? UNKNOWN ?????????
+     // Usage: ?????? UNKNOWN ???????????
+     ********************************************************************************/
     @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
         modified = false
         pDV.scale = self.scale
@@ -228,7 +235,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         if(isNewPointToAdd){
             modified = true
             if(!isUpdatingPoint){
-            numPoints += 1
+                numPoints += 1
             }
             
             if(plane == "XY"){
@@ -257,21 +264,22 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             else if(plane == "YZ"){
                 sliderText.text = "X: "
                 dynamicSlider.value = points[updateRow].0
-
+                
             }
             sliderText.text?.append("\(Int(dynamicSlider.value))")
-
-             self.pointTableView.reloadData()
-             pDV.points = self.points
-             pDV.setNeedsDisplay()
-             
-             let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
-             
-             pointTableView.deselectRow(at: indexPath, animated: true)
+            
+            self.pointTableView.reloadData()
+            pDV.points = self.points
+            pDV.setNeedsDisplay()
+            
+            let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
+            
+            pointTableView.deselectRow(at: indexPath, animated: true)
             isUpdatingPoint = false
             addUpdateBtn.setTitle("Add Point", for: .normal)
         }
     }
+    
     /*******************************************************************************
      // Function: loadPath
      // Called when: the load path button has been pressed
@@ -446,18 +454,18 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 self.present(duplicateAlertController, animated: true, completion: nil)
                 
                 
-            if(nonDuplicateError){
-                let alertController = UIAlertController(title: "Error:", message:
-                    "\(message)", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-                
-                self.present(alertController, animated: true, completion: nil)
-            }
-            nonDuplicateError = false
+                if(nonDuplicateError){
+                    let alertController = UIAlertController(title: "Error:", message:
+                        "\(message)", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                nonDuplicateError = false
             }
         }
     }
-                    
+    
     /*******************************************************************************
      // Function: prepare
      // Called when: ??? ADD CALLED WHEN ???
@@ -554,7 +562,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             isUpdatingPoint = true
             addUpdateBtn.setTitle("Update Point", for: .normal)
             updateRow = indexPath.row
-            
         }
     }
     
@@ -600,6 +607,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     
     //************************************************* misc functions **********************************************************
+    
     /*******************************************************************************
      // Function: newPointAt
      // Called when: pDV has been tapped or panned
@@ -742,7 +750,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         super.didReceiveMemoryWarning()
     }
     
-     /*
+    /*
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation

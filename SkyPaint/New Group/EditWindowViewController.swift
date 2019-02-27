@@ -41,7 +41,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBAction func zSliderChanged(_ sender: UISlider) { //Updates text outlets and golabl cordiantes when slider is changed
         if(plane == "XY"){
-            sliderText.text = "Z:"
+            sliderText.text = "Z: "
             zCord = dynamicSlider.value
         }
         else if(plane == "XZ"){

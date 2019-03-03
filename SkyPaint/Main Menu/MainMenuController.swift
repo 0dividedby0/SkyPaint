@@ -12,10 +12,22 @@ import DJISDK
 class MainMenuController: UIViewController {
     
     @IBAction func userTappedFly(_ sender: Any) {
-        performSegue(withIdentifier: "mainMenuToFlySegue", sender: nil)
+        let alert = UIAlertController(title: "Disclaimer:", message: "This app is in beta. In order to use with your DJI aircraft, please switch your controller to \"P-Mode\". While using this app, maintain ability to immediately take control of your aircraft by switching to a different mode. Skypaint and it's developers are not responsible for any damages to persons or property as a result of using this app. Please fly responsibly and within all federal regulations.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        let acceptBtn = UIAlertAction(title:"Accept", style: .default, handler:  {(_ action: UIAlertAction) -> Void in
+            self.performSegue(withIdentifier: "mainMenuToFlySegue", sender: nil)
+        })
+        alert.addAction(acceptBtn)
+        self.present(alert, animated: true)
     }
     @IBAction func userTappedEdit(_ sender: Any) {
-        performSegue(withIdentifier: "mainMenuToCreateSegue", sender: nil)
+        let alert = UIAlertController(title: "Disclaimer:", message: "This app is in beta. In order to use with your DJI aircraft, please switch your controller to \"P-Mode\". While using this app, maintain ability to immediately take control of your aircraft by switching to a different mode. Skypaint and it's developers are not responsible for any damages to persons or property as a result of using this app. Please fly responsibly and within all federal regulations.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        let acceptBtn = UIAlertAction(title:"Accept", style: .default, handler:  {(_ action: UIAlertAction) -> Void in
+            self.performSegue(withIdentifier: "mainMenuToCreateSegue", sender: nil)
+        })
+        alert.addAction(acceptBtn)
+        self.present(alert, animated: true)
     }
     
     @IBAction func unwindToMainMenu(segue:UIStoryboardSegue) { }
@@ -62,5 +74,4 @@ class MainMenuController: UIViewController {
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
-    
 }

@@ -492,6 +492,11 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         else {
             let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+                if (error != nil) {
+                    let alert = UIAlertController(title: "Error!", message: error?.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                }
                 startDidComplete()
             }
             

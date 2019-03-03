@@ -168,8 +168,8 @@
                                     <action selector="xyButtonTapped:" destination="B5o-KZ-xHA" eventType="touchUpInside" id="8fF-ra-7Dv"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Path Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUF-TN-AYg">
-                                <rect key="frame" x="7" y="105" width="153" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Point List:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUF-TN-AYg">
+                                <rect key="frame" x="7" y="105" width="75.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -229,11 +229,10 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="Kwc-Wr-Qhk">
-                                <rect key="frame" x="168" y="100.5" width="100" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Path Name" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="Kwc-Wr-Qhk">
+                                <rect key="frame" x="117.5" y="100.5" width="150.5" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="GiW-Ha-Fku"/>
-                                    <constraint firstAttribute="width" constant="100" id="PlZ-Mf-dKI"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -241,7 +240,6 @@
                                 <variation key="heightClass=compact">
                                     <mask key="constraints">
                                         <exclude reference="GiW-Ha-Fku"/>
-                                        <exclude reference="PlZ-Mf-dKI"/>
                                     </mask>
                                 </variation>
                             </textField>
@@ -281,7 +279,7 @@
                             <constraint firstItem="gW0-qX-Nwr" firstAttribute="top" secondItem="0GU-sY-CEI" secondAttribute="bottom" constant="10" id="k7D-rA-LOR"/>
                             <constraint firstItem="Kwc-Wr-Qhk" firstAttribute="centerY" secondItem="jUF-TN-AYg" secondAttribute="centerY" id="kRt-As-zcf"/>
                             <constraint firstItem="MFM-AC-SJu" firstAttribute="top" secondItem="q92-rl-CXH" secondAttribute="bottom" constant="8" id="mEz-9q-3Fx"/>
-                            <constraint firstItem="Kwc-Wr-Qhk" firstAttribute="leading" secondItem="jUF-TN-AYg" secondAttribute="trailing" constant="8" id="pYN-uH-ECz"/>
+                            <constraint firstItem="Kwc-Wr-Qhk" firstAttribute="leading" secondItem="jUF-TN-AYg" secondAttribute="trailing" constant="35" id="pYN-uH-ECz"/>
                             <constraint firstItem="Fhq-Ap-j6D" firstAttribute="leading" secondItem="Kwc-Wr-Qhk" secondAttribute="trailing" constant="9" id="sqy-9O-mXs"/>
                             <constraint firstItem="740-wk-OYw" firstAttribute="top" secondItem="bb0-8k-ZKv" secondAttribute="top" constant="7" id="suS-e6-ECF"/>
                             <constraint firstItem="gW0-qX-Nwr" firstAttribute="leading" secondItem="bb0-8k-ZKv" secondAttribute="leading" constant="7" id="y6Z-V9-gbg"/>

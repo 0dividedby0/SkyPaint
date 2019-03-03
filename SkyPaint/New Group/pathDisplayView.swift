@@ -100,8 +100,8 @@ public class pathDisplayView: UIView {
     
     /*******************************************************************************
      // Function: createPath
-     // Called when: ???????????????
-     // Usage: ???????????????
+     // Called when: view draw function is called
+     // Usage: add each point in the points array to the view
      ********************************************************************************/
     func createPath() {        /// Initialize the path.
         path = UIBezierPath()

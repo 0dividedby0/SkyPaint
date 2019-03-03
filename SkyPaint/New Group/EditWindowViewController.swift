@@ -14,7 +14,7 @@ import CoreData
 
 class EditWindowViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate {
     
-    //************************************************* variables **********************************************************************
+    // MARK: - Variables
     
     var points:[(Float, Float, Float)] = [] /// points displayed on pDV and tableView
     var plane:String = "XY"         /// tracks what xyz plane should be displayed
@@ -33,7 +33,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     var isTextBoxEditing = false    /// tracks if keyboard is being displayed
     var isUpdatingPoint = false     /// tracks if a point has been tapped on tableview for updating
     
-    //********************************************* button outlets *************************************************************
+    // MARK: - UI Outlets
     
     @IBOutlet weak var pDV: pathDisplayView!
     
@@ -48,12 +48,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var dynamicSlider: UISlider!
     @IBOutlet weak var pointTableView: UITableView!
     
-    //***************************************TextFields and Slider Functions**************************************
-    
-    
-    
-    
-    
+    // MARK: - Textfields/Sliders
     
     /*******************************************************************************
      // Function: textFieldDidBeginEditing
@@ -104,7 +99,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.setNeedsDisplay()
     }
     
-    //*****************************************Button Functions***********************************************
+    // MARK: - Button Actions
     
     /*******************************************************************************
      // Function: returnToMain
@@ -113,19 +108,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
      ********************************************************************************/
     @IBAction func returnToMain(_ sender: Any) {
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
-    }
-    
-    /*******************************************************************************
-     // Function: unwindToCreate
-     // Called when: ??????? UNKNOWN ?????????
-     // Usage: ?????? UNKNOWN ???????????
-     ********************************************************************************/
-    @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
-        modified = false
-        pDV.scale = self.scale
-        pDV.zScale = self.zScale
-        pDV.points = self.points
-        pDV.setNeedsDisplay()
     }
     
     /*******************************************************************************
@@ -357,8 +339,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
                 
                 for point in points {
-                    latitude.append(point.0)
-                    longitude.append(point.1)
+                    latitude.append(point.1)
+                    longitude.append(point.0)
                     altitude.append(point.2)
                 }
                 
@@ -368,6 +350,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 
                 appDelegate.saveContext()
                 
+                modified = true
                 performSegue(withIdentifier: "createToPathSegue", sender: nil)
             }
         }
@@ -433,8 +416,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         newPath.numPoints = NSDecimalNumber(integerLiteral: self.points.count)
                         
                         for point in self.points {
-                            latitude.append(point.0)
-                            longitude.append(point.1)
+                            latitude.append(point.1)
+                            longitude.append(point.0)
                             altitude.append(point.2)
                         }
                         
@@ -444,6 +427,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         
                         appDelegate.saveContext()
                         
+                        self.modified = true
                         self.performSegue(withIdentifier: "createToPathSegue", sender: nil)
                     }
                 })
@@ -466,25 +450,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    /*******************************************************************************
-     // Function: prepare
-     // Called when: ??? ADD CALLED WHEN ???
-     // Usage: ??? ADD USAGE ???
-     ********************************************************************************/
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "createToPathSegue" {
-            let destinationController = segue.destination as! ConfirmationViewController
-            destinationController.previousViewIsFlight = false
-            if (!modified) {
-                destinationController.loadingPath = true;
-            }
-            else {
-                destinationController.loadingPath = false;
-            }
-        }
-    }
-    
-    //***********************************************************TableView Functions**********************************************
+    // MARK: - TableView Functions
     
     /*******************************************************************************
      // Called when: deleting a point from tableView
@@ -565,7 +531,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    //*******************************************************Gesture Recognition*******************************************
+    // MARK: - Gesture Recognizers
     
     /*******************************************************************************
      // Function: panPiece
@@ -606,7 +572,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     
-    //************************************************* misc functions **********************************************************
+    // MARK: - Helper Functions
     
     /*******************************************************************************
      // Function: newPointAt
@@ -687,7 +653,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.setNeedsDisplay() /// Refreshing pDV display
     }
     
-    //******************************************* screen loading functions **********************************************************************
+    // MARK: - View Management
     
     /*******************************************************************************
      // Function: viewDidAppear
@@ -737,8 +703,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.addGestureRecognizer(addPointGesture)
         pDV.addGestureRecognizer(addPanGesture)
         pDV.scale = scale
-        
-        /// Do any additional setup after loading the view.
     }
     
     /*******************************************************************************
@@ -750,13 +714,36 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         super.didReceiveMemoryWarning()
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    /*******************************************************************************
+     // Function: unwindToCreate
+     // Called when: Returning to edit view
+     // Usage: Updates pDV and pointTableView
+     ********************************************************************************/
+    @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
+        modified = false
+        pDV.scale = self.scale
+        pDV.zScale = self.zScale
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
+        self.pointTableView.reloadData()
+    }
+    
+    /*******************************************************************************
+     // Function: prepare
+     // Called when: Preparing to change view
+     // Usage: If moving to confirmation view, tell the destination view controller whether it's loading a path
+     ********************************************************************************/
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "createToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = false
+            if (!modified) {
+                destinationController.loadingPath = true;
+            }
+            else {
+                destinationController.loadingPath = false;
+            }
+        }
+    }
+    
 }

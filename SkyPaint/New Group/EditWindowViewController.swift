@@ -1,29 +1,41 @@
+//
+// EditWindowViewController.swift
+// SkyPaint
+//
+// Created by Addisalem Kebede on 3/3/18.
+// Most recent edit by Connor Easton on 2/26/19
+//
+// Copyright © 2018 SkyPaint. All rights reserved.
+//
+
 import UIKit
 import SpriteKit
 import CoreData
 
 class EditWindowViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate {
     
-    var points:[(Float, Float, Float)] = []
-    var plane:String = "XY"
-    var updateRow:Int = 0
-    var numPoints:Int = 0;
+    // MARK: - Variables
     
-    var xCord:Float = 0.0
-    var yCord:Float = 0.0
-    var zCord:Float = 0.0
+    var points:[(Float, Float, Float)] = [] /// points displayed on pDV and tableView
+    var plane:String = "XY"         /// tracks what xyz plane should be displayed
+    var updateRow:Int = 0           /// tracks what point is being updated if updating
+    var numPoints:Int = 0;          /// tracks num points *Different from points.count*
     
-    var scale:Float = 0.0
-    var zScale:Float = 0.0
+    var xCord:Float = 0.0           /// current x coordinate
+    var yCord:Float = 0.0           /// current y coordinate
+    var zCord:Float = 0.0           /// current z coordinate
     
-    var modified = false
-    var isNewPointToAdd = false
-    var isTextBoxEditing = false
-    var isUpdatingPoint = false
-        
+    var scale:Float = 0.0           /// scale of x and y determined by device screen size
+    var zScale:Float = 0.0          /// scale of z determined by device scren size
+    
+    var modified = false            /// tracks if pDV has points that has not been saved
+    var isNewPointToAdd = false     /// tracks if a new point has been added to pDV but not pushed to points[]
+    var isTextBoxEditing = false    /// tracks if keyboard is being displayed
+    var isUpdatingPoint = false     /// tracks if a point has been tapped on tableview for updating
+    
+    // MARK: - UI Outlets
+    
     @IBOutlet weak var pDV: pathDisplayView!
-
-    
     
     @IBOutlet weak var yzOutlet: UIButton!
     @IBOutlet weak var xzOutlet: UIButton!
@@ -31,17 +43,31 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var pathNameTextFeild: UITextField!
     
-    
-    //***************************************TextFields and Sliders**************************************
-    
     @IBOutlet weak var addUpdateBtn: UIButton!
     @IBOutlet weak var sliderText: UILabel!
     @IBOutlet weak var dynamicSlider: UISlider!
+    @IBOutlet weak var pointTableView: UITableView!
     
+    // MARK: - Textfields/Sliders
     
-    @IBAction func zSliderChanged(_ sender: UISlider) { //Updates text outlets and golabl cordiantes when slider is changed
+    /*******************************************************************************
+     // Function: textFieldDidBeginEditing
+     // Called when: textbox for path name is tapped
+     // Usage: to keep track of whether or not keyboard is being displayed
+     ********************************************************************************/
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isTextBoxEditing = true
+    }
+    
+    /*******************************************************************************
+     // Function: zSliderChanged
+     // Called when: dynamic slider has been chagned
+     // Usage: to update corresponding slider X/Y/S, slider amount,
+     //    update global tmpPoint variable for pDV with new slider information
+     ********************************************************************************/
+    @IBAction func zSliderChanged(_ sender: UISlider) {
         if(plane == "XY"){
-            sliderText.text = "Z:"
+            sliderText.text = "Z: "
             zCord = dynamicSlider.value
         }
         else if(plane == "XZ"){
@@ -56,9 +82,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
         sliderText.text?.append("\(Int(dynamicSlider.value))")
         
-        //updates point with new slider axis value
         var tmpPoint:(Float, Float, Float)
-        
         tmpPoint = (xCord, yCord, zCord)
         
         if (points.count == numPoints + 1){
@@ -71,31 +95,27 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             points.append(tmpPoint)
         }
         
-        pDV.points = self.points
+        pDV.points = self.points  /// Updates pDV
         pDV.setNeedsDisplay()
-        
     }
     
+    // MARK: - Button Actions
     
-    @IBOutlet weak var pointTableView: UITableView!
-    
-    
-    
-    //    ********************************************Buttons***********************************************
-    
+    /*******************************************************************************
+     // Function: returnToMain
+     // Called when: back button has been pressed
+     // Usage: to return to main menu
+     ********************************************************************************/
     @IBAction func returnToMain(_ sender: Any) {
         performSegue(withIdentifier: "createToMainMenuSegue", sender: nil)
     }
     
-    
-    @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
-        modified = false
-        pDV.scale = self.scale
-        pDV.zScale = self.zScale
-        pDV.points = self.points
-        pDV.setNeedsDisplay()
-    }
-    
+    /*******************************************************************************
+     // Function: xzButtonTapped
+     // Called when: XZ button has been pressed
+     // Usage: to update pDV to display coordinates on an XZ plane, set slider
+     //     to Y axis and value
+     ********************************************************************************/
     @IBAction func xzButtonTapped(_ sender: UIButton) { //sets plane to XZ axis and sets correspoing sliders
         plane = "XZ"
         pDV.plane = "XZ"
@@ -124,6 +144,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
+    /*******************************************************************************
+     // Function: yzButtonTapped
+     // Called when: YZ button has been pressed
+     // Usage: to update pDV to display coordinates on an YZ plane, set slider
+     //     to X axis and value
+     ********************************************************************************/
     @IBAction func yzButtonTapped(_ sender: UIButton) {//sets plane to YZ axis and sets correspoing sliders
         plane = "YZ"
         pDV.plane = "YZ"
@@ -149,6 +175,12 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         yzOutlet.tintColor = UIColor.green
     }
     
+    /*******************************************************************************
+     // Function: xyButtonTapped
+     // Called when: XY button has been pressed
+     // Usage: to update pDV to display coordinates on an XY plane, set slider
+     //     to Z axis and value
+     ********************************************************************************/
     @IBAction func xyButtonTapped(_ sender: UIButton) {//sets plane to XY axis and sets correspoing sliders
         plane = "XY"
         pDV.plane = "XY"
@@ -175,12 +207,17 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         xyOutlet.tintColor = UIColor.green
     }
     
-    
+    /*******************************************************************************
+     // Function: addPointButtonTapped
+     // Called when: the add point button or update button has been pressed
+     // Usage: to update the local value of points[] to align with pDV.points and
+     //     add new value to tableView.
+     ********************************************************************************/
     @IBAction func addPointButtonTapped(_ sender: UIButton) {
         if(isNewPointToAdd){
             modified = true
             if(!isUpdatingPoint){
-            numPoints += 1
+                numPoints += 1
             }
             
             if(plane == "XY"){
@@ -209,25 +246,28 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             else if(plane == "YZ"){
                 sliderText.text = "X: "
                 dynamicSlider.value = points[updateRow].0
-
+                
             }
             sliderText.text?.append("\(Int(dynamicSlider.value))")
             
-//             points[updateRow].0 = xSlider.value
-//             points[updateRow].1 = ySlider.value
-//             points[updateRow].2 = zSlider.value
-             self.pointTableView.reloadData()
-             pDV.points = self.points
-             pDV.setNeedsDisplay()
-             
-             let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
-             
-             pointTableView.deselectRow(at: indexPath, animated: true)
+            self.pointTableView.reloadData()
+            pDV.points = self.points
+            pDV.setNeedsDisplay()
+            
+            let indexPath:IndexPath = IndexPath(item: updateRow, section: 1)
+            
+            pointTableView.deselectRow(at: indexPath, animated: true)
             isUpdatingPoint = false
             addUpdateBtn.setTitle("Add Point", for: .normal)
         }
     }
     
+    /*******************************************************************************
+     // Function: loadPath
+     // Called when: the load path button has been pressed
+     // Usage: to load a previously created path, clear any discrepencies between
+     //     points[] and pDV.points[], warn user if current path has not been saved
+     ********************************************************************************/
     @IBAction func loadPath(_ sender: Any) {
         if (points.count > numPoints){
             points.removeLast()
@@ -244,6 +284,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    /*******************************************************************************
+     // Function: savePath
+     // Called when: Save Path button has been pressed
+     // Usage: - to check if flight path has all necessary variables
+     //        - if so, add flightpath to RawPathMO[]
+     //        - if path has same name as previously saved path, warn and give
+     //          option to overwrite
+     ********************************************************************************/
     @IBAction func savePath(_ sender: UIButton) {
         var paths: [RawPathMO] = []
         
@@ -291,8 +339,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 newPath.numPoints = NSDecimalNumber(integerLiteral: points.count)
                 
                 for point in points {
-                    latitude.append(point.0)
-                    longitude.append(point.1)
+                    latitude.append(point.1)
+                    longitude.append(point.0)
                     altitude.append(point.2)
                 }
                 
@@ -302,6 +350,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 
                 appDelegate.saveContext()
                 
+                modified = true
                 performSegue(withIdentifier: "createToPathSegue", sender: nil)
             }
         }
@@ -360,8 +409,6 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         context.delete(pathToDelete)
                         
                         appDelegate.saveContext()
-                        //add delete fucntion here
-                        
                         
                         newPath = RawPathMO(context: appDelegate.persistentContainer.viewContext)
                         
@@ -369,8 +416,8 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         newPath.numPoints = NSDecimalNumber(integerLiteral: self.points.count)
                         
                         for point in self.points {
-                            latitude.append(point.0)
-                            longitude.append(point.1)
+                            latitude.append(point.1)
+                            longitude.append(point.0)
                             altitude.append(point.2)
                         }
                         
@@ -380,6 +427,7 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                         
                         appDelegate.saveContext()
                         
+                        self.modified = true
                         self.performSegue(withIdentifier: "createToPathSegue", sender: nil)
                     }
                 })
@@ -390,35 +438,25 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
                 self.present(duplicateAlertController, animated: true, completion: nil)
                 
                 
-            if(nonDuplicateError){
-                let alertController = UIAlertController(title: "Error:", message:
-                    "\(message)", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-                
-                self.present(alertController, animated: true, completion: nil)
-            }
-            nonDuplicateError = false
-            }
-        }
-    }
+                if(nonDuplicateError){
+                    let alertController = UIAlertController(title: "Error:", message:
+                        "\(message)", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
                     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "createToPathSegue" {
-            let destinationController = segue.destination as! ConfirmationViewController
-            destinationController.previousViewIsFlight = false
-            if (!modified) {
-                destinationController.loadingPath = true;
-            }
-            else {
-                destinationController.loadingPath = false;
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                nonDuplicateError = false
             }
         }
     }
     
-    //*********************TableView Functions***************************
+    // MARK: - TableView Functions
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { //Deleting a point from tableview
+    /*******************************************************************************
+     // Called when: deleting a point from tableView
+     // Usage: to delete selected point from global points[] and remove from list
+     ********************************************************************************/
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             points.remove(at: indexPath.row)
             numPoints -= 1
@@ -427,11 +465,20 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // Counts number of points to populate
+    
+    /*******************************************************************************
+     // Called when: parparing to populate tableView
+     // Usage: to count how many rows will be filled with data
+     ********************************************************************************/
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numPoints
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //Provides data to tableview
+    /*******************************************************************************
+     // Called when: populating tableView
+     // Usage: to populate tableView with points[] data
+     ********************************************************************************/
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "pointCellIdentifier", for: indexPath)
         
@@ -442,8 +489,14 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { //Selecting a row
+    /*******************************************************************************
+     // Called when: user selects a row
+     // Usage: - updates slider value to given point value
+     //        - sets isUpdatingPoint to true
+     //        - updates addpoint to Update point
+     //        - enables updating/adjusting previously added points
+     ********************************************************************************/
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { ///Selecting a row
         if(points.count > indexPath.row)
         {
             
@@ -475,107 +528,35 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             isUpdatingPoint = true
             addUpdateBtn.setTitle("Update Point", for: .normal)
             updateRow = indexPath.row
-            
         }
     }
     
-    //******************************************Gesture Recognition*******************************************
+    // MARK: - Gesture Recognizers
     
+    /*******************************************************************************
+     // Function: panPiece
+     // Called when: pDV has been dragged
+     // Usage: to send new coordinates to newPointAt to add new location
+     ********************************************************************************/
     @IBAction func panPiece(_ gestureRecognizer : UIPanGestureRecognizer) {
         guard gestureRecognizer.view != nil else {return}
         let location = gestureRecognizer.location(in: gestureRecognizer.view!)
-        // Update the position for the .began, .changed, and .ended states
+        /// Update the position for the .began, .changed, and .ended states
         if gestureRecognizer.state != .cancelled {
             if (location.x > 0 && location.y > 0 && location.x < pDV.frame.width && location.y < pDV.frame.height) {
                 pDV.scale = scale
                 pDV.zScale = zScale
                 let newPoint:CGPoint = location
-
-
-                if(plane == "XY") //tests for plane
-                {
-
-                    xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
-                    yCord = (scale * Float(newPoint.y)) * -1 + 250
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].2//getting the previous points z value
-                        zCord = dynamicSlider.value
-                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 20
-                        zCord = dynamicSlider.value
-                        sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                    }
-                }
-                else if(plane == "XZ")
-                {
-                    xCord = scale * Float(newPoint.x)-250
-                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
-                        yCord = dynamicSlider.value
-                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 0
-                        yCord = dynamicSlider.value
-                        sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                    }
-                }
-                else if(plane == "YZ")
-                {
-                    yCord = (scale * Float(newPoint.x)) - 250
-                    zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                    if(points.count > 0)
-                    {
-                        dynamicSlider.value = points[points.count-1].0//getting the previous points x value
-                        xCord = dynamicSlider.value
-                        sliderText.text = "X: \(Int(dynamicSlider.value))"
-                    }
-                    else
-                    {
-                        dynamicSlider.value = 0
-                        xCord = dynamicSlider.value
-                        sliderText.text = "X: \(Int(dynamicSlider.value))"
-                    }
-                }
-
-                var tmpPoint:(Float, Float, Float)
-
-
-
-                tmpPoint = (xCord, yCord, zCord)
-
-
-                if (points.count == numPoints + 1){
-                    points.remove(at: numPoints)
-                }
-                if(isUpdatingPoint){
-                    points[updateRow] = tmpPoint
-                }
-                else{
-                    points.append(tmpPoint)
-                }
-                
-                pDV.points = self.points
-                pDV.setNeedsDisplay()
+                newPointAt(newPoint: newPoint)
             }
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        isTextBoxEditing = true
-    }
-    
-    
+    /*******************************************************************************
+     // Function: tapToPoint
+     // Called when: pDV has been tapped
+     // Usage: to send new coordinates to newPointAt to add new location
+     ********************************************************************************/
     @objc func tapToPoint(_ sender:UITapGestureRecognizer)
     {
         if(isTextBoxEditing){
@@ -586,91 +567,109 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
             pDV.scale = scale
             pDV.zScale = zScale
             let newPoint:CGPoint = sender.location(in: self.pDV)
-
-
-            if(plane == "XY") //tests for plane
-            {
-
-                xCord = scale * Float(newPoint.x)-250 //changes Cordiantes to standard -250,250 scale,
-                yCord = (scale * Float(newPoint.y)) * -1 + 250
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].2//getting the previous points z value
-                    zCord = dynamicSlider.value
-                    sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 20
-                    zCord = dynamicSlider.value
-                    sliderText.text = "Z: \(Int(dynamicSlider.value))"
-                }
-            }
-            else if(plane == "XZ")
-            {
-                xCord = scale * Float(newPoint.x)-250
-                zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].1 //getting the previous points y value
-                    yCord = dynamicSlider.value
-                    sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 0
-                    yCord = dynamicSlider.value
-                    sliderText.text = "Y: \(Int(dynamicSlider.value))"
-                }
-            }
-            else if(plane == "YZ")
-            {
-                yCord = (scale * Float(newPoint.x)) - 250
-                zCord = (zScale * Float(newPoint.y)) * -1 + 400
-
-                if(points.count > 0)
-                {
-                    dynamicSlider.value = points[points.count-1].0//getting the previous points x value
-                    xCord = dynamicSlider.value
-                    sliderText.text = "X: \(Int(dynamicSlider.value))"
-                }
-                else
-                {
-                    dynamicSlider.value = 0
-                    xCord = dynamicSlider.value
-                    sliderText.text = "X: \(Int(dynamicSlider.value))"
-                }
-            }
-
-            var tmpPoint:(Float, Float, Float)
-
-
-
-            tmpPoint = (xCord, yCord, zCord)
-
-            if (points.count == numPoints + 1){
-                points.remove(at: numPoints)
-            }
-            if(isUpdatingPoint){
-                points[updateRow] = tmpPoint
-            }
-            else{
-                points.append(tmpPoint)
-            }
-
-            pDV.points = self.points
-            pDV.setNeedsDisplay()
+            newPointAt(newPoint: newPoint)
         }
-
     }
     
-    override func viewDidAppear(_ animated: Bool) { //sets scale of pDV based on screen size
+    
+    // MARK: - Helper Functions
+    
+    /*******************************************************************************
+     // Function: newPointAt
+     // Called when: pDV has been tapped or panned
+     // Usage: to create new point at tap locaiton on pDV
+     ********************************************************************************/
+    func newPointAt(newPoint:CGPoint){
+        if(plane == "XY") //tests for plane and sets slider value to corresponding xyz value
+        {
+            
+            xCord = scale * Float(newPoint.x)-250 ///changes Cordiantes to standard -250,250 scale,
+            yCord = (scale * Float(newPoint.y)) * -1 + 250
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].2 ///getting the previous points z value
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 20
+                zCord = dynamicSlider.value
+                sliderText.text = "Z: \(Int(dynamicSlider.value))"
+            }
+        }
+        else if(plane == "XZ")
+        {
+            xCord = scale * Float(newPoint.x)-250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].1 ///getting the previous points y value
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 0
+                yCord = dynamicSlider.value
+                sliderText.text = "Y: \(Int(dynamicSlider.value))"
+            }
+        }
+        else if(plane == "YZ")
+        {
+            yCord = (scale * Float(newPoint.x)) - 250
+            zCord = (zScale * Float(newPoint.y)) * -1 + 400
+            
+            if(points.count > 0)
+            {
+                dynamicSlider.value = points[points.count-1].0 ///getting the previous points x value
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
+            }
+            else
+            {
+                dynamicSlider.value = 0
+                xCord = dynamicSlider.value
+                sliderText.text = "X: \(Int(dynamicSlider.value))"
+            }
+        }
+        
+        var tmpPoint:(Float, Float, Float)  /// new temporary point created with x,y,z coords
+        tmpPoint = (xCord, yCord, zCord)
+        
+        if (points.count == numPoints + 1){ /// if points.count is greater than local count, remove last point since addButtonPressed has not been called
+            points.remove(at: numPoints)
+        }
+        if(isUpdatingPoint){
+            points[updateRow] = tmpPoint
+        }
+        else{
+            points.append(tmpPoint)
+        }
+        
+        pDV.points = self.points
+        pDV.setNeedsDisplay() /// Refreshing pDV display
+    }
+    
+    // MARK: - View Management
+    
+    /*******************************************************************************
+     // Function: viewDidAppear
+     // Called when: EditView page is loading
+     // Usage: to calculate scale for pDV depending on screen size
+     ********************************************************************************/
+    override func viewDidAppear(_ animated: Bool) { ///sets scale of pDV based on screen size
         scale = Float(500 / pDV.frame.width)
         zScale = Float(400 / pDV.frame.width)
     }
     
+    /*******************************************************************************
+     // Function: viewDidLoad
+     // Called when: EditView page is loading
+     // Usage: to set and update global variabels to desired specifications
+     ********************************************************************************/
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -704,29 +703,47 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
         pDV.addGestureRecognizer(addPointGesture)
         pDV.addGestureRecognizer(addPanGesture)
         pDV.scale = scale
-        
-        //        updatePointButtonOutlet.isEnabled = false
-        //
-        //        verticalAxisLabel.text = "Y-Axis"
-        //        horizantalAxisLabel.text = "X-Axis"
-        
-        
-        // Do any additional setup after loading the view.
     }
     
+    /*******************************************************************************
+     // Function: didReceiveMemoryWarning
+     // Called when: device has run out of memory
+     // Usage: to delete any unnecessary resources that can be recreated
+     ********************************************************************************/
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    /*******************************************************************************
+     // Function: unwindToCreate
+     // Called when: Returning to edit view
+     // Usage: Updates pDV and pointTableView
+     ********************************************************************************/
+    @IBAction func unwindToCreate(segue:UIStoryboardSegue) {
+        modified = false
+        pDV.scale = self.scale
+        pDV.zScale = self.zScale
+        pDV.points = self.points
+        pDV.setNeedsDisplay()
+        self.pointTableView.reloadData()
+    }
+    
+    /*******************************************************************************
+     // Function: prepare
+     // Called when: Preparing to change view
+     // Usage: If moving to confirmation view, tell the destination view controller whether it's loading a path
+     ********************************************************************************/
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "createToPathSegue" {
+            let destinationController = segue.destination as! ConfirmationViewController
+            destinationController.previousViewIsFlight = false
+            if (!modified) {
+                destinationController.loadingPath = true;
+            }
+            else {
+                destinationController.loadingPath = false;
+            }
+        }
+    }
     
 }

@@ -3,6 +3,8 @@
 //  SkyPaint
 //
 //  Created by Addisalem Kebede on 3/3/18.
+//  Most recent edit by Connor Easton on 2/26/19
+//
 //  Copyright © 2018 SkyPaint. All rights reserved.
 //
 
@@ -10,31 +12,27 @@ import UIKit
 
 public class pathDisplayView: UIView {
 
-    var path: UIBezierPath!
-    
-    let dot = UIImage(named: "Circle")!
-    
-    var points:[(Float, Float, Float)] = []
-
-    var plane: String?
-    
-    var scale:Float!
-    
-    var zScale:Float!
-
-    
+    var path: UIBezierPath!                 /// path connecting dots
+    let dot = UIImage(named: "Circle")!     /// image used to display point icon on pDV
+    var points:[(Float, Float, Float)] = [] /// points displayed on pDV
+    var plane: String?                      /// xy, xz, yz
+    var scale:Float!                        /// calculated from device size
+    var zScale:Float!                       /// calculated from device size
 
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    
+    /*******************************************************************************
+     // Function: addStartPoint
+     // Called when: createPath is called
+     // Usage: to add the key start point of a path
+     ********************************************************************************/
     func addStartPoint() -> Void
     {
         var newPoint:CGPoint
@@ -56,14 +54,16 @@ public class pathDisplayView: UIView {
             coor1 = (CGFloat(points[0].0) + 250)/CGFloat(scale)
             coor2 = CGFloat(points[0].1)/CGFloat(scale) * -1 + CGFloat(250/scale)
         }
-        
-        
         newPoint = CGPoint(x: coor1, y: coor2) //initial point
-        
         path.move(to: newPoint)
         
     }
     
+    /*******************************************************************************
+     // Function: addPoints
+     // Called when: createPath is called
+     // Usage: to add any addtional points apart from start point to pDV
+     ********************************************************************************/
     func addPoints() -> Void
     {
         var newPoint:CGPoint
@@ -90,20 +90,20 @@ public class pathDisplayView: UIView {
             }
 
             
-            newPoint = CGPoint(x: coor1, y: coor2) //initial point
+            newPoint = CGPoint(x: coor1, y: coor2) ///initial point
             path.addLine(to: newPoint)
             
             let area = CGRect(x: ((newPoint.x - 10)), y: (newPoint.y - 10), width: 20, height: 20)
-            
-            //dot.draw(at: newPoint)
             dot.draw(in: area)
-            
-          
         }
     }
     
-    func createPath() {
-        // Initialize the path.
+    /*******************************************************************************
+     // Function: createPath
+     // Called when: view draw function is called
+     // Usage: add each point in the points array to the view
+     ********************************************************************************/
+    func createPath() {        /// Initialize the path.
         path = UIBezierPath()
         
         if(points.count > 0)
@@ -114,23 +114,14 @@ public class pathDisplayView: UIView {
     }
     
     
-    override public func draw(_ rect: CGRect) {
+    /*******************************************************************************
+     // Function: draw
+     // Called when: redrawing pDV
+     // Usage: to draw the new path on pDV
+     ********************************************************************************/
+    override public func draw(_ rect: CGRect) { /// draws path with white color stroke
         self.createPath()
-        
         UIColor.white.setStroke()
-    
-        
         path.stroke()
     }
-
-    
-    
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }

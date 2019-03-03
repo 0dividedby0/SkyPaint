@@ -485,46 +485,54 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
     }
     
     func startMission() {
-        let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
-            if (error == nil) {
+        if (DJISDKManager.product() == nil) {
+            let alert = UIAlertController(title: "No Connection!", message: "Please connect to a DJI aircraft first.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+        else {
+            let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
                 startDidComplete()
             }
-        }
-        
-        let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
-            if (error != nil) {
-                self.missionOperator!.startMission(completion: startCompletionHandler)
-            }
-        }
-        
-        mutablemission.maxFlightSpeed = 15
-        mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
-        mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
-        
-        //convert mutable mission to standard mission
-        mission = DJIWaypointMission(mission: mutablemission)
-        
-        missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
             
-            if event.error != nil {
-                //request upload until no error
-                self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
-            }
-            else {
-                // start mission
-                self.missionOperator?.startMission(completion: startCompletionHandler)
+            let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
+                if (error != nil) {
+                    self.missionOperator!.startMission(completion: startCompletionHandler)
+                }
             }
             
-        })
-        
-        
-        missionOperator!.load(mission)
-        
-        missionOperator!.uploadMission(completion: uploadCompletionHandler)
-        
-        func startDidComplete () {
-            print("Mission Started!!!")
-            performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+            mutablemission.maxFlightSpeed = 15
+            mutablemission.headingMode = DJIWaypointMissionHeadingMode.auto
+            mutablemission.finishedAction = DJIWaypointMissionFinishedAction.noAction
+            
+            //convert mutable mission to standard mission
+            mission = DJIWaypointMission(mission: mutablemission)
+            
+            missionOperator?.addListener(toUploadEvent: self, with: DispatchQueue.main, andBlock: { (event) in
+                
+                if event.error != nil {
+                    //request upload until no error
+                    self.missionOperator?.uploadMission(completion: uploadCompletionHandler)
+                }
+                else {
+                    // start mission
+                    self.missionOperator?.startMission(completion: startCompletionHandler)
+                }
+                
+            })
+            
+            
+            missionOperator!.load(mission)
+            
+            missionOperator!.uploadMission(completion: uploadCompletionHandler)
+            
+            func startDidComplete () {
+                if (missionOperator?.currentState == DJIWaypointMissionState.executing || missionOperator?.currentState == DJIWaypointMissionState.readyToExecute) {
+                    print("Mission Started!!!")
+                    performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+                    performSegue(withIdentifier: "scaleToFlySegueNew", sender: nil)
+                }
+            }
         }
     }
 }

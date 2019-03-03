@@ -48,19 +48,6 @@ class MainMenuController: UIViewController {
                 }
             }
         })
-        
-        DJISDKManager.keyManager()?.startListeningForChanges(on: connectedKey, withListener: self, andUpdate: { (oldValue: DJIKeyedValue?, newValue : DJIKeyedValue?) in
-            if newValue != nil {
-                if newValue!.boolValue {
-                    // At this point, a product is connected so we can show it.
-                    
-                    // UI goes on MT.
-                    DispatchQueue.main.async {
-                        self.productConnected()
-                    }
-                }
-            }
-        })
     }
     
     func productConnected() {

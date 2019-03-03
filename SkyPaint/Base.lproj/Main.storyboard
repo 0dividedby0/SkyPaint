@@ -37,7 +37,7 @@
                         <viewLayoutGuide key="safeArea" id="yGl-TS-C1v"/>
                     </view>
                     <connections>
-                        <segue destination="LME-JH-YJp" kind="show" identifier="flyToPathSegue" animates="NO" id="lwf-gl-bfJ"/>
+                        <segue destination="LME-JH-YJp" kind="show" identifier="flyToPathSegue" id="lwf-gl-bfJ"/>
                         <segue destination="W7s-pa-QL1" kind="unwind" identifier="flyToMainMenuSegue" unwindAction="unwindToMainMenuWithSegue:" id="tg4-Fq-2bB"/>
                     </connections>
                 </viewController>
@@ -326,7 +326,7 @@
                         <outlet property="xyOutlet" destination="dYD-Ld-Eeo" id="g6U-5n-HrD"/>
                         <outlet property="xzOutlet" destination="KhY-Ql-N4b" id="eu9-H8-aeB"/>
                         <outlet property="yzOutlet" destination="740-wk-OYw" id="4wY-V0-B3g"/>
-                        <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" animates="NO" id="Aqn-za-g8R"/>
+                        <segue destination="LME-JH-YJp" kind="show" identifier="createToPathSegue" id="Aqn-za-g8R"/>
                         <segue destination="goU-27-YM5" kind="unwind" identifier="createToMainMenuSegue" unwindAction="unwindToMainMenuWithSegue:" id="btC-To-zam"/>
                     </connections>
                 </viewController>
@@ -554,6 +554,7 @@
                         <outlet property="segmentedControlMapSelector" destination="JXK-OH-IBQ" id="yds-s3-j9i"/>
                         <segue destination="1iM-Jv-t1S" kind="unwind" identifier="scaleToConfirmationSegue" unwindAction="unwindToConfirmationWithSegue:" id="IaO-SO-nGV"/>
                         <segue destination="1iM-Jv-t1S" kind="unwind" identifier="scaleToFlySegue" unwindAction="unwindToFlightWithSegue:" id="Jfu-v9-glw"/>
+                        <segue destination="t1m-Xd-6cb" kind="show" identifier="scaleToFlySegueNew" id="NuX-wN-sd6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BH6-EI-O57" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -632,7 +633,7 @@
                     <connections>
                         <outlet property="pathNamesTableView" destination="BTv-Jd-mx3" id="VaH-Xl-fNb"/>
                         <outlet property="pathPreviewView" destination="9Xi-Zy-b0E" id="7li-Lh-md2"/>
-                        <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" animates="NO" id="nvn-Yb-FW7"/>
+                        <segue destination="5cw-m2-ClR" kind="show" identifier="pathToScaleSegue" id="nvn-Yb-FW7"/>
                         <segue destination="laO-4K-DLH" kind="unwind" identifier="pathToCreateSegue" unwindAction="unwindToCreateWithSegue:" id="Sv8-ix-0jy"/>
                         <segue destination="laO-4K-DLH" kind="unwind" identifier="pathToFlySegue" unwindAction="unwindToFlightWithSegue:" id="Ai6-Lr-mNs"/>
                     </connections>
@@ -650,5 +651,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Aqn-za-g8R"/>
+        <segue reference="NuX-wN-sd6"/>
     </inferredMetricsTieBreakers>
 </document>

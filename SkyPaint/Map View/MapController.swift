@@ -492,9 +492,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
         }
         else {
             let startCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
-                if (error == nil) {
-                    startDidComplete()
-                }
+                startDidComplete()
             }
             
             let uploadCompletionHandler: (_ error: Error?) -> Void = { (error) -> Void in
@@ -529,8 +527,11 @@ class MapController: UIViewController, CLLocationManagerDelegate, MKMapViewDeleg
             missionOperator!.uploadMission(completion: uploadCompletionHandler)
             
             func startDidComplete () {
-                print("Mission Started!!!")
-                performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+                if (missionOperator?.currentState == DJIWaypointMissionState.executing || missionOperator?.currentState == DJIWaypointMissionState.readyToExecute) {
+                    print("Mission Started!!!")
+                    performSegue(withIdentifier: "scaleToFlySegue", sender: nil)
+                    performSegue(withIdentifier: "scaleToFlySegueNew", sender: nil)
+                }
             }
         }
     }

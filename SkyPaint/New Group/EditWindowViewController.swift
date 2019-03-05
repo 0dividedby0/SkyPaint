@@ -662,7 +662,9 @@ class EditWindowViewController: UIViewController, UITableViewDataSource, UITable
      ********************************************************************************/
     override func viewDidAppear(_ animated: Bool) { ///sets scale of pDV based on screen size
         scale = Float(500 / pDV.frame.width)
+        pDV.scale = scale
         zScale = Float(400 / pDV.frame.width)
+        pDV.zScale = zScale
     }
     
     /*******************************************************************************

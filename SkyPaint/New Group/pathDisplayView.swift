@@ -12,6 +12,8 @@ import UIKit
 
 public class pathDisplayView: UIView {
 
+    // MARK: - Variables
+
     var path: UIBezierPath!                 /// path connecting dots
     let dot = UIImage(named: "Circle")!     /// image used to display point icon on pDV
     var points:[(Float, Float, Float)] = [] /// points displayed on pDV
@@ -19,7 +21,7 @@ public class pathDisplayView: UIView {
     var scale:Float!                        /// calculated from device size
     var zScale:Float!                       /// calculated from device size
 
-    
+    // MARK: - initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -27,6 +29,8 @@ public class pathDisplayView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    // MARK: - Functions
     
     /*******************************************************************************
      // Function: addStartPoint
